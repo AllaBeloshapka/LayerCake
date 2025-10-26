@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+    <script src="javaScr" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel: Layer Cake</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body id="root">
+    <!-- шапка -->
+    <header class="header">
+      <h2>Our goal is less fuss, more profit.</h2>
+    </header>
+
+    <main class="main">
+      <!-- секция статистики -->
+      <section class="stats">
+        <h1>The success of our site.</h1>
+
+        <div class="stat-card">
+          <h4>Today</h4>
+          <p>5 orders</p>
+          <h3>200 $</h3>
+        </div>
+
+        <div class="stat-card">
+          <h4>This week</h4>
+          <p>32 orders</p>
+          <h3>500 $</h3>
+        </div>
+
+        <div class="stat-card">
+          <h4>This month</h4>
+          <p>120 orders</p>
+          <h3>4000 $</h3>
+        </div>
+      </section>
+
+      <!-- конверсия сайта, т.е. сколько посетителей сделали заказ -->
+      <section class="website-success">
+        <div class="promotion">
+          <h3>Conversion percentage</h3>
+          <p id="convercion">5%</p>
+          <h5>
+            For small business websites, a good percentage is considered to be
+            3–10%. <br />
+            Anything higher is already a fantastic result.
+          </h5>
+        </div>
+
+        <!-- результат автоворонки -->
+        <div class="promotion">
+          <h3>Number of orders through the sales funnel:</h3>
+          <p id="convercion">50</p>
+          <h4>
+            Go about your business while the site searches for clients for you.
+          </h4>
+        </div>
+      </section>
+
+      <!-- блок для РАЗВИТИЯ БИЗНЕССА -->
+      <div class="development">
+        <div class="moneybox">
+          <h2>
+            Set aside 10% of your profits today for further business
+            development.
+          </h2>
+          <h3>Today, that's $57.</h3>
+
+          <!-- квадратик для подтверждения, что человек внёс деньги в копилку -->
+          <label>
+            <input type="checkbox" />
+            Mark if you have already postponed.
+          </label>
+          <!-- "Теперь в вашей копилке на развитие бизнесса ... долларов" -->
+          <h3>Now you have $57 in your piggy bank for business growth.</h3>
+        </div>
+        <div class="motivation">
+          <h2>
+            “Help your business grow — save a portion for new equipment and
+            extra hands.”
+          </h2>
+        </div>
+      </div>
+
+      <!-- секция МОДЕРАЦИЯ ОТЗЫВОВ и ЗАКАЗЫ -->
+      <section class="important">
+        <!-- поступление заказа -->
+        <div class="order">
+          <h1 id="text">
+            Here you will receive notifications <br />
+            about new orders.
+          </h1>
+          <div id="order"><strong>You have 5 new orders! </strong></div>
+          <!-- <p>Name: <strong>Billi</strong></p>
+          <p>Phone number: <strong>+00 000 00 00 000</strong></p>
+          <p>Email: <strong>billi@gmail.com</strong></p> -->
+
+          <!-- кнопка для перехода на страницу заказов -->
+          <button type="button" class="btn-order">To all orders</button>
+        </div>
+
+        <!-- отзыв на модерации -->
+        <div class="review-box">
+          <h1 id="review">You have a new review pending moderation!</h1>
+
+          <div class="review">
+            <p class="text-review">
+              <strong
+                >Ordered for a birthday — the guests were delighted, everyone
+                asked where I got it.</strong
+              >
+            </p>
+
+            <img class="foto" src="../assets/кусочек.jpg" />
+          </div>
+
+          <!-- кнопки ОДОБРИТЬ/ОТКЛОНИТЬ -->
+          <div class="block-btn">
+            <button type="button" class="btn" id="btn-approve">APPROVE</button>
+            <button type="button" class="btn" id="btn_reject">REJECT</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- секция УПРАВЛЕНИЕ САЙТОМ -->
+
+      <h1 class="name_section">Admin Panel 👇</h1>
+
+      <section class="website_management">
+        <!-- редактирование карточек галереи -->
+        <form id="edit-product-form">
+          <h1>
+            In this block you can create a <br />
+            new cake card for the cake gallery.
+          </h1>
+
+          <div class="box-product">
+            <label for="product-name">Name</label>
+            <input
+              class="product-form"
+              type="text"
+              placeholder="Enter the product name"
+              id="product-name"
+              name="name"
+              required
+            />
+          </div>
+
+          <div class="box-product">
+            <label for="product-price">Price</label>
+            <input
+              class="product-form"
+              type="number"
+              placeholder="Enter the product price"
+              id="product-price"
+              name="price"
+              min="0"
+              step="0.01"
+              required
+            />
+          </div>
+
+          <div class="box-product">
+            <label for="product-price">ID</label>
+            <input
+              class="product-form"
+              type="number"
+              placeholder="Enter the product ID"
+              id="product-price"
+              name="price"
+              min="0"
+              required
+            />
+          </div>
+
+          <div class="box-product">
+            <label for="product-image">Foto</label>
+            <input
+              class="product-form"
+              id="product-foto"
+              type="file"
+              id="product-image"
+              name="image"
+              accept="image/*"
+            />
+          </div>
+          <!-- кнопка создания новой карточки -->
+          <button class="product-btn" type="submit">Save changes</button>
+        </form>
+
+        <!-- удаление существующей карточки товара -->
+        <form id="delete-form" class="form">
+          <h2 class="title">
+            Delete a product card by <span class="muted">ID</span>
+          </h2>
+          <label for="delete-id" class="label"
+            >Enter the ID of the card you want to delete:</label
+          >
+          <input
+            class="input-id"
+            type="number"
+            id="delete-id"
+            name="id"
+            required
+            class="input"
+          />
+          <div class="actions">
+            <button type="submit" class="product-btn">Delete</button>
+            <!-- <button type="button" id="show-all" class="btn">Показать все</button> -->
+          </div>
+          <p id="message" class="message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- ОПИСАНИЕ ТОВАРА В МОДАЛЬНОЙ КАРТОЧКЕ - добавление, удаление или корректировка -->
+      <div class="edit-modalcard">
+        <h2 id="modal-title">Edit cake description</h2>
+        <h3>
+          Here you can edit the product description or create a new card with a
+          product description.
+        </h3>
+
+        <!-- форма, где владелец сайта может создать новую или отредактировать старую информацию о торте -->
+
+        <form>
+          <div class="edit-form">
+            <div class="box-1">
+              <!-- ID -->
+              <div class="g">
+                <label for="id-input">ID:</label>
+                <input
+                  class="form-group"
+                  type="number"
+                  id="id-input"
+                  placeholder="Enter cake ID"
+                  required
+                />
+              </div>
+
+              <!-- Description -->
+              <div class="g">
+                <label for="description-input">Description:</label>
+                <textarea
+                  class="form-group"
+                  id="description-input"
+                  rows="3"
+                  placeholder="For example: chocolate cake with cream"
+                ></textarea>
+              </div>
+
+              <!-- Flavor -->
+              <div class="g">
+                <label for="flavor-input">Flavor:</label>
+                <textarea
+                  class="form-group"
+                  type="text"
+                  id="flavor-input"
+                  placeholder="For example: chocolate, vanilla"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="box-2">
+              <!-- Ingredients -->
+              <div class="g">
+                <label for="ingredients-input">Ingredients:</label>
+                <textarea
+                  class="form-group"
+                  id="ingredients-input"
+                  rows="3"
+                  placeholder="For example: flour, eggs, chocolate, sugar"
+                ></textarea>
+              </div>
+
+              <!-- Weight -->
+              <div class="g">
+                <label for="weight-input">Weight (kg):</label>
+                <input
+                  class="form-group"
+                  type="number"
+                  id="weight-input"
+                  step="0.1"
+                  placeholder="For example: 1.5"
+                />
+              </div>
+
+              <!-- Height -->
+              <div class="g">
+                <label for="height-input">Height (cm):</label>
+                <input
+                  class="form-group"
+                  type="number"
+                  id="height-input"
+                  step="0.1"
+                  placeholder="For example: 10"
+                />
+              </div>
+
+              <!-- Diameter -->
+              <div class="g">
+                <label for="diameter-input">Diameter (cm):</label>
+                <input
+                  class="form-group"
+                  type="number"
+                  id="diameter-input"
+                  step="0.1"
+                  placeholder="For example: 20"
+                />
+              </div>
+
+              <!-- кнопка для сохранения информации в модальную карточку -->
+              <button class="btn-modalcard" type="submit">Save</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- доступ к корректировке физического адреса кондитерской и контактных данных в footer -->
+      <div></div>
+    </main>
+
+    <div class="footer">
+      <h3>Contact the developer.</h3>
+      <h3>allabeloshapka4@gmail.com</h3>
+    </div>
+  </body>
+</html>

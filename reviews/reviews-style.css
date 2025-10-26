@@ -1,0 +1,228 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* вся страница просмотра */
+#root {
+  display: flex;
+  min-height: 210%; /*скрол*/
+  background-color: #e7c69e;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/* шапка */
+.header {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  z-index: 2;
+  background-image: url(./assets/слоистые\ торты.png);
+  background-size: cover;
+  background-position: 103%;
+  width: 100%;
+  height: 300px;
+}
+
+/* поле навигации */
+nav {
+  display: flex;
+  justify-content: center;
+  top: 400px;
+  height: 50px;
+  width: 100%;
+  background: #e7c69e;
+  border-bottom: 1px solid #682b08;
+  border-top: 1px solid #682b08;
+  font-size: 30px;
+  padding-top: 8px;
+  gap: 300px;
+}
+
+/* вид текста навигации */
+nav a {
+  color: #682b08; /* обычный цвет текста */
+  text-decoration: none; /* убираем подчеркивание */
+  transition: all 0.3s ease; /* плавные анимации */
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+/* наведение мышкой на навигацию */
+nav a:hover {
+  transform: scale(1.5); /* чуть увеличиваем */
+  text-shadow: 2px 2px 10px white; /* добавляем эффект свечения */
+  display: inline-block;
+}
+
+/* основное поле main */
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card_box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-wrap: 1;
+  justify-content: space-around;
+  gap: 30px;
+  padding-top: 20px;
+}
+
+/*карточка с отзывом*/
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  min-width: 400px;
+  max-height: 300px;
+  min-height: 300px;
+  color: #682b08;
+  background: #feeeba;
+  border: 4px solid #682b08;
+  border-radius: 10px;
+  word-wrap: break-word; /* перенос длинных слов */
+}
+
+/*текст отзыва*/
+.review {
+  display: flex;
+  max-width: 370px;
+  min-width: 370px;
+  max-height: 270px;
+  min-height: 270px;
+  font-size: 20px;
+  color: #682b08;
+  background: #fff3cd;
+  border: 1px solid #682b08;
+  border-radius: 10px;
+  padding: 10px;
+  white-space: normal; /* разрешаем перенос строк */
+  word-break: break-word; /* перенос слов, чтобы не выходили за границу */
+}
+
+/*фото отзыва*/
+.img {
+  width: 150px; /* фото занимает всю ширину блока */
+  height: min-content; /* сохраняем пропорции */
+  border-radius: 10px; /* закругление по желанию */
+  margin-bottom: 10px; /* отступ между фото и текстом */
+}
+
+/* форма для ввода текста */
+.user_form {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+/* поле для заполнения */
+.user_input_form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 70%;
+  height: 120px;
+  border-radius: 10px;
+  border: 4px solid #682b08;
+  background-color: #fff3cd;
+  font-size: 24px;
+}
+
+/*блок поле ввода и фото*/
+.input {
+  display: flex; /* добавили */
+  flex-direction: row; /* элементы внутри будут в строку */
+  gap: 10px; /* отступы между элементами по желанию */
+  align-items: flex-end; /* выравнивание по нижнему краю */
+  justify-content: space-around;
+  width: 100%;
+  height: 120px;
+}
+
+/*блок фото с надписью*/
+.foto{
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+/* выбрать фото для отзыва клиента*/
+#foto_input{
+  width: 300px;
+  height: 100px;
+  border-radius: 10px;
+  border: 4px solid #682b08;
+  background-color: #fff3cd;
+}
+
+
+/*кнопка*/
+.send_btn {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #682b08;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #e7c69e;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.send_btn:hover {
+  background-color: #993d08;
+}
+
+/* подвал */
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  background-color: #e7c69e;
+  color: #682b08;
+  font-size: 20px;
+  padding: 20px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  border-top: 1px solid #682b08;
+  height: 200px;
+}
+
+/* логотип в footer */
+#foto-name {
+  display: flex;
+  background-image: url(./assets/name-footer.png);
+  width: 200px;
+  height: 80px;
+  background-size: cover;
+  background-position: center;
+  margin: 30px;
+}
+
+/* расположение контактов в footer */
+#contact {
+  margin: 50px;
+}

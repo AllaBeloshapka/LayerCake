@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="./Index.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pastry Chef: reviews</title>
+    <link rel="stylesheet" href="reviews-style.css" type="text/css" />
+  </head>
+  <body>
+    <div id="root">
+      <!-- шапка сайта -->
+      <header class="header"></header>
+
+      <!-- навигация -->
+      <nav>
+        <h5 id="nav_text">
+          <a href="../galery/Index-galery.html">Cake Gallery & Prices</a>
+        </h5>
+        <h5 id="nav_text"><a href="../main/Index.html">About me</a></h5>
+      </nav>
+
+      <!-- основная часть -->
+      <main class="main">
+
+        <!-- форма для ввода отзыва -->
+        <div class="user_form">
+          <div class="input">
+            <!-- поле ввода -->
+          <textarea class="user_input_form" placeholder="Please leave your feedback."></textarea>
+          
+          <!-- пользователь может добавить в отзыв фото -->
+          <div class="foto">
+          <label class="from-label" for="user_foto">Select a review photo</label>
+          <!-- type="file" — позволяет выбрать файл. -->
+          <!-- accept="image/*" — ограничивает выбор только изображениями. -->
+          <input type="file" id="foto_input" accept="image/*" />
+          </div>
+        </div>
+           <!-- кнопка для отправки отзыва -->
+          <button type="button" class="send_btn">Leave a Review</button>
+        </div>
+      </main>
+
+      <!-- "подвал" сайта -->
+      <footer class="footer-container">
+        <div id="foto-name"></div>
+
+        <div id="contact">
+          <h6>Pick up your order at::</h6>
+          <h6>38-39 Bell Blvd,</h6>
+          <h6>Bayside, NY 11361</h6>
+        </div>
+
+        <div id="contact">
+          <h6>info@gmai.com</h6>
+          <h6>Tel. +0 000 00 00 000</h6>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<!-- здесь показываются только одобренные сообщения
+        <h3>Feedback from our dear clients</h3>
+        <div id="chat"></div>
+
+        здесь пользователь видит только свои сообщения (даже без одобрения)
+        <h3>Write your review</h3>
+        <div id="myMessages"></div>
+
+        <div class="user_input">
+         поле, где пользователь вводит текст -->
+<!-- <textarea id="user_input_form" placeholder="Write a message"></textarea> -->
+
+<!-- кнопка отправки -->
+<!-- <button id="send_btn">PUBLISH</button>
+           </div> -->
+
+<!-- сюда будут попадать все новые сообщения, пока модератор их не проверит -->
+<!-- <div id="pending"></div> -->

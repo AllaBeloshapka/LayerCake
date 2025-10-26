@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- ✅ Адаптация под мобильные устройства -->
+    <title>Cake gallery</title>
+    <link rel="stylesheet" href="./style-galery.css" />
+    <!-- ✅ Подключаем внешний CSS-файл -->
+    <script src="./Index.js" defer></script>
+  </head>
+  <body id="root">
+    <!-- 🔹 Шапка сайта -->
+    <header class="header"></header>
+
+    <!-- навигация -->
+    <nav>
+      <h5 id="nav_text"><a href="../main/Index.html">About me</a></h5>
+      <h5 id="nav_text">
+        <a href="../reviews/reviews.html">Customer Reviews</a>
+      </h5>
+    </nav>
+
+    <!-- модальное окно (по умолчанию скрыто) -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <!-- крестик для закрытия модального окна  -->
+        <span id="close-modal" class="close">&times;</span>
+
+        <!-- имя торта -->
+        <h2 class="modal-name"></h2>
+        <br />
+        <!-- описание вкуса -->
+        <p class="modal-taste"></p>
+        <br />
+        <!-- состав -->
+        <p class="modal-ingredients"></p>
+        <br />
+        <!-- размер и вес -->
+        <p class="modal-size"></p>
+
+        <!-- кнопка заказа -->
+        <div class="button">
+          <button class="modal-button">ORDER</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- форма для заполнения заказа -->
+    <div class="box-order-form">
+      <span class="close-order">&times;</span>
+
+      <h2 class="name-form">Order form</h2>
+
+      <form class="order-form">
+        <label>
+          Name:
+          <input type="text" name="customer-name" required />
+        </label>
+
+        <label>
+          Phone number:
+          <input
+            type="tel"
+            name="customer-phone"
+            required
+            pattern="[0-9+\-\s]{6,}"
+            title="Please enter a valid phone number"
+          />
+        </label>
+
+        <label>
+          Email:
+          <input type="email" name="customer-email" required />
+        </label>
+        <br>
+        <h4>The pastry chef will contact you to clarify your preferences.</h4>
+        <br>
+        <button class="order-btn" type="submit">SEND AN ORDER</button>
+      </form>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="gallery"></main>
+
+    <!-- "подвал" сайта -->
+    <footer class="footer-container">
+      <div id="foto-name"></div>
+
+      <div id="contact">
+        <h6>Pick up your order at::</h6>
+        <h6>38-39 Bell Blvd,</h6>
+        <h6>Bayside, NY 11361</h6>
+      </div>
+
+      <div id="contact">
+        <h6>info@gmai.com</h6>
+        <h6>Tel. +0 000 00 00 000</h6>
+      </div>
+    </footer>
+  </body>
+</html>
