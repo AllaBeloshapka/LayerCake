@@ -85,16 +85,16 @@ const STATUS_LIST = [
   "Blacklist",
 ];
 
-// 3️⃣ Проверяем localStorage на наличие заказов
+//  Проверяем localStorage на наличие заказов
 if (!localStorage.getItem("orders")) {
   // Создаём пустой массив заказов
   localStorage.setItem("orders", JSON.stringify([]));
 }
 
-// 4️⃣ Контейнер для заказов
+//  Контейнер для заказов
 const ordersContainer = document.querySelector(".orders-container");
 
-// 5️⃣ Функция загрузки и отображения заказов
+//  Функция загрузки и отображения заказов
 function loadOrders() {
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
 

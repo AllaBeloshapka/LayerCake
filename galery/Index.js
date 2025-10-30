@@ -662,26 +662,28 @@ ORDER_FORM.addEventListener("submit", async (event) => {
 // Находим объект продукта по productId
 const product = products.find(p => p.id == productId);
 
-
 const order = {
   id: Date.now(),               // ID заказа
   productId: productId,         // ID товара
-  // cakeName: product ? product.name : "Неизвестный торт",
   cakeName: productName,
-  customerName: name,           // ✅ имя клиента
+  customerName: name,           //  имя клиента
   phone,
   email,
-  status: "New order"           // статус по умолчанию
+  birthDate: ORDER_FORM["birth-date"].value,          // дата рождения
+  orderDateTime: ORDER_FORM["order-datetime"].value,  // дата и время выполнения заказа
+  status: "New order",           // статус по умолчанию
+  sentAt: new Date().toISOString()
+
 };
 
 
   try {
-    // 1️⃣ Сохраняем в localStorage (на всякий случай)
+    //  Сохраняем в localStorage (на всякий случай)
     const orders = JSON.parse(localStorage.getItem("orders")) || [];
     orders.push(order);
     localStorage.setItem("orders", JSON.stringify(orders));
 
-    // 2️⃣ Отправляем на сервер
+    //  Отправляем на сервер
     const response = await fetch("https://your-server.com/api/orders", {
       method: "POST",
       headers: {
