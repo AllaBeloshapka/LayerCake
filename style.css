@@ -1,6 +1,62 @@
- * {
+@import url('https://fonts.googleapis.com/css2?family=Felipa&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playball&display=swap');
+/* ===== CSS VARIABLES ===== */
+:root {
+  /* Colors */
+  --color-primary: #682b08;
+  --color-background: #e7c69e;
+  --color-white: #ffffff;
+  --color-text: #682b08;
+
+  /* Typography */
+  --font-heading: 'Dancing Script', cursive;
+  --font-body: 'Cormorant Garamond', serif;
+  --font-ui: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  --font-about: 'Playball', cursive;
+
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 1rem;
+  --font-size-md: 1.2rem;
+  --font-size-lg: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 2.2rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-xxl: 5rem;
+
+  /* Layout */
+  --header-height-mobile: 120px;
+  --header-height-tablet: 150px;
+  --header-height-desktop: 380px;
+  --nav-height: 50px;
+  --footer-height: 200px;
+
+  /* Borders & Shadows */
+  --border-primary: 1px solid var(--color-primary);
+  --border-thick: 2px solid var(--color-primary);
+  --shadow-primary: 5px 5px 20px 1px var(--color-primary);
+  --shadow-glow: 2px 2px 10px var(--color-white);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Breakpoints */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+}
+
+/* ===== RESET & BASE STYLES ===== */
+* {
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
@@ -19,153 +75,353 @@ li {
   padding: 0;
 }
 
+/* Accessibility - Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
-/* вся страница просмотра */
+/* ===== ROOT LAYOUT ===== */
 #root {
   display: flex;
-  min-height: 210%; /*скрол*/
-  background-color: #e7c69e;
+  min-height: 100vh;
+  background-color: var(--color-background);
   flex-direction: column;
   flex-wrap: wrap;
 }
 
-
-/* шапка */
+/* ===== HEADER STYLES ===== */
 .header {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   z-index: 2;
-  background-image: url(./assets/слоистые\ торты.png);
+  background-image: url(./assets/layered-cakes.png);
   background-size: cover;
-  background-position: 103%;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 100%;
-  height: 300px;
+  height: var(--header-height-desktop);
 }
 
-
-/* поле навигации */
+/* ===== NAVIGATION STYLES ===== */
 nav {
   display: flex;
   justify-content: start;
-  top: 400px;
+  gap: var(--space-lg);
   height: 50px;
   width: 100%;
-  background: #e7c69e;
-  border-bottom: 1px solid #682b08;
-  border-top: 1px solid #682b08;
-  font-size: 30px;
-  padding-top: 8px;
-  gap: 200px;
-  padding-left: 100px;
- }
-
-/* вид текста навигации */
-nav a {
-  color: #682b08; /* обычный цвет текста */
-  text-decoration: none; /* убираем подчеркивание */
-  transition: all 0.3s ease; /* плавные анимации */
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  
+  background: var(--color-background);
+  border-top: var(--border-primary);
+  border-bottom: var(--border-primary);
+  padding: var(--space-sm) var(--space-lg);
 }
 
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: var(--space-lg);
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-/* наведение мышкой на навигацию */
-nav a:hover {
-  transform: scale(1.5); /* чуть увеличиваем */
-  text-shadow: 2px 2px 10px white; /* добавляем эффект свечения */
+.nav-list a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  font-family: var(--font-ui);
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.nav-list a:hover {
+  transform: scale(1.5);
+  text-shadow: var(--shadow-glow);
   display: inline-block;
+  padding-bottom: 4rem;
 }
 
-
-/* основное поле main */
+/* ===== MAIN CONTENT STYLES ===== */
 .main {
-  position: relative;
   display: flex;
   flex: 1;
-  flex-wrap: wrap;
   flex-direction: column;
-  justify-content: flex-end;
-  border-bottom: 2px solid #682b08;
- 
+  border-bottom: var(--border-thick);
 }
 
-
-/* карточки с тортами */
-.foto {
-  position: absolute;
+.about-section {
+  padding: var(--space-lg);
   display: flex;
-  width: 600px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #682b08;
-  top: -25px;
-  right: 20px;
-  box-shadow: 5px 5px 20px 1px #682b08;
+  justify-content: center;
 }
 
-
-/* текст ОБО МНЕ */
-.text_about_my {
+.about-content {
   position: relative;
   display: flex;
-  left: 3%;
-  margin-top: 5%;
-  width: 800px;
-  height: 500px;
-  background-color: #e7c69e;
-  background-position: center;
-  border: 1px solid #682b08;
-  box-shadow: 5px 5px 20px 1px #682b08;
-  font-size: 30px;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  justify-content: stretch;
+  align-items: start;
+}
+
+.chef-image-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  position: relative;
+  top: -2.5rem;
+}
+
+.chef-photo {
+  width: 100%;
+  height: auto;
   background-size: cover;
   background-position: center;
-  
+  border: var(--border-primary);
+  box-shadow: var(--shadow-primary);
 }
 
+/* About Me Text with Beautiful Styling */
+.about-text {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+  max-width: 800px;
+  background-color: var(--color-background);
+  border: var(--border-primary);
+  box-shadow: var(--shadow-primary);
+  padding: var(--space-xl);
+  margin-top: var(--space-xxl);
+}
 
-/* празднечный торт */
-.cake2 {
+.about-title {
+  font-family: var(--font-about);
+  font-size: var(--font-size-xxl);
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.about-content-text {
+  font-family: var(--font-about);
+  font-size: var(--font-size-lg);
+  line-height: 1.7;
+  color: var(--color-text);
+  font-weight: 400;
+}
+
+.about-content-text p {
+  margin-bottom: var(--space-md);
+  text-align: justify;
+}
+
+.about-content-text p:last-child {
+  margin-bottom: 0;
+}
+
+.cakes-decoration {
   width: 100%;
-  margin-bottom: 0px;
-  border-bottom: 2px solid #682b08;
+  margin-top: auto;
 }
 
+.cakes-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
-/* подвал */
+/* ===== FOOTER STYLES ===== */
 .footer-container {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   flex-wrap: wrap;
-  background-color: #e7c69e;
-  color: #682b08;
-  font-size: 20px;
-  padding: 20px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  border-top: 1px solid #682b08;
-  height: 200px;
- 
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: var(--space-lg);
+  font-family: var(--font-ui);
+  border-top: var(--border-primary);
+  gap: var(--space-lg);
 }
 
-
-/* логотип в footer */
-#foto-name {
+.logo-footer {
   display: flex;
-  background-image: url(./assets/name-footer.png);
+  background-image: url(./assets/logo-footer.png);
   width: 200px;
   height: 80px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
-  margin: 30px;
+  margin: var(--space-sm);
 }
 
-
-/* расположение контактов в footer */
-#contact {
-  margin: 50px;
+.contact-info {
+  margin: var(--space-sm);
+  text-align: center;
 }
 
+.contact-info h3 {
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+}
 
+.contact-info a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
 
+.contact-info a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
 
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Styles */
+@media (min-width: 481px) and (max-width: 768px) {
+  .header {
+    height: var(--header-height-tablet);
+  }
+
+  .about-content {
+    flex-direction: column;
+    gap: var(--space-lg);
+    top: var(--space-xl);
+  }
+
+  .chef-image-container,
+  .about-text {
+    max-width: 100%;
+  }
+
+  .about-text {
+    padding: var(--space-lg);
+  }
+
+  .about-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .about-content-text {
+    font-size: var(--font-size-md);
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+  }
+
+  .logo-footer {
+    width: 180px;
+    height: 70px;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+  .header {
+    height: var(--header-height-desktop);
+    background-position: 103%;
+  }
+
+  .nav-list {
+    gap: 200px;
+    padding-left: 100px;
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .header {
+    height: var(--header-height-mobile);
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .nav-list a {
+    font-size: var(--font-size-sm);
+  }
+
+  .about-section {
+    padding: var(--space-sm);
+  }
+
+  .about-text {
+    padding: var(--space-md);
+  }
+
+  .about-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-content-text {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+  }
+
+  .logo-footer {
+    width: 150px;
+    height: 60px;
+  }
+
+  .contact-info {
+    margin: var(--space-xs);
+  }
+
+  .contact-info h3 {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 1200px) {
+  .about-content {
+    gap: var(--space-xxl);
+  }
+
+  .about-text {
+    padding: var(--space-xxl);
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .header,
+  nav,
+  .cakes-decoration {
+    display: none;
+  }
+
+  .about-text {
+    border: none;
+    box-shadow: none;
+  }
+
+  .footer-container {
+    border: none;
+  }
+}

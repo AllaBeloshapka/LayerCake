@@ -1,61 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="index.js" defer></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pastry Chef</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    
+    <!-- Основные SEO мета-теги -->
+    <title>Pastry Chef | Custom Cakes & Desserts in New York</title>
+    <meta name="description" content="Professional pastry chef in NYC specializing in custom wedding cakes, birthday cakes, and desserts. Order beautiful, delicious cakes for any occasion.">
+    <meta name="keywords" content="pastry chef, custom cakes, wedding cakes, birthday cakes, desserts, NYC, Bayside, bakery, cake designer">
+    <meta name="author" content="Pastry Chef">
+    
+    <!-- Open Graph мета-теги -->
+    <meta property="og:title" content="Pastry Chef | Custom Cakes & Desserts in New York">
+    <meta property="og:description" content="Professional pastry chef in NYC specializing in custom wedding cakes, birthday cakes, and desserts.">
+    <meta property="og:image" content="https://allabeloshapka.github.io/LayerCake/assets/name.png">
+    <meta property="og:url" content="https://allabeloshapka.github.io/LayerCake">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pastry Chef">
+    
+    <!-- Twitter Card мета-теги -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pastry Chef | Custom Cakes & Desserts in New York">
+    <meta name="twitter:description" content="Professional pastry chef in NYC specializing in custom cakes and desserts for all occasions.">
+    <meta name="twitter:image" content="https://allabeloshapka.github.io/LayerCake/assets/name.png">
+    
+    <!-- Дополнительные SEO -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://allabeloshapka.github.io/LayerCake">
+    
+    <!-- Google Fonts для красивого текста -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./style.css" type="text/css" />
   </head>
   <body>
     <div id="root">
       <!-- шапка сайта -->
-      <header class="header"></header>
+      <header class="header" role="banner">
+        <h1 class="sr-only">Pastry Chef - Custom Cakes & Desserts in New York</h1>
+      </header>
 
       <!-- навигация -->
-      <nav>
-        <h5 id="nav_text"><a href="galery/index-galery.html">Cake Gallery & Prices</a></h5>
-        <h5 id="nav_text"><a href="reviews/index_reviews.html">Customer Reviews</a></h5>
+      <nav role="navigation">
+        <ul class="nav-list">
+          <li><a href="galery/index-galery.html">Cake Gallery & Prices</a></li>
+          <li><a href="reviews/index_reviews.html">Customer Reviews</a></li>
+        </ul>
       </nav>
 
-
       <!-- основная часть -->
-      <main class="main">
+      <main class="main" role="main">
+        <section class="about-section">
+          <div class="about-content">
+            <div class="chef-image-container">
+              <img class="chef-photo" src="./assets/confectioner.jpg" alt="Professional pastry chef decorating a custom cake in New York" />
+            </div>
+            
+            <article class="about-text">
+              <h2 class="about-title">About Me</h2>
+              <div class="about-content-text">
+                <p>For over twenty years, I have been crafting cakes that transcend mere dessert — each one a signature creation, where unparalleled taste meets bespoke design, tailored with the finest, most luxurious notes to reflect the singular essence of your celebration.</p>
+                
+                <p>Every cake I create is a work of art, conceived to captivate the eye and enchant the palate. From a wedding steeped in elegance, to an anniversary shimmering with intimate joy, or a private celebration meant to be immortalized in memory, my cakes are centerpieces of pure indulgence, destined to leave an unforgettable impression.</p>
+                
+                <p>I believe a true cake should do more than delight the senses — it should breathe luxury, evoke wonder, and be as unique as the moment it commemorates. Each creation is meticulously designed, exclusively for you, as if it were the crown jewel of your celebration.</p>
+              </div>
+            </article>
+          </div>
+        </section>
 
-        <!-- фотография кондитера -->
-        <div>
-          <img class="foto" src="./assets/кондитер_n.jpg" />
+        <!-- декоративные торты -->
+        <div class="cakes-decoration">
+          <img class="cakes-image" src="./assets/cakes-background.png" alt="Collection of custom wedding cakes, birthday cakes, and special occasion cakes" />
         </div>
-
-        <!-- рамка с рассказом о себе -->
-       <div>
-          <img class="text_about_my" src="./assets/About Me.png" />
-        </div>
-
-        <!-- два торта внизу -->
-         <div>
-          <img class="cake2" src="./assets/фон2.png" />
-        </div>
-
       </main>
 
-      <!-- "подвал" сайта -->
-      <footer class="footer-container">
-
+      <!-- подвал сайта -->
+      <footer class="footer-container" role="contentinfo">
         <!-- логотип -->
-        <div id="foto-name"></div>
+        <div class="logo-footer" aria-label="Pastry Chef logo"></div>
 
-        <!-- адрес самой кондитерской -->
-        <div id="contact">
-          <h6>Pick up your order at::</h6>
-          <h6>38-39 Bell Blvd,</h6>
-          <h6>Bayside, NY 11361</h6>
-        </div>
+        <!-- адрес -->
+        <address class="contact-info">
+          <h3>Pick up your order at:</h3>
+          <p>38-39 Bell Blvd,<br>
+          Bayside, NY 11361</p>
+        </address>
 
-        <!-- контакты для заказа -->
-        <div id="contact">
-          <h6>info@gmai.com</h6>
-          <h6>Tel. +0 000 00 00 000</h6>
+        <!-- контакты -->
+        <div class="contact-info">
+          <h3>Contact</h3>
+          <p><a href="mailto:info@gmail.com">info@gmail.com</a><br>
+          Tel. +0 000 00 00 000</p>
         </div>
       </footer>
     </div>
