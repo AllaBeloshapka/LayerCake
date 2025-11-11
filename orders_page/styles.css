@@ -27,7 +27,7 @@ li {
 
 .orders-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   flex-wrap: wrap;
   gap: 50px;
   z-index: 13;
@@ -37,7 +37,7 @@ li {
 .order-card {
   min-height: auto;
   width: 450px;
-  height: 330px;
+  height: 370px;
   padding: 16px;
   border: none;
   box-shadow: inset 0 5px 15px black;

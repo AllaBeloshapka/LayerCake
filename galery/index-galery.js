@@ -255,7 +255,7 @@ function displayProducts(productsToShow) {
 
       // Store product id for order reference
       MODAL_BUTTON.dataset.id = product.id;
-      MODAL_BUTTON.dataset.name = product.name; // ✅ сохраняем название торта
+      MODAL_BUTTON.dataset.name = product.name; // сохраняем название торта
 
     });
 
@@ -324,7 +324,7 @@ const order = {
     localStorage.setItem("orders", JSON.stringify(orders));
 
     //  Отправляем на сервер
-    const response = await fetch("https://your-server.com/api/orders", {
+    const response = await fetch("http://localhost:5000/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
