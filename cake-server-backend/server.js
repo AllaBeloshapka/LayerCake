@@ -18,7 +18,7 @@ mongoose
   .then(() => console.log("✅ MongoDB Atlas connected"))
   .catch((err) => console.error("❌ Ошибка подключения к MongoDB:", err));
 
-// 🔹 Модель заказа
+//  Модель заказа
 const orderSchema = new mongoose.Schema({
   productId: Number,
   cakeName: String,
@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model("Order", orderSchema); // коллекция "orders"
 
-// 🔹 Маршрут для создания заказа
+//  Маршрут для создания заказа
 app.post("/api/orders", async (req, res) => {
   try {
     const newOrder = new Order(req.body);
@@ -47,7 +47,7 @@ app.post("/api/orders", async (req, res) => {
   }
 });
 
-// 🔹 Маршрут для получения всех заказов
+// Маршрут для получения всех заказов
 app.get("/api/orders", async (req, res) => {
   try {
     const orders = await Order.find();
@@ -58,7 +58,7 @@ app.get("/api/orders", async (req, res) => {
   }
 });
 
-// 🔹 ✅ Новый маршрут для обновления статуса заказа
+//Новый маршрут для обновления статуса заказа
 app.put("/api/orders/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -82,6 +82,6 @@ app.put("/api/orders/:id", async (req, res) => {
   }
 });
 
-// 🔹 Запуск сервера
+//  Запуск сервера
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 

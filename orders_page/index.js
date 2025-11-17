@@ -1,4 +1,4 @@
-// 2️⃣ Возможные статусы заказа
+// Возможные статусы заказа
 const STATUS_LIST = [
   "New order",
   "Accepted for work",
