@@ -9,7 +9,7 @@ const STATUS_LIST = [
 // Контейнер для заказов
 const ordersContainer = document.querySelector(".orders-container");
 
-// 🔧 Функция форматирования даты и времени
+//  Функция форматирования даты и времени
 function formatDateTime(dateString) {
   if (!dateString) return "-";
   const date = new Date(dateString);
@@ -22,7 +22,7 @@ function formatDateTime(dateString) {
   });
 }
 
-// 🔧 Функция форматирования только даты
+//  Функция форматирования только даты
 function formatDate(dateString) {
   if (!dateString) return "-";
   const date = new Date(dateString);
@@ -33,7 +33,7 @@ function formatDate(dateString) {
   });
 }
 
-// ⚙️ Функция обновления статуса заказа
+//  Функция обновления статуса заказа
 async function updateOrderStatus(orderId, newStatus) {
   try {
     const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
@@ -60,7 +60,7 @@ async function updateOrderStatus(orderId, newStatus) {
   }
 }
 
-// 🔄 Функция загрузки и отображения заказов
+//  Функция загрузки и отображения заказов
 async function loadOrders() {
   try {
     const response = await fetch("http://localhost:5000/api/orders");
@@ -110,7 +110,7 @@ async function loadOrders() {
       const sentAtP = document.createElement("p");
       sentAtP.textContent = `Sent At: ${formatDateTime(order.sentAt)}`;
 
-      // ✅ Select для статуса
+      //  Select для статуса
       const statusSelect = document.createElement("select");
       statusSelect.className = "statusSelect";
       STATUS_LIST.forEach((status) => {
@@ -144,11 +144,11 @@ async function loadOrders() {
     });
   } catch (err) {
     console.error("Ошибка при загрузке заказов:", err);
-    ordersContainer.innerHTML = `<p style="color:red;">Ошибка при загрузке заказов. Проверь соединение с сервером.</p>`;
+    ordersContainer.innerHTML = `<p style="color:red;">Error loading orders. Check your server connection.</p>`;
   }
 }
 
-// 🚀 Загружаем заказы при старте страницы
+//Загружаем заказы при старте страницы
 loadOrders();
 
 
