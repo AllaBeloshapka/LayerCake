@@ -1,9 +1,10 @@
 // Возможные статусы заказа
 const STATUS_LIST = [
   "New order",
-  "Accepted for work",
+  "In progress",
   "Completed",
-  "Blacklist",
+  "Reviewed",
+  "Blacklisted",
 ];
 
 // Контейнер для заказов
@@ -121,9 +122,13 @@ async function loadOrders() {
         statusSelect.appendChild(option);
       });
 
-      // При изменении статуса сразу обновляем в БД
+      // Применяем стилизацию к select и его текущему значению
+      applyStatusStyle(statusSelect, order.status);
+
       statusSelect.addEventListener("change", () => {
-        updateOrderStatus(order._id, statusSelect.value);
+        const newStatus = statusSelect.value;
+        applyStatusStyle(statusSelect, newStatus); // Обновляем стиль
+        updateOrderStatus(order._id, newStatus);
       });
 
       // Добавляем элементы в карточку
@@ -144,11 +149,168 @@ async function loadOrders() {
     });
   } catch (err) {
     console.error("Ошибка при загрузке заказов:", err);
-    ordersContainer.innerHTML = `<p style="color:red;">Error loading orders. Check your server connection.</p>`;
+
+    // Загружаем данные из localStorage при ошибке
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    ordersContainer.innerHTML = "";
+
+    if (orders.length > 0) {
+      orders.forEach((order) => {
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+
+        orderCard.innerHTML = `
+          <p>Order ID: ${order.id}</p>
+          <p>Cake Name: ${order.cakeName}</p>
+          <p>Customer Name: ${order.customerName}</p>
+          <p>Phone: ${order.phone}</p>
+          <p>Email: ${order.email}</p>
+          <p>Birth Date: ${order.birthDate}</p>
+          <p>Order Date & Time: ${order.orderDateTime}</p>
+          <p>Status: ${order.status}</p>
+        `;
+
+        // Создаем select для статуса
+        const statusSelect = document.createElement("select");
+        statusSelect.className = "statusSelect";
+
+        STATUS_LIST.forEach((status) => {
+          const option = document.createElement("option");
+          option.value = status;
+          option.textContent = status;
+          if (order.status === status) option.selected = true;
+          statusSelect.appendChild(option);
+        });
+
+        // Применяем стилизацию к select и его текущему значению
+        applyStatusStyle(statusSelect, order.status);
+
+        // Обработчик изменения статуса
+        statusSelect.addEventListener("change", () => {
+          const newStatus = statusSelect.value;
+          applyStatusStyle(statusSelect, newStatus); // Обновляем стиль
+
+          // Обновляем статус в localStorage
+          const updatedOrders = orders.map((o) =>
+            o.id === order.id ? { ...o, status: newStatus } : o
+          );
+          localStorage.setItem("orders", JSON.stringify(updatedOrders));
+        });
+
+        orderCard.appendChild(statusSelect);
+        ordersContainer.appendChild(orderCard);
+      });
+    } else {
+      ordersContainer.innerHTML = `<p style="color:red;">Error loading orders. No local data available.</p>`;
+    }
   }
 }
 
 //Загружаем заказы при старте страницы
 loadOrders();
+
+// Логика получения данных из sessionStorage
+window.addEventListener("DOMContentLoaded", () => {
+  const newOrder = JSON.parse(sessionStorage.getItem("newOrder"));
+
+  if (newOrder) {
+    // Сохраняем новый заказ в localStorage
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(newOrder);
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    // Отображаем новый заказ на странице
+    const orderCard = document.createElement("div");
+    orderCard.className = "order-card";
+
+    orderCard.innerHTML = `
+      <p>Order ID: ${newOrder.id}</p>
+      <p>Cake Name: ${newOrder.cakeName}</p>
+      <p>Customer Name: ${newOrder.customerName}</p>
+      <p>Phone: ${newOrder.phone}</p>
+      <p>Email: ${newOrder.email}</p>
+      <p>Birth Date: ${newOrder.birthDate}</p>
+      <p>Order Date & Time: ${newOrder.orderDateTime}</p>
+      <p>Status: ${newOrder.status}</p>
+    `;
+
+    ordersContainer.appendChild(orderCard);
+
+    // Очищаем sessionStorage после обработки
+    sessionStorage.removeItem("newOrder");
+  }
+});
+
+// Исправляем отображение заказов из localStorage
+window.addEventListener("DOMContentLoaded", () => {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  if (orders.length > 0) {
+    orders.forEach((order) => {
+      const orderCard = document.createElement("div");
+      orderCard.className = "order-card";
+
+      orderCard.innerHTML = `
+        <p>Order ID: ${order.id}</p>
+        <p>Cake Name: ${order.cakeName}</p>
+        <p>Customer Name: ${order.customerName}</p>
+        <p>Phone: ${order.phone}</p>
+        <p>Email: ${order.email}</p>
+        <p>Birth Date: ${order.birthDate}</p>
+        <p>Order Date & Time: ${order.orderDateTime}</p>
+      `;
+
+      // Создаем select для статуса
+      const statusSelect = document.createElement("select");
+      statusSelect.className = "statusSelect";
+
+      STATUS_LIST.forEach((status) => {
+        const option = document.createElement("option");
+        option.value = status;
+        option.textContent = status;
+        if (order.status === status) option.selected = true;
+        statusSelect.appendChild(option);
+      });
+
+      // Применяем стилизацию к select и его текущему значению
+      applyStatusStyle(statusSelect, order.status);
+
+      // Обработчик изменения статуса
+      statusSelect.addEventListener("change", () => {
+        const newStatus = statusSelect.value;
+        applyStatusStyle(statusSelect, newStatus); // Обновляем стиль
+
+        // Обновляем статус в localStorage
+        const updatedOrders = orders.map((o) =>
+          o.id === order.id ? { ...o, status: newStatus } : o
+        );
+        localStorage.setItem("orders", JSON.stringify(updatedOrders));
+      });
+
+      orderCard.appendChild(statusSelect);
+      ordersContainer.appendChild(orderCard);
+    });
+  } else {
+    const noOrdersMsg = document.createElement("p");
+    noOrdersMsg.textContent = "No orders found in localStorage.";
+    noOrdersMsg.style.fontSize = "20px";
+    noOrdersMsg.style.fontWeight = "bold";
+    noOrdersMsg.style.color = "#fff";
+    ordersContainer.appendChild(noOrdersMsg);
+  }
+});
+
+// Добавляем стилизацию статуса в зависимости от значения
+function applyStatusStyle(element, status) {
+  const statusColors = {
+    "New order": "#87CEEB", // голубой
+    "In progress": "#ff4d00", // оранжевый
+    "Completed": "#008000", // зелёный
+    "Reviewed": "#bca002", // жёлтый
+    "Blacklisted": "#000000", // чёрный
+  };
+
+  element.style.color = statusColors[status] || "#000000"; // По умолчанию чёрный
+}
 
 

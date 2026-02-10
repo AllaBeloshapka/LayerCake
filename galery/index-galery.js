@@ -1,4 +1,3 @@
-
 const products = [
   {
     id: 1,
@@ -282,7 +281,8 @@ CLOSE_ORDER.addEventListener("click", () => {
   ORDER_FORM_BOX.style.display = "none";
 });
 
-ORDER_FORM.addEventListener("submit", async (event) => {
+// Логика передачи данных из формы в orders-page
+ORDER_FORM.addEventListener("submit", (event) => {
   event.preventDefault();
 
   ORDER_FORM_BOX.style.display = "none";
@@ -299,52 +299,32 @@ ORDER_FORM.addEventListener("submit", async (event) => {
   }
 
   // Находим продукт по ID в массиве products
-// Находим объект продукта по productId
-const product = products.find(p => p.id == productId);
+  const product = products.find((p) => p.id == productId);
 
-const order = {
-  id: Date.now(),               // ID заказа
-  productId: productId,         // ID товара
-  cakeName: productName,
-  customerName: name,           //  имя клиента
-  phone,
-  email,
-  birthDate: ORDER_FORM["birth-date"].value,          // дата рождения
-  orderDateTime: ORDER_FORM["order-datetime"].value,  // дата и время выполнения заказа
-  status: "New order",           // статус по умолчанию
-  sentAt: new Date().toISOString()
+  const order = {
+    id: Date.now(), // ID заказа
+    productId: productId, // ID товара
+    cakeName: productName,
+    customerName: name, // имя клиента
+    phone,
+    email,
+    birthDate: ORDER_FORM["birth-date"].value, // дата рождения
+    orderDateTime: ORDER_FORM["order-datetime"].value, // дата и время выполнения заказа
+    status: "New order", // статус по умолчанию
+    sentAt: new Date().toISOString(),
+  };
 
-};
+  // Сохраняем заказ в localStorage
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
 
+  // Передаём данные на страницу orders-page
+  sessionStorage.setItem("newOrder", JSON.stringify(order));
+  alert(`Your order for "${product.name}" has been submitted successfully!`);
 
-  try {
-    //  Сохраняем в localStorage (на всякий случай)
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push(order);
-    localStorage.setItem("orders", JSON.stringify(orders));
-
-    //  Отправляем на сервер
-    const response = await fetch("http://localhost:5000/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(order)
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
-    }
-
-    alert(`Your order for "${product.name}" has been sent successfully!`);
-
-    // Закрываем форму и очищаем
-    ORDER_FORM_BOX.style.display = "none";
-    ORDER_FORM.reset();
-
-  } catch (error) {
-    console.error(error);
-    alert("There was an error sending your order. Please try again later.");
-  }
+  // Закрываем форму и очищаем
+  ORDER_FORM_BOX.style.display = "none";
+  ORDER_FORM.reset();
 });
 

@@ -1,4 +1,5 @@
 const ORDER = document.querySelector(".order");
+const NEW_ORDERS = document.querySelector(".number_new_orders");
 // Элемент, куда выводим количество новых заказов
 //  const newOrdersCountElement = document.getElementById("new-orders-count");
 
@@ -22,3 +23,5 @@ function updateNewOrdersCount(orders) {
 
 // Старт при загрузке страницы
 loadOrders();
+
+NEW_ORDERS.childElementCount = ORDER.textContent;

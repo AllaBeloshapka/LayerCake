@@ -59,6 +59,31 @@ p{
   margin-top: 5px;
 }
 
+.statusSelect option {
+  font-weight: bold;
+}
+
+/* Цвета для статусов */
+.statusSelect option[value="New order"] {
+  color: #87CEEB; /* голубой */
+}
+
+.statusSelect option[value="In progress"] {
+  color: #FFA500; /* оранжевый */
+}
+
+.statusSelect option[value="Completed"] {
+  color: #008000; /* зелёный */
+}
+
+.statusSelect option[value="Reviewed"] {
+  color: #FFD700; /* жёлтый */
+}
+
+.statusSelect option[value="Blacklisted"] {
+  color: #000000; /* чёрный */
+}
+
 .footer{
 
   width: 100%;
