@@ -1,52 +1,105 @@
-# LayerCake
-(the project is still in progress)
-Сайт кондитера 
+# LayerCake — Frontend Confectionery E-Commerce Website
 
-Добро пожаловать в маленький сладкий мир, где каждый торт рассказывает свою историю. Этот сайт создан для того, чтобы делиться красотой и радостью кондитерского искусства, а также для удобного взаимодействия с клиентами и управления заказами.
+Responsive confectionery shop website built with HTML, CSS, and Vanilla JavaScript.
 
- Страницы сайта
+This project demonstrates my ability to design, structure, and implement a real-world frontend interface with interactive functionality and clean architecture.
 
-Главная ("Обо мне") – здесь я рассказываю о себе, своём пути и любви к сладкой магии.
+---
 
-Галерея тортов – место, где можно вдохновиться готовыми работами, рассмотреть детали и выбрать идеальный торт.
+## 🔎 Project Overview
 
-Отзывы – страница, где клиенты оставляют свои впечатления и слова благодарности.
+LayerCake is a frontend e-commerce concept for a confectionery shop.
 
-Админка – сердце сайта, где я могу:
+The website includes:
 
-видеть статистику заказов и прибыли
+- Product catalog
+- Dynamic filtering logic
+- Order form interface
+- Multi-page structure
+- Responsive layout for all screen sizes
 
-добавлять новые шедевры в галерею
+The focus of this project is practical frontend architecture, UI structure, and client-side logic implementation without frameworks.
 
-удалять устаревшие карточки
+---
 
-управлять поступающими заказами
+## 🛠 Tech Stack
 
-⚙ Технологии
+- **HTML5** — semantic structure  
+- **CSS3** — responsive layout (Flexbox, Grid, Media Queries)  
+- **Vanilla JavaScript** — DOM manipulation, filtering, form logic  
+- **Git** — version control  
 
-Сайт создан на:
+---
 
-HTML
+## ✨ Key Features
 
-CSS
+- Responsive design (mobile-first approach)
+- Product filtering system
+- Interactive order form
+- Structured modular file organization
+- Clean and readable codebase
+- Separation of concerns (structure / style / logic)
 
-JavaScript
+---
 
-Постепенно планирую внедрять новые технологии и библиотеки, чтобы сделать сайт ещё удобнее и красивее.
+## 📂 Project Structure
 
- Особенности
+```
+LayerCake/
+├── index.html
+├── style.css
+├── index.js
+├── assets/
+├── main/
+├── galery/
+├── orders_page/
+├── reviews/
+├── login/
+```
 
-Интерактивная галерея с возможностью выбора тортов
+---
 
-Удобная админка для контроля заказов и статистики
+## 💡 What This Project Demonstrates
 
-Сбор отзывов клиентов прямо на сайте
+- Ability to build a complete frontend interface from scratch
+- Understanding of layout systems (Flexbox & Grid)
+- DOM-based state handling
+- Event-driven architecture
+- Code organization and scalability awareness
+- Attention to UX and responsiveness
 
-Простая структура, которую легко расширять и улучшать
+---
 
- Цель проекта
+## 🚀 Running the Project
 
-Этот сайт – мой маленький проект, который показывает мои навыки веб-разработки, 
-любовь к красоте деталей и заботу о клиентах. Он создан, чтобы вдохновлять и быть полезным: 
-и для работодателя, чтобы видеть мои способности, и для клиента, чтобы наслаждаться удобством и красотой.
+1. Clone the repository:
+```
+git clone https://github.com/AllaBeloshapka/LayerCake.git
+```
+
+2. Open `index.html` in a browser  
+or run with Live Server.
+
+---
+
+## 🔄 Planned Improvements
+
+- Admin panel for content management
+- Backend API integration
+- Authentication system
+- Order persistence
+- Performance optimization
+
+---
+
+## 👩‍💻 About Me
+
+I am a Junior Frontend Developer focused on building structured, responsive, and user-friendly interfaces.
+
+I am actively looking for a remote internship or junior position where I can contribute, learn in a team environment, and grow as a developer.
+
+---
+
+**Year:** 2026
+
 
