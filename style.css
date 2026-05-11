@@ -1,6 +1,7 @@
- * {
+* {
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
@@ -19,154 +20,173 @@ li {
   padding: 0;
 }
 
+body {
+  background-color: #e7c69e;
+  color: #682b08;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
 
-/* вся страница просмотра */
+/* Root */
+
 #root {
   display: flex;
-  min-height: 210%; /*скрол*/
-  background-color: #e7c69e;
   flex-direction: column;
   flex-wrap: wrap;
+  min-height: 210%;
+  background-color: #e7c69e;
 }
 
+/* Header */
 
-/* шапка */
 .header {
   display: flex;
-  align-items: start;
   justify-content: center;
-  z-index: 2;
-  background-image: url(./assets/слоистые\ торты.png);
-  background-size: cover;
-  background-position: 103%;
+  align-items: flex-start;
+
   width: 100%;
   height: 300px;
+
+  background-image: url("./assets/слоистые торты.png");
+  background-size: cover;
+  background-position: 103%;
+
+  z-index: 2;
 }
 
+/* Navigation */
 
-/* поле навигации */
-nav {
+.navigation {
   display: flex;
-  justify-content: start;
-  top: 400px;
-  height: 50px;
-  width: 100%;
-  background: #e7c69e;
-  border-bottom: 1px solid #682b08;
-  border-top: 1px solid #682b08;
-  font-size: 30px;
-  padding-top: 8px;
+  justify-content: flex-start;
   gap: 200px;
+
+  width: 100%;
+  height: 50px;
+  padding-top: 8px;
   padding-left: 100px;
- }
 
-/* вид текста навигации */
-nav a {
-  color: #682b08; /* обычный цвет текста */
-  text-decoration: none; /* убираем подчеркивание */
-  transition: all 0.3s ease; /* плавные анимации */
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  
+  background-color: #e7c69e;
+  border-top: 1px solid #682b08;
+  border-bottom: 1px solid #682b08;
+
+  font-size: 30px;
 }
 
+.navigation a {
+  color: #682b08;
+  text-decoration: none;
+  transition: all 0.3s ease;
 
-/* наведение мышкой на навигацию */
-nav a:hover {
-  transform: scale(1.5); /* чуть увеличиваем */
-  text-shadow: 2px 2px 10px white; /* добавляем эффект свечения */
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.navigation a:hover {
   display: inline-block;
+  transform: scale(1.5);
+  text-shadow: 2px 2px 10px white;
 }
 
+/* Main */
 
-/* основное поле main */
 .main {
   position: relative;
+
   display: flex;
   flex: 1;
-  flex-wrap: wrap;
   flex-direction: column;
   justify-content: flex-end;
+  flex-wrap: wrap;
+
   border-bottom: 2px solid #682b08;
- 
 }
 
+/* Chef photo */
 
-/* карточки с тортами */
-.foto {
+.chef-photo {
   position: absolute;
-  display: flex;
-  width: 600px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #682b08;
   top: -25px;
   right: 20px;
-  box-shadow: 5px 5px 20px 1px #682b08;
-}
 
-
-/* текст ОБО МНЕ */
-.text_about_my {
-  position: relative;
   display: flex;
-  left: 3%;
-  margin-top: 5%;
-  width: 800px;
-  height: 500px;
-  background-color: #e7c69e;
+  width: 600px;
+
   background-position: center;
+  background-size: cover;
+
   border: 1px solid #682b08;
   box-shadow: 5px 5px 20px 1px #682b08;
-  font-size: 30px;
-  background-size: cover;
-  background-position: center;
-  
 }
 
+/* About image */
 
-/* празднечный торт */
-.cake2 {
+.about-image {
+  position: relative;
+  left: 3%;
+
+  display: flex;
+  width: 800px;
+  height: 500px;
+  margin-top: 5%;
+
+  background-color: #e7c69e;
+  background-position: center;
+  background-size: cover;
+
+  border: 1px solid #682b08;
+  box-shadow: 5px 5px 20px 1px #682b08;
+
+  font-size: 30px;
+}
+
+/* Cake image */
+
+.cake-image {
   width: 100%;
-  margin-bottom: 0px;
+  margin-bottom: 0;
+
   border-bottom: 2px solid #682b08;
 }
 
+/* Footer */
 
-/* подвал */
-.footer-container {
+.footer {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   flex-wrap: wrap;
+
+  height: 200px;
+  padding: 20px;
+  padding-top: 50px;
+
   background-color: #e7c69e;
+  border-top: 1px solid #682b08;
+
   color: #682b08;
   font-size: 25px;
-  padding: 20px;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  border-top: 1px solid #682b08;
-  height: 200px;
-  padding-top: 50px;
- 
+
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
+/* Footer logo */
 
-/* логотип в footer */
-#foto-name {
+.footer-logo {
   display: flex;
-  background-image: url(./assets/name-footer.png);
+
   width: 200px;
   height: 80px;
-  background-size: cover;
-  background-position: center;
   margin: 30px;
+
+  background-image: url("./assets/name-footer.png");
+  background-position: center;
+  background-size: cover;
 }
 
+/* Contact section */
 
-/* расположение контактов в footer */
-#contact {
+.contact-info {
   margin: 50px;
 }
-
 
 
 

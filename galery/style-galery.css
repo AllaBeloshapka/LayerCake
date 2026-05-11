@@ -1,290 +1,387 @@
-/* 🔹 Сброс отступов и рамок для всех элементов */
+
+/* Reset default browser styles */
+
 * {
-  margin: 0; /* убираем стандартные отступы */
-  padding: 0; /* убираем стандартные поля */
-  box-sizing: border-box; /* чтобы ширина и высота учитывала padding и border */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* 🔹 Общие стили для страницы */
+/* Global page styles */
+
 body {
-  font-family: Arial, sans-serif; /* шрифт текста */
-  background-color: #e7c69e; /* светлый фон страницы */
-  color: #682b08; /* цвет текста */
-  /* display: flex; */
+  font-family: Arial, sans-serif;
+  background-color: #e7c69e;
+  color: #682b08;
 }
 
-/* 🔹 Шапка сайта */
+/* Header section */
+
 .header {
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  z-index: 2;
-  background-image: url(./assets/слоистые\ торты.png);
-  background-size: cover;
-  background-position: 103%;
-  width: 100%;
-  height: 300px;
-}
-
-/* поле навигации */
-nav {
-  display: flex;
-  justify-content: center;
-  top: 400px;
-  height: 50px;
-  width: 100%;
-  background: #e7c69e;
-  border-bottom: 1px solid #682b08;
-  border-top: 1px solid #682b08;
-  font-size: 30px;
-  padding-top: 8px;
-  gap: 300px;
-}
-
-/* вид текста навигации */
-nav a {
-  color: #682b08; /* обычный цвет текста */
-  text-decoration: none; /* убираем подчеркивание */
-  transition: all 0.3s ease; /* плавные анимации */
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-}
-
-/* наведение мышкой на навигацию */
-nav a:hover {
-  transform: scale(1.5); /* чуть увеличиваем */
-  text-shadow: 2px 2px 10px white; /* добавляем эффект свечения */
-  display: inline-block;
-}
-
-/*main*/
-.gallery {
-  display: grid; /* сетка для блоков с тортами */
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  ); /* адаптивное количество колонок */
-  gap: 20px; /* расстояние между блоками */
-  padding: 20px;
-}
-
-/*Карточки тортов */
-.card {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  gap: 20px;
-  background: #745347; /*  фон блока */
-  border-radius: 10px; /* скругленные углы */
-  padding: 15px; /* внутренние отступы */
-  text-align: center; /* текст по центру */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* легкая тень */
-  transition: transform 0.3s ease; /* плавное увеличение при наведении */
-  cursor: pointer;
-}
-
-.id{
-  font-size: 15px;
-  color: rgb(74, 4, 4);
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-}
-
-/*Эффект наведения на карточку */
-.card:hover {
-  transform: scale(1.05); /* слегка увеличиваем блок */
-}
-
-/*фото в карточках */
-.card img {
-  max-width: 100%; /*картинка не выходит за предел блока */
-  border-radius: 10px; /* скругленные углы для картинки */
-}
-
-/*Подписи к картинкам */
-.card p {
-  font-size: 24px; /* размер текста */
-  color: #e7c69e; /* цвет подписи */
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
- 
-}
-
-#id {
-  font-size: 15px;
-  font-style: italic;
-}
-
-/* карточка с описанием вкуса и ингедиентов */
-.modal-content {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  height: 70%;
-  bottom: 15%;
-  left: 15%;
-  border: 2px solid #682b08;
-  background: #e7c69e;
-  border-radius: 10px;
-  z-index: 600;
-  padding: 20px;
-  font-size: 20px;
-}
-
-/* крестик для закрытия окна */
-.close{
-  padding-left: 96%;
-  font-size: 40px;
-  cursor: pointer;
-}
-
-/* блок для кнопки заказа */
-.button {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  height: 100px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+  width: 100%;
+  height: 300px;
+
+  background-image: url("../assets/слоистые торты.png");
+  background-size: cover;
+  background-position: 103%;
+
+  z-index: 2;
+}
+
+/* Navigation */
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 300px;
+
+  width: 100%;
+  height: 50px;
+  padding-top: 8px;
+
+  background-color: #e7c69e;
+  border-top: 1px solid #682b08;
+  border-bottom: 1px solid #682b08;
+
+  font-size: 30px;
+}
+
+/* Navigation links */
+
+nav a {
+  color: #682b08;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+/* Navigation hover effect */
+
+nav a:hover {
+  display: inline-block;
+  transform: scale(1.5);
+  text-shadow: 2px 2px 10px white;
+}
+
+/* Gallery grid */
+
+.gallery {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  );
+
+  gap: 20px;
   padding: 20px;
 }
 
-/* кнопка заказа в карточке с описанием */
+/* Product cards */
+
+.card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding: 15px;
+
+  background-color: #745347;
+  border-radius: 10px;
+
+  text-align: center;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.3s ease;
+
+  cursor: pointer;
+}
+
+/* Product ID */
+
+.id {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+
+  font-size: 15px;
+  color: rgb(74, 4, 4);
+}
+
+/* Card hover effect */
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* Product images */
+
+.card img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* Product text */
+
+.card p {
+  font-size: 24px;
+  color: #e7c69e;
+
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+/* Modal window */
+
+.modal-content {
+  position: fixed;
+  bottom: 15%;
+  left: 15%;
+
+  z-index: 600;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 70%;
+  height: 70%;
+  padding: 20px;
+
+  background-color: #e7c69e;
+  border: 2px solid #682b08;
+  border-radius: 10px;
+
+  font-size: 20px;
+}
+
+/* Close modal button */
+
+.close {
+  padding-left: 96%;
+
+  font-size: 40px;
+
+  cursor: pointer;
+}
+
+/* Order button container */
+
+.button {
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+}
+
+/* Modal order button */
+
 .modal-button {
   width: 50%;
   height: 50px;
-  background: linear-gradient(45deg, #984413, #682b08, #984413);
-  animation: goldShine 5s ease infinite;
-  color: #fff;
+
+  background: linear-gradient(
+    45deg,
+    #984413,
+    #682b08,
+    #984413
+  );
+
   color: #e7c69e;
+
   font-size: 24px;
+
   border: none;
   border-radius: 10px;
+
   cursor: pointer;
+
   box-shadow: 5px 5px 5px rgba(24, 7, 0, 0.7);
-  
+
+  animation: goldShine 5s ease infinite;
 }
+
+/* Modal button hover effect */
 
 .modal-button:hover {
   background-color: #803a11;
-  transform: scale(1.1); /* увеличивается при наведении */
+
+  transform: scale(1.1);
   transition: transform 0.2s;
 }
 
-/* форма заказа */
-/* Общий фон для формы заказа */
+/* Order form overlay */
+
 .box-order-form {
-  display: flex; /* скрыта по умолчанию */
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* полупрозрачный фон */
+
+  z-index: 1000;
+
+  display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* Окно формы */
+/* Order form window */
+
 .order-form {
-  background: #fbe5c9;
-  padding: 25px 30px;
-  border-radius: 12px;
-  width: 520px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 15px;
-  position: relative;
+
+  width: 520px;
+  padding: 25px 30px;
+
+  background-color: #fbe5c9;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Заголовок */
+/* Order form title */
+
 .name-form h2 {
-  margin: 0 0 10px;
-  font-size: 20px;
+  margin-bottom: 10px;
+
   color: #333;
+
+  font-size: 20px;
   text-align: center;
 }
 
-/* Поля формы */
+/* Form labels */
+
 .order-form label {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+
   color: #5b0606;
+
+  font-size: 14px;
 }
+
+/* Form inputs */
 
 .order-form input {
   margin-top: 5px;
   padding: 10px;
-  border-radius: 8px;
+
   border: 1px solid #ccc;
+  border-radius: 8px;
+
   font-size: 14px;
 }
 
+/* Input focus effect */
+
 .order-form input:focus {
   outline: none;
+
   border-color: #682b08;
+
   box-shadow: 0 0 4px #250f02;
 }
 
-/* Кнопка оформления заказа в форме */
+/* Submit order button */
+
 .order-btn {
   padding: 12px;
+
   background-color: #682b08;
+
+  color: #e7c69e;
+
   border: none;
   border-radius: 8px;
-  color: #e7c69e;
+
   font-size: 16px;
+
   cursor: pointer;
+
   transition: 0.2s ease;
 }
+
+/* Submit button hover effect */
 
 .order-btn:hover {
   background-color: #fe8c01;
   color: #682b08;
 }
 
-/* крестик закрытия формы заказа */
+/* Close order form button */
+
 .close-order {
   position: absolute;
   top: 10px;
   right: 15px;
+
+  color: #888;
+
   font-size: 28px;
   font-weight: bold;
-  color: #888;
+
   cursor: pointer;
+
   transition: 0.2s;
 }
+
+/* Close order button hover effect */
 
 .close-order:hover {
   color: #000;
 }
 
+/* Footer */
 
-/* подвал */
 .footer-container {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
   flex-wrap: wrap;
-  background-color: #e7c69e;
-  color: #682b08;
-  font-size: 20px;
+
   padding: 20px;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+
+  background-color: #e7c69e;
   border-top: 2px solid #682b08;
+
+  color: #682b08;
+
+  font-size: 20px;
+
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
-/* логотип в footer */
-#foto-name {
+/* Footer logo */
+
+.footer-logo {
   display: flex;
-  background-image: url(./assets/name-footer.png);
+
   width: 200px;
   height: 80px;
-  background-size: cover;
-  background-position: center;
   margin: 30px;
+
+  background-image: url("../assets/name-footer.png");
+  background-position: center;
+  background-size: cover;
 }

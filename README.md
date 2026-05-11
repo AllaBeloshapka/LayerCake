@@ -6,7 +6,7 @@ This project demonstrates my ability to design, structure, and implement a real-
 
 ---
 
-## 🔎 Project Overview
+##  Project Overview
 
 LayerCake is a frontend e-commerce concept for a confectionery shop.
 
@@ -22,7 +22,7 @@ The focus of this project is practical frontend architecture, UI structure, and 
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **HTML5** — semantic structure  
 - **CSS3** — responsive layout (Flexbox, Grid, Media Queries)  
@@ -31,7 +31,7 @@ The focus of this project is practical frontend architecture, UI structure, and 
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 - Responsive design (mobile-first approach)
 - Product filtering system
@@ -42,7 +42,7 @@ The focus of this project is practical frontend architecture, UI structure, and 
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 LayerCake/
@@ -59,7 +59,7 @@ LayerCake/
 
 ---
 
-## 💡 What This Project Demonstrates
+##  What This Project Demonstrates
 
 - Ability to build a complete frontend interface from scratch
 - Understanding of layout systems (Flexbox & Grid)
@@ -70,7 +70,7 @@ LayerCake/
 
 ---
 
-## 🚀 Running the Project
+##  Running the Project
 
 1. Clone the repository:
 ```
@@ -82,7 +82,7 @@ or run with Live Server.
 
 ---
 
-## 🔄 Planned Improvements
+##  Planned Improvements
 
 - Admin panel for content management
 - Backend API integration
@@ -92,7 +92,7 @@ or run with Live Server.
 
 ---
 
-## 👩‍💻 About Me
+##  About Me
 
 I am a Junior Frontend Developer focused on building structured, responsive, and user-friendly interfaces.
 
