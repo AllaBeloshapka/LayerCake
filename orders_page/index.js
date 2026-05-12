@@ -159,163 +159,105 @@ function createOrderCard(order, orders) {
 
 
 //  Функция загрузки и отображения заказов
-async function loadOrders() {
-  try {
-    const response = await fetch(
-      "http://localhost:5000/api/orders"
-    );
+// async function loadOrders() {
+//   try {
+//     const response = await fetch(
+//       "http://localhost:5000/api/orders"
+//     );
 
-    const orders = await response.json();
+//     const orders = await response.json();
 
-    ordersContainer.innerHTML = "";
+//     ordersContainer.innerHTML = "";
 
-    if (!orders || orders.length === 0) {
-      const noOrdersMsg =
-        document.createElement("p");
+//     if (!orders || orders.length === 0) {
+//       const noOrdersMsg =
+//         document.createElement("p");
 
-      noOrdersMsg.textContent =
-        "NO ORDERS YET";
+//       noOrdersMsg.textContent =
+//         "NO ORDERS YET";
 
-      noOrdersMsg.style.fontSize = "20px";
-      noOrdersMsg.style.fontWeight = "bold";
-      noOrdersMsg.style.color = "#fff";
+//       noOrdersMsg.style.fontSize = "20px";
+//       noOrdersMsg.style.fontWeight = "bold";
+//       noOrdersMsg.style.color = "#fff";
 
-      ordersContainer.appendChild(noOrdersMsg);
+//       ordersContainer.appendChild(noOrdersMsg);
 
-      return;
-    }
+//       return;
+//     }
 
-    // Render orders from backend
-    orders.forEach((order) => {
-      const orderCard =
-        createOrderCard(order, orders);
+//     // Render orders from backend
+//     orders.forEach((order) => {
+//       const orderCard =
+//         createOrderCard(order, orders);
 
-      ordersContainer.appendChild(orderCard);
-    });
-  } catch (err) {
-    console.error(
-      "Ошибка при загрузке заказов:",
-      err
-    );
+//       ordersContainer.appendChild(orderCard);
+//     });
+//   } catch (err) {
+//     console.error(
+//       "Ошибка при загрузке заказов:",
+//       err
+//     );
 
-    // Load orders from localStorage
-    const orders =
-      JSON.parse(localStorage.getItem("orders")) || [];
+//     // Load orders from localStorage
+//     const orders =
+//       JSON.parse(localStorage.getItem("orders")) || [];
 
-    ordersContainer.innerHTML = "";
+//     ordersContainer.innerHTML = "";
 
-    if (orders.length > 0) {
-      // Render orders from localStorage
-      orders.forEach((order) => {
-        const orderCard =
-          createOrderCard(order, orders);
+//     if (orders.length > 0) {
+//       // Render orders from localStorage
+//       orders.forEach((order) => {
+//         const orderCard =
+//           createOrderCard(order, orders);
 
-        ordersContainer.appendChild(orderCard);
-      });
-    } else {
-      ordersContainer.innerHTML = `
-        <p style="color:red;">
-          Error loading orders.
-          No local data available.
-        </p>
-      `;
-    }
+//         ordersContainer.appendChild(orderCard);
+//       });
+//     } else {
+//       ordersContainer.innerHTML = `
+//         <p style="color:red;">
+//           Error loading orders.
+//           No local data available.
+//         </p>
+//       `;
+//     }
+//   }
+// }
+
+// Load and display orders
+function loadOrders() {
+  const orders =
+    JSON.parse(localStorage.getItem("orders")) || [];
+
+  ordersContainer.innerHTML = "";
+
+  if (orders.length === 0) {
+    const noOrdersMsg =
+      document.createElement("p");
+
+    noOrdersMsg.textContent =
+      "NO ORDERS YET";
+
+    noOrdersMsg.style.fontSize = "20px";
+    noOrdersMsg.style.fontWeight = "bold";
+    noOrdersMsg.style.color = "#fff";
+
+    ordersContainer.appendChild(noOrdersMsg);
+
+    return;
   }
+
+  orders.forEach((order) => {
+    const orderCard =
+      createOrderCard(order, orders);
+
+    ordersContainer.appendChild(orderCard);
+  });
 }
 
 //Загружаем заказы при старте страницы
 loadOrders();
 
-// Логика получения данных из sessionStorage
-window.addEventListener("DOMContentLoaded", () => {
-  const newOrder = JSON.parse(sessionStorage.getItem("newOrder"));
 
-  if (newOrder) {
-    // Сохраняем новый заказ в localStorage
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push(newOrder);
-    localStorage.setItem("orders", JSON.stringify(orders));
-
-    // Отображаем новый заказ на странице
-    const orderCard = document.createElement("div");
-    orderCard.className = "order-card";
-
-    orderCard.innerHTML = `
-      <p>Order ID: ${newOrder.id}</p>
-      <p>Cake Name: ${newOrder.cakeName}</p>
-      <p>Customer Name: ${newOrder.customerName}</p>
-      <p>Phone: ${newOrder.phone}</p>
-      <p>Email: ${newOrder.email}</p>
-      <p>Birth Date: ${newOrder.birthDate}</p>
-      <p>Order Date & Time: ${newOrder.orderDateTime}</p>
-      <p>Status: ${newOrder.status}</p>
-    `;
-
-    ordersContainer.appendChild(orderCard);
-
-    // Очищаем sessionStorage после обработки
-    sessionStorage.removeItem("newOrder");
-  }
-});
-
-// Исправляем отображение заказов из localStorage
-window.addEventListener("DOMContentLoaded", () => {
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-  if (orders.length > 0) {
-    orders.forEach((order) => {
-      const orderCard = document.createElement("div");
-      orderCard.className = "order-card";
-
-      orderCard.innerHTML = `
-        <p>Order ID: ${order.id}</p>
-        <p>Cake Name: ${order.cakeName}</p>
-        <p>Customer Name: ${order.customerName}</p>
-        <p>Phone: ${order.phone}</p>
-        <p>Email: ${order.email}</p>
-        <p>Birth Date: ${order.birthDate}</p>
-        <p>Order Date & Time: ${order.orderDateTime}</p>
-      `;
-
-      // Создаем select для статуса
-      const statusSelect = document.createElement("select");
-      statusSelect.className = "statusSelect";
-
-      STATUS_LIST.forEach((status) => {
-        const option = document.createElement("option");
-        option.value = status;
-        option.textContent = status;
-        if (order.status === status) option.selected = true;
-        statusSelect.appendChild(option);
-      });
-
-      // Применяем стилизацию к select и его текущему значению
-      applyStatusStyle(statusSelect, order.status);
-
-      // Обработчик изменения статуса
-      statusSelect.addEventListener("change", () => {
-        const newStatus = statusSelect.value;
-        applyStatusStyle(statusSelect, newStatus); // Обновляем стиль
-
-        // Обновляем статус в localStorage
-        const updatedOrders = orders.map((o) =>
-          o.id === order.id ? { ...o, status: newStatus } : o
-        );
-        localStorage.setItem("orders", JSON.stringify(updatedOrders));
-      });
-
-      orderCard.appendChild(statusSelect);
-      ordersContainer.appendChild(orderCard);
-    });
-  } else {
-    const noOrdersMsg = document.createElement("p");
-    noOrdersMsg.textContent = "No orders found in localStorage.";
-    noOrdersMsg.style.fontSize = "20px";
-    noOrdersMsg.style.fontWeight = "bold";
-    noOrdersMsg.style.color = "#fff";
-    ordersContainer.appendChild(noOrdersMsg);
-  }
-});
 
 // Добавляем стилизацию статуса в зависимости от значения
 function applyStatusStyle(element, status) {

@@ -146,17 +146,6 @@ orderForm.addEventListener("submit", (event) => {
 
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  // Send order data to orders page
-
-  sessionStorage.setItem(
-    "newOrder",
-    JSON.stringify(order)
-  );
-
-  alert(
-    `Your order for "${product.name}" has been submitted successfully!`
-  );
-
   // Reset and close form
 
   orderFormBox.style.display = "none";
