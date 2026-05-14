@@ -242,21 +242,20 @@ const orders = getOrders();
 
   ordersContainer.innerHTML = "";
 
-  if (orders.length === 0) {
-    const noOrdersMsg =
-      document.createElement("p");
+if (orders.length === 0) {
+  const noOrdersMsg =
+    document.createElement("p");
 
-    noOrdersMsg.textContent =
-      "NO ORDERS YET";
+  noOrdersMsg.textContent =
+    "NO ORDERS YET";
 
-    noOrdersMsg.style.fontSize = "20px";
-    noOrdersMsg.style.fontWeight = "bold";
-    noOrdersMsg.style.color = "#fff";
+  noOrdersMsg.className =
+    "no-orders-message";
 
-    ordersContainer.appendChild(noOrdersMsg);
+  ordersContainer.appendChild(noOrdersMsg);
 
-    return;
-  }
+  return;
+}
 
   orders.forEach((order) => {
     const orderCard =
