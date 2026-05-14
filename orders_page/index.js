@@ -1,4 +1,4 @@
-// Возможные статусы заказа
+
 const STATUS_LIST = [
   "New order",
   "In progress",
@@ -7,10 +7,26 @@ const STATUS_LIST = [
   "Blacklisted",
 ];
 
-// Контейнер для заказов
-const ordersContainer = document.querySelector(".orders-container");
+// Orders container
+const ordersContainer =
+  document.querySelector(".orders-container");
 
-//  Функция форматирования даты и времени
+// Get orders from localStorage
+function getOrders() {
+  return (
+    JSON.parse(localStorage.getItem("orders")) || []
+  );
+}
+
+// Save orders to localStorage
+function saveOrders(orders) {
+  localStorage.setItem(
+    "orders",
+    JSON.stringify(orders)
+  );
+}
+
+// Format date and time
 function formatDateTime(dateString) {
   if (!dateString) return "-";
   const date = new Date(dateString);
@@ -23,7 +39,7 @@ function formatDateTime(dateString) {
   });
 }
 
-//  Функция форматирования только даты
+// Format date only
 function formatDate(dateString) {
   if (!dateString) return "-";
   const date = new Date(dateString);
@@ -34,7 +50,7 @@ function formatDate(dateString) {
   });
 }
 
-//  Функция обновления статуса заказа
+// Update order status
 async function updateOrderStatus(orderId, newStatus) {
   try {
     const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
@@ -95,10 +111,7 @@ function createStatusSelect(order, orders) {
         : o
     );
 
-    localStorage.setItem(
-      "orders",
-      JSON.stringify(updatedOrders)
-    );
+saveOrders(updatedOrders);
   });
 
   return statusSelect;
@@ -158,7 +171,7 @@ function createOrderCard(order, orders) {
 }
 
 
-//  Функция загрузки и отображения заказов
+// Load and display orders (DB)
 // async function loadOrders() {
 //   try {
 //     const response = await fetch(
@@ -224,9 +237,8 @@ function createOrderCard(order, orders) {
 // }
 
 // Load and display orders
-function loadOrders() {
-  const orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+function loadOrders() { 
+const orders = getOrders();
 
   ordersContainer.innerHTML = "";
 
@@ -254,12 +266,12 @@ function loadOrders() {
   });
 }
 
-//Загружаем заказы при старте страницы
+// Load orders on page start
 loadOrders();
 
 
 
-// Добавляем стилизацию статуса в зависимости от значения
+// Apply status color styles
 function applyStatusStyle(element, status) {
   const statusColors = {
     "New order": "#87CEEB", // голубой
