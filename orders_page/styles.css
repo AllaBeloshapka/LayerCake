@@ -90,3 +90,23 @@ p{
   height: 100px;
   background: rgb(84, 0, 0);
 }
+
+.status-new {
+  color: #87ceeb;
+}
+
+.status-progress {
+  color: #ff4d00;
+}
+
+.status-completed {
+  color: #008000;
+}
+
+.status-reviewed {
+  color: #bca002;
+}
+
+.status-blacklisted {
+  color: #000000;
+}

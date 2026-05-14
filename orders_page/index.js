@@ -273,15 +273,25 @@ loadOrders();
 
 // Apply status color styles
 function applyStatusStyle(element, status) {
-  const statusColors = {
-    "New order": "#87CEEB", // голубой
-    "In progress": "#ff4d00", // оранжевый
-    "Completed": "#008000", // зелёный
-    "Reviewed": "#bca002", // жёлтый
-    "Blacklisted": "#000000", // чёрный
+  element.classList.remove(
+    "status-new",
+    "status-progress",
+    "status-completed",
+    "status-reviewed",
+    "status-blacklisted"
+  );
+
+  const statusClasses = {
+    "New order": "status-new",
+    "In progress": "status-progress",
+    Completed: "status-completed",
+    Reviewed: "status-reviewed",
+    Blacklisted: "status-blacklisted",
   };
 
-  element.style.color = statusColors[status] || "#000000"; // По умолчанию чёрный
+  element.classList.add(
+    statusClasses[status]
+  );
 }
 
 
