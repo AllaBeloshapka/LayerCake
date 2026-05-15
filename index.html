@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="index.js" defer></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pastry Chef</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
+
+    <title>LayerCake</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
   </head>
+
   <body>
     <div id="root">
-      <!-- шапка сайта -->
       <header class="header"></header>
 
-      <!-- навигация -->
-      <nav>
-        <h5 id="nav_text"><a href="./galery/index-galery.html">Cake Gallery & Prices</a></h5>
-        <h5 id="nav_text"><a href="./reviews/index_reviews.html">Customer Reviews</a></h5>
+      <nav class="navigation">
+        <a class="nav-link" href="./galery/index-galery.html">
+          Cake Gallery & Prices
+        </a>
+
+        <a class="nav-link" href="./reviews/index_reviews.html">
+          Customer Reviews
+        </a>
       </nav>
 
-
-      <!-- основная часть -->
       <main class="main">
+        <section class="hero">
+          <img
+            class="chef-photo"
+            src="./assets/кондитер_n.jpg"
+            alt="Pastry chef portrait"
+          />
 
-        <!-- фотография кондитера -->
-        <div>
-          <img class="foto" src="./assets/кондитер_n.jpg" />
-        </div>
+          <img
+            class="about-image"
+            src="./assets/About Me.png"
+            alt="About the pastry chef"
+          />
 
-        <!-- рамка с рассказом о себе -->
-       <div>
-          <img class="text_about_my" src="./assets/About Me.png" />
-        </div>
-
-        <!-- два торта внизу -->
-         <div>
-          <img class="cake2" src="./assets/фон2.png" />
-        </div>
-
+          <img
+            class="cake-image"
+            src="./assets/фон2.png"
+            alt="Decorative cake"
+          />
+        </section>
       </main>
 
-      <!-- "подвал" сайта -->
-      <footer class="footer-container">
+      <footer class="footer">
+        <div class="footer-logo"></div>
 
-        <!-- логотип -->
-        <div id="foto-name"></div>
+        <address class="contact-info">
+          <p>Pick up your order at:</p>
+          <p>38-39 Bell Blvd,</p>
+          <p>Bayside, NY 11361</p>
+        </address>
 
-        <!-- адрес самой кондитерской -->
-        <div id="contact">
-          <h6>Pick up your order at::</h6>
-          <h6>38-39 Bell Blvd,</h6>
-          <h6>Bayside, NY 11361</h6>
-        </div>
-
-        <!-- контакты для заказа -->
-        <div id="contact">
-          <h6>info@gmai.com</h6>
-          <h6>Tel. +0 000 00 00 000</h6>
+        <div class="contact-info">
+          <p>info@gmail.com</p>
+          <p>Tel. +0 000 00 00 000</p>
         </div>
       </footer>
     </div>

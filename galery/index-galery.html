@@ -1,9 +1,158 @@
-<nav role="navigation">
-    <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/services">Services</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/gallery">Gallery</a></li>
-    </ul>
-</nav>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LayerCake</title>
+    <link rel="stylesheet" href="./style-galery.css" />
+    <script src="./products.js" defer></script>
+    <script src="./index-galery.js" defer></script>
+  </head>
+
+  <body>
+    <div id="root">
+
+      <!-- Header -->
+      <header class="header"></header>
+
+      <!-- Navigation -->
+      <nav>
+        <h5 id="nav">
+          <a href="../index.html">About me</a>
+        </h5>
+
+        <h5>
+          <a
+            class="nav"
+            href="../reviews/index_reviews.html"
+          >
+            Customer Reviews
+          </a>
+        </h5>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="main">
+        <section class="gallery"></section>
+      </main>
+
+      <!-- Product Modal -->
+      <div class="modal">
+        <div class="modal-content">
+
+          <span class="close">&times;</span>
+
+          <h2 class="modal-name"></h2>
+
+          <p>
+            <strong>Description:</strong>
+            <span class="modal-taste"></span>
+          </p>
+
+          <p>
+            <strong>Ingredients:</strong>
+            <span class="modal-ingredients"></span>
+          </p>
+
+          <p>
+            <strong>Size:</strong>
+            <span class="modal-size"></span>
+          </p>
+
+          <div class="button">
+            <button class="modal-button">
+              ORDER
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Form -->
+      <div class="box-order-form">
+        <form class="order-form">
+
+          <span class="close-order">&times;</span>
+
+          <div class="name-form">
+            <h2>Order Form</h2>
+          </div>
+
+          <label>
+            Full Name
+
+            <input
+              type="text"
+              name="customer-name"
+              placeholder="Enter your full name"
+              required
+            />
+          </label>
+
+          <label>
+            Phone Number
+
+            <input
+              type="tel"
+              name="customer-phone"
+              placeholder="+1 000 000 0000"
+              required
+            />
+          </label>
+
+          <label>
+            Email
+
+            <input
+              type="email"
+              name="customer-email"
+              placeholder="example@email.com"
+              required
+            />
+          </label>
+
+          <label>
+            Birth Date
+
+            <input
+              type="date"
+              name="birth-date"
+            />
+          </label>
+
+          <label>
+            Desired Order Date & Time
+
+            <input
+              type="datetime-local"
+              name="order-datetime"
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="order-btn"
+          >
+            Submit Order
+          </button>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer-container">
+
+        <div class="footer-logo"></div>
+
+        <address class="contact-info">
+          <p>Pick up your order at:</p>
+          <p>38-39 Bell Blvd,</p>
+          <p>Bayside, NY 11361</p>
+        </address>
+
+        <div class="contact-info">
+          <p>info@gmail.com</p>
+          <p>Tel. +0 000 00 00 000</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

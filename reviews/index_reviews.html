@@ -1,66 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="index.js" defer></script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pastry Chef: reviews</title>
-    <link rel="stylesheet" href="reviews-style.css" type="text/css" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Pastry Chef: Reviews</title>
+
+    <link
+      rel="stylesheet"
+      href="reviews-style.css"
+      type="text/css"
+    />
+
+    <script src="./reviews-data.js"></script>
+
+    <script src="index.js" defer></script>
   </head>
+
   <body>
     <div id="root">
-      <!-- шапка сайта -->
+      <!-- Header -->
       <header class="header"></header>
 
-      <!-- навигация -->
+      <!-- Navigation -->
       <nav>
-        <h5 id="nav_text">
-          <a href="../galery/index-galery.html">Cake Gallery & Prices</a>
+        <h5 class="nav-text">
+          <a href="../galery/index-galery.html">
+            Cake Gallery & Prices
+          </a>
         </h5>
-        <h5 id="nav_text"><a href="../index.html">About me</a></h5>
+
+        <h5 class="nav-text">
+          <a href="../index.html">
+            About me
+          </a>
+        </h5>
       </nav>
 
-      <!-- основная часть -->
+      <!-- Main content -->
       <main class="main">
-
-        <!-- форма для ввода отзыва -->
+        <!-- Review form -->
         <div class="user_form">
           <div class="input">
-            <!-- поле ввода -->
-          <textarea class="user_input_form" placeholder="Please leave your feedback."></textarea>
-          
-          <!-- пользователь может добавить в отзыв фото -->
-          <div class="foto">
-          <label class="from-label" for="user_foto">Select a review photo</label>
-          <!-- type="file" — позволяет выбрать файл. -->
-          <!-- accept="image/*" — ограничивает выбор только изображениями. -->
-          <input type="file" id="foto_input" accept="image/*" />
+            <!-- Review text area -->
+            <textarea
+              class="user_input_form"
+              placeholder="Please leave your feedback."
+            ></textarea>
+
+            <!-- Upload review photo -->
+            <div class="foto">
+              <label
+                class="from-label"
+                for="user_foto"
+              >
+                Select a review photo
+              </label>
+
+              <input
+                type="file"
+                id="foto_input"
+                accept="image/*"
+              />
+            </div>
           </div>
-        </div>
-           <!-- кнопка для отправки отзыва -->
-          <button type="button" class="send_btn">Leave a Review</button>
+
+          <!-- Submit review button -->
+          <button
+            type="button"
+            class="send_btn"
+          >
+            Leave a Review
+          </button>
         </div>
       </main>
 
-      <!-- "подвал" сайта -->
+      <!-- Footer -->
       <footer class="footer-container">
         <div id="foto-name"></div>
 
-        <div id="contact">
-          <h6>Pick up your order at::</h6>
+        <div class="contact">
+          <h6>Pick up your order at:</h6>
           <h6>38-39 Bell Blvd,</h6>
           <h6>Bayside, NY 11361</h6>
         </div>
 
-        <div id="contact">
-          <h6>info@gmai.com</h6>
+        <div class="contact">
+          <h6>info@gmail.com</h6>
           <h6>Tel. +0 000 00 00 000</h6>
         </div>
       </footer>
     </div>
   </body>
 </html>
-
 <!-- здесь показываются только одобренные сообщения
         <h3>Feedback from our dear clients</h3>
         <div id="chat"></div>

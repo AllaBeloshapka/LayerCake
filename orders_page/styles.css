@@ -1,11 +1,17 @@
+/* =========================
+   RESET
+========================= */
+
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
   margin: 0;
 }
+
 h1,
 h2,
 h3,
@@ -17,76 +23,146 @@ li {
   margin: 0;
   padding: 0;
 }
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+
 #root {
   min-height: 200%;
   display: flex;
   padding: 40px;
   background: rgb(84, 0, 0);
-  
 }
 
-.orders-container{
+/* =========================
+   ORDERS CONTAINER
+========================= */
+
+.orders-container {
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap;
+  justify-content: space-around;
   gap: 50px;
   z-index: 13;
-  justify-content: space-around;
 }
+
+/* =========================
+   ORDER CARD
+========================= */
 
 .order-card {
-  min-height: auto;
   width: 450px;
   height: 370px;
+  min-height: auto;
+
   padding: 16px;
+
   border: none;
-  box-shadow: inset 0 5px 15px black;
-  background: rgb(247, 228, 228);
-  font-size: 24px;
   border-radius: 8px;
+
+  background: rgb(247, 228, 228);
+
+  box-shadow: inset 0 5px 15px black;
+
+  font-size: 24px;
 }
 
-p{
+/* =========================
+   TEXT ELEMENTS
+========================= */
+
+p {
   margin-bottom: 5px;
 }
+
+/* =========================
+   STATUS SELECT
+========================= */
 
 .statusSelect {
   width: 400px;
   height: 50px;
+
+  margin-top: 5px;
+
   border-radius: 8px;
+
   font-size: 25px;
   font-weight: bold;
-  margin-top: 5px;
 }
 
 .statusSelect option {
   font-weight: bold;
 }
 
-/* Цвета для статусов */
+/* =========================
+   STATUS OPTION COLORS
+========================= */
+
 .statusSelect option[value="New order"] {
-  color: #87CEEB; /* голубой */
+  color: #87ceeb;
 }
 
 .statusSelect option[value="In progress"] {
-  color: #FFA500; /* оранжевый */
+  color: #ffa500;
 }
 
 .statusSelect option[value="Completed"] {
-  color: #008000; /* зелёный */
+  color: #008000;
 }
 
 .statusSelect option[value="Reviewed"] {
-  color: #FFD700; /* жёлтый */
+  color: #ffd700;
 }
 
 .statusSelect option[value="Blacklisted"] {
-  color: #000000; /* чёрный */
+  color: #000000;
 }
 
-.footer{
+/* =========================
+   FOOTER
+========================= */
 
+.footer {
   width: 100%;
   height: 100px;
+
   background: rgb(84, 0, 0);
+}
+
+/* =========================
+   STATUS TEXT COLORS
+========================= */
+
+.status-new {
+  color: #87ceeb;
+}
+
+.status-progress {
+  color: #ff4d00;
+}
+
+.status-completed {
+  color: #008000;
+}
+
+.status-reviewed {
+  color: #bca002;
+}
+
+.status-blacklisted {
+  color: #000000;
+}
+
+/* =========================
+   EMPTY STATE MESSAGE
+========================= */
+
+.no-orders-message {
+  color: #fff;
+
+  font-size: 20px;
+  font-weight: bold;
 }
