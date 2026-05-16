@@ -3,20 +3,13 @@
   <head>
     <!-- Meta -->
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Title -->
     <title>Admin Panel: Layer Cake</title>
 
     <!-- Styles -->
-    <link
-      rel="stylesheet"
-      href="styles.css"
-      type="text/css"
-    />
+    <link rel="stylesheet" href="styles.css" type="text/css" />
 
     <!-- Scripts -->
     <script src="index.js" defer></script>
@@ -24,17 +17,14 @@
   </head>
 
   <body id="root">
-
     <!-- Header -->
     <header class="header">
       <h2>Our goal is less fuss, more profit.</h2>
     </header>
 
     <main class="main">
-
       <!-- Statistics Section -->
       <section class="stats">
-
         <h1>The success of our site.</h1>
 
         <div class="stat-card">
@@ -58,46 +48,37 @@
 
       <!-- Website Conversion -->
       <section class="website-success">
-
         <div class="promotion">
           <h3>Conversion percentage</h3>
 
           <p id="convercion">5%</p>
 
           <h5>
-            For small business websites,
-            a good percentage is considered to be
+            For small business websites, a good percentage is considered to be
             3–10%.
             <br />
-            Anything higher is already
-            a fantastic result.
+            Anything higher is already a fantastic result.
           </h5>
         </div>
 
         <!-- Sales Funnel -->
         <div class="promotion">
-          <h3>
-            Number of orders through
-            the sales funnel:
-          </h3>
+          <h3>Number of orders through the sales funnel:</h3>
 
           <p id="convercion">50</p>
 
           <h4>
-            Go about your business while
-            the site searches for clients for you.
+            Go about your business while the site searches for clients for you.
           </h4>
         </div>
       </section>
 
       <!-- Business Development -->
       <section class="development">
-
         <div class="moneybox">
-
           <h2>
-            Set aside 10% of your profits today
-            for further business development.
+            Set aside 10% of your profits today for further business
+            development.
           </h2>
 
           <h3>Today, that's $57.</h3>
@@ -108,111 +89,63 @@
             Mark if you have already postponed.
           </label>
 
-          <h3>
-            Now you have $57 in your piggy bank
-            for business growth.
-          </h3>
+          <h3>Now you have $57 in your piggy bank for business growth.</h3>
         </div>
 
         <!-- Motivation -->
         <div class="motivation">
           <h2>
-            “Help your business grow —
-            save a portion for new equipment
-            and extra hands.”
+            “Help your business grow — save a portion for new equipment and
+            extra hands.”
           </h2>
         </div>
       </section>
 
       <!-- Orders and Reviews -->
       <section class="important">
-
         <!-- New Orders -->
         <div class="order">
-
-          <h1 id="text">
-            You have received new orders.
-          </h1>
+          <h1 id="text">You have received new orders.</h1>
 
           <div class="number_new_orders"></div>
 
           <!-- Orders page button -->
-          <button
-            type="button"
-            class="btn-order"
-          >
-            To all orders
-          </button>
+          <button type="button" class="btn-order">To all orders</button>
         </div>
 
         <!-- Review Moderation -->
         <div class="review-box">
-
-          <h1 id="review">
-            You have a new review pending moderation!
-          </h1>
+          <h1 id="review">You have a new review pending moderation!</h1>
 
           <div class="review">
+            <p class="text-review"></p>
 
-            <p class="text-review">
-              <strong>
-                Ordered for a birthday —
-                the guests were delighted,
-                everyone asked where I got it.
-              </strong>
-            </p>
-
-            <img
-              class="foto"
-              src="../assets/кусочек.jpg"
-              alt="Cake review photo"
-            />
+            <img class="foto" src="" alt="Cake review photo" />
           </div>
 
           <!-- Moderation buttons -->
           <div class="block-btn">
+            <button type="button" class="btn" id="btn-approve">APPROVE</button>
 
-            <button
-              type="button"
-              class="btn"
-              id="btn-approve"
-            >
-              APPROVE
-            </button>
-
-            <button
-              type="button"
-              class="btn"
-              id="btn_reject"
-            >
-              REJECT
-            </button>
+            <button type="button" class="btn" id="btn_reject">REJECT</button>
           </div>
         </div>
       </section>
 
       <!-- Admin Panel -->
-      <h1 class="name_section">
-        Admin Panel 👇
-      </h1>
+      <h1 class="name_section">Admin Panel 👇</h1>
 
       <!-- Website Management -->
       <section class="website_management">
-
         <!-- Product Creation Form -->
         <form id="edit-product-form">
-
           <h1>
-            In this block you can create
-            a new cake card for the cake gallery.
+            In this block you can create a new cake card for the cake gallery.
           </h1>
 
           <!-- Product Name -->
           <div class="box-product">
-
-            <label for="product-name">
-              Name
-            </label>
+            <label for="product-name"> Name </label>
 
             <input
               class="product-form"
@@ -226,10 +159,7 @@
 
           <!-- Product Price -->
           <div class="box-product">
-
-            <label for="product-price">
-              Price
-            </label>
+            <label for="product-price"> Price </label>
 
             <input
               class="product-form"
@@ -245,10 +175,7 @@
 
           <!-- Product ID -->
           <div class="box-product">
-
-            <label for="product-id">
-              ID
-            </label>
+            <label for="product-id"> ID </label>
 
             <input
               class="product-form"
@@ -263,10 +190,7 @@
 
           <!-- Product Image -->
           <div class="box-product">
-
-            <label for="product-image">
-              Photo
-            </label>
+            <label for="product-image"> Photo </label>
 
             <input
               class="product-form"
@@ -278,30 +202,18 @@
           </div>
 
           <!-- Save Product -->
-          <button
-            class="product-btn"
-            type="submit"
-          >
-            Save changes
-          </button>
+          <button class="product-btn" type="submit">Save changes</button>
         </form>
 
         <!-- Delete Product Form -->
-        <form
-          id="delete-form"
-          class="form"
-        >
+        <form id="delete-form" class="form">
           <h2 class="title">
             Delete a product card by
             <span class="muted">ID</span>
           </h2>
 
-          <label
-            for="delete-id"
-            class="label"
-          >
-            Enter the ID of the card
-            you want to delete:
+          <label for="delete-id" class="label">
+            Enter the ID of the card you want to delete:
           </label>
 
           <input
@@ -313,13 +225,7 @@
           />
 
           <div class="actions">
-
-            <button
-              type="submit"
-              class="product-btn"
-            >
-              Delete
-            </button>
+            <button type="submit" class="product-btn">Delete</button>
 
             <!--
             <button
@@ -332,41 +238,27 @@
             -->
           </div>
 
-          <p
-            id="message"
-            class="message"
-            aria-live="polite"
-          ></p>
+          <p id="message" class="message" aria-live="polite"></p>
         </form>
       </section>
 
       <!-- Modal Card Editing -->
       <section class="edit-modalcard">
-
-        <h2 id="modal-title">
-          Edit cake description
-        </h2>
+        <h2 id="modal-title">Edit cake description</h2>
 
         <h3>
-          Here you can edit the product description
-          or create a new card with
-          a product description.
+          Here you can edit the product description or create a new card with a
+          product description.
         </h3>
 
         <!-- Edit Form -->
         <form>
-
           <div class="edit-form">
-
             <!-- Left Column -->
             <div class="box-1">
-
               <!-- ID -->
               <div class="g">
-
-                <label for="id-input">
-                  ID:
-                </label>
+                <label for="id-input"> ID: </label>
 
                 <input
                   class="form-group"
@@ -379,10 +271,7 @@
 
               <!-- Description -->
               <div class="g">
-
-                <label for="description-input">
-                  Description:
-                </label>
+                <label for="description-input"> Description: </label>
 
                 <textarea
                   class="form-group"
@@ -394,10 +283,7 @@
 
               <!-- Flavor -->
               <div class="g">
-
-                <label for="flavor-input">
-                  Flavor:
-                </label>
+                <label for="flavor-input"> Flavor: </label>
 
                 <textarea
                   class="form-group"
@@ -409,13 +295,9 @@
 
             <!-- Right Column -->
             <div class="box-2">
-
               <!-- Ingredients -->
               <div class="g">
-
-                <label for="ingredients-input">
-                  Ingredients:
-                </label>
+                <label for="ingredients-input"> Ingredients: </label>
 
                 <textarea
                   class="form-group"
@@ -427,10 +309,7 @@
 
               <!-- Weight -->
               <div class="g">
-
-                <label for="weight-input">
-                  Weight (kg):
-                </label>
+                <label for="weight-input"> Weight (kg): </label>
 
                 <input
                   class="form-group"
@@ -443,10 +322,7 @@
 
               <!-- Height -->
               <div class="g">
-
-                <label for="height-input">
-                  Height (cm):
-                </label>
+                <label for="height-input"> Height (cm): </label>
 
                 <input
                   class="form-group"
@@ -459,10 +335,7 @@
 
               <!-- Diameter -->
               <div class="g">
-
-                <label for="diameter-input">
-                  Diameter (cm):
-                </label>
+                <label for="diameter-input"> Diameter (cm): </label>
 
                 <input
                   class="form-group"
@@ -474,12 +347,7 @@
               </div>
 
               <!-- Save Button -->
-              <button
-                class="btn-modalcard"
-                type="submit"
-              >
-                Save
-              </button>
+              <button class="btn-modalcard" type="submit">Save</button>
             </div>
           </div>
         </form>

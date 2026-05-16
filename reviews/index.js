@@ -5,6 +5,16 @@
 const main = document.querySelector(".main");
 
 /* =========================
+   REVIEW FORM ELEMENTS
+========================= */
+
+const reviewTextarea = document.querySelector(".user_input_form");
+
+const reviewPhotoInput = document.querySelector("#foto_input");
+
+const sendReviewButton = document.querySelector(".send_btn");
+
+/* =========================
    REVIEWS CONTAINER
 ========================= */
 
@@ -45,4 +55,34 @@ cakeReviews.forEach((reviewItem) => {
 
   // Add card into reviews container
   cardBox.appendChild(card);
+});
+
+/* =========================
+   SUBMIT REVIEW
+========================= */
+
+function saveReviews(reviews) {
+  localStorage.setItem("cakeReviews", JSON.stringify(reviews));
+}
+
+sendReviewButton.addEventListener("click", () => {
+  const review = {
+    id: crypto.randomUUID(),
+    text: reviewTextarea.value,
+    img: "",
+    status: "pending",
+    createdAt: Date.now(),
+  };
+
+  console.log(review);
+
+  cakeReviews.push(review);
+
+  saveReviews(cakeReviews);
+
+  reviewTextarea.value = "";
+
+  reviewPhotoInput.value = "";
+
+  console.log(cakeReviews);
 });
