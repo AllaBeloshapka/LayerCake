@@ -57,12 +57,23 @@ const reviews = JSON.parse(localStorage.getItem("cakeReviews")) || [];
 
 console.log(reviews);
 
+/* =========================
+   GET REVIEWS
+========================= */
+
+function getReviews() {
+  return (
+    JSON.parse(localStorage.getItem("cakeReviews")) || []
+  );
+}
 
 /* =========================
    APPROVE REVIEW
 ========================= */
 
 approveButton.addEventListener("click", () => {
+  const reviews = getReviews();
+
   const pendingReview = reviews.find(
     (review) => review.status === "pending"
   );
@@ -78,12 +89,13 @@ approveButton.addEventListener("click", () => {
 
   renderPendingReview();
 });
-
 /* =========================
    RENDER REVIEW
 ========================= */
 
 function renderPendingReview() {
+  const reviews = getReviews();
+
   const pendingReview = reviews.find(
     (review) => review.status === "pending"
   );

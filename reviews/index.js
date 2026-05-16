@@ -65,7 +65,47 @@ function saveReviews(reviews) {
   localStorage.setItem("cakeReviews", JSON.stringify(reviews));
 }
 
+/* =========================
+   CONVERT IMAGE
+========================= */
+
+function convertImageToBase64(file, callback) {
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    callback(reader.result);
+  };
+
+  reader.readAsDataURL(file);
+}
+
 sendReviewButton.addEventListener("click", () => {
+  const file = reviewPhotoInput.files[0];
+
+  if (file) {
+    convertImageToBase64(file, (imageBase64) => {
+      const review = {
+        id: crypto.randomUUID(),
+        text: reviewTextarea.value,
+        img: imageBase64,
+        status: "pending",
+        createdAt: Date.now(),
+      };
+
+      cakeReviews.push(review);
+
+      saveReviews(cakeReviews);
+
+      reviewTextarea.value = "";
+
+      reviewPhotoInput.value = "";
+
+      console.log(cakeReviews);
+    });
+
+    return;
+  }
+
   const review = {
     id: crypto.randomUUID(),
     text: reviewTextarea.value,
@@ -73,8 +113,6 @@ sendReviewButton.addEventListener("click", () => {
     status: "pending",
     createdAt: Date.now(),
   };
-
-  console.log(review);
 
   cakeReviews.push(review);
 
