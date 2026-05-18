@@ -74,9 +74,16 @@ function displayProducts(productsToShow) {
   });
 }
 
-// Initial gallery render
+const localStorageProducts =
+  JSON.parse(localStorage.getItem("products")) || [];
 
-displayProducts(products);
+const allProducts = [
+  ...products,
+  ...localStorageProducts,
+];
+
+// Initial gallery render
+displayProducts(allProducts);
 
 // Close product modal
 
