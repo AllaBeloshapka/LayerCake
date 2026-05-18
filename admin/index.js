@@ -187,3 +187,62 @@ productForm.addEventListener("submit", (event) => {
 
   console.log(product);
 });
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+const deleteForm = document.querySelector("#delete-form");
+
+const deleteIdInput =
+  document.querySelector("#delete-id");
+
+const deleteMessage =
+  document.querySelector("#message");
+
+deleteForm.addEventListener(
+  "submit",
+  (event) => {
+    event.preventDefault();
+
+    deleteMessage.textContent = "";
+
+    const deleteId =
+      deleteIdInput.value;
+
+    const products = getProducts();
+
+    const productIndex =
+      products.findIndex(
+        (product) =>
+          product.id === deleteId,
+      );
+
+    if (productIndex === -1) {
+      deleteMessage.textContent =
+        "Product not found";
+
+      deleteMessage.style.color =
+        "red";
+
+      return;
+    }
+
+    products.splice(productIndex, 1);
+
+    localStorage.setItem(
+      "products",
+      JSON.stringify(products),
+    );
+
+    deleteMessage.textContent =
+      "Product deleted";
+
+    deleteMessage.style.color =
+      "green";
+
+    deleteForm.reset();
+
+    displayProducts(getProducts());
+  },
+);
