@@ -194,55 +194,110 @@ productForm.addEventListener("submit", (event) => {
 
 const deleteForm = document.querySelector("#delete-form");
 
-const deleteIdInput =
-  document.querySelector("#delete-id");
+const deleteIdInput = document.querySelector("#delete-id");
 
-const deleteMessage =
-  document.querySelector("#message");
+const deleteMessage = document.querySelector("#message");
 
-deleteForm.addEventListener(
-  "submit",
-  (event) => {
-    event.preventDefault();
+deleteForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-    deleteMessage.textContent = "";
+  deleteMessage.textContent = "";
 
-    const deleteId =
-      deleteIdInput.value;
+  const deleteId = deleteIdInput.value;
 
-    const products = getProducts();
+  const products = getProducts();
 
-    const productIndex =
-      products.findIndex(
-        (product) =>
-          product.id === deleteId,
-      );
+  const productIndex = products.findIndex((product) => product.id === deleteId);
 
-    if (productIndex === -1) {
-      deleteMessage.textContent =
-        "Product not found";
+  if (productIndex === -1) {
+    deleteMessage.textContent = "Product not found";
 
-      deleteMessage.style.color =
-        "red";
+    deleteMessage.style.color = "red";
 
-      return;
-    }
+    return;
+  }
 
-    products.splice(productIndex, 1);
+  products.splice(productIndex, 1);
 
-    localStorage.setItem(
-      "products",
-      JSON.stringify(products),
-    );
+  localStorage.setItem("products", JSON.stringify(products));
 
-    deleteMessage.textContent =
-      "Product deleted";
+  deleteMessage.textContent = "Product deleted";
 
-    deleteMessage.style.color =
-      "green";
+  deleteMessage.style.color = "green";
 
-    deleteForm.reset();
+  deleteForm.reset();
 
-    displayProducts(getProducts());
-  },
-);
+  displayProducts(getProducts());
+});
+
+/* =========================
+   MODAL CARD EDITOR
+========================= */
+const idInput = document.querySelector("#id-input");
+
+const descriptionInput = document.querySelector("#description-input");
+
+const flavorInput = document.querySelector("#flavor-input");
+
+const ingredientsInput = document.querySelector("#ingredients-input");
+
+const weightInput = document.querySelector("#weight-input");
+
+const heightInput = document.querySelector("#height-input");
+
+const diameterInput = document.querySelector("#diameter-input");
+
+const modalCardMessage = document.querySelector(".product-message");
+
+const findProductButton = document.querySelector(".btn-find-product");
+
+/* =========================
+   FIND PRODUCT
+========================= */
+
+findProductButton.addEventListener("click", () => {
+  const productId = Number(idInput.value);
+
+  const products =
+    JSON.parse(localStorage.getItem("products")) || [];
+
+  const product = products.find(
+    (item) => item.id === productId
+  );
+
+  if (!product) {
+  modalCardMessage.textContent =
+    "Product with this ID was not found.";
+
+  descriptionInput.value = "";
+  flavorInput.value = "";
+  ingredientsInput.value = "";
+  weightInput.value = "";
+  heightInput.value = "";
+  diameterInput.value = "";
+
+  return;
+}
+
+productMessage.textContent = "";
+
+descriptionInput.value =
+  product.description || "";
+
+flavorInput.value =
+  product.flavor || "";
+
+ingredientsInput.value =
+  product.ingredients || "";
+
+weightInput.value =
+  product.weight || "";
+
+heightInput.value =
+  product.height || "";
+
+diameterInput.value =
+  product.diameter || "";
+});
+
+

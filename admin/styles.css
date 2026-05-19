@@ -314,8 +314,7 @@ li {
   width: 400px;
   padding: 20px;
 
-  font-family: Cambria, Cochin, Georgia, Times,
-    "Times New Roman", serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-size: 20px;
 }
 
@@ -574,6 +573,13 @@ li {
   align-items: flex-start;
 
   margin-bottom: 10px;
+}
+
+.product-message {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 /* Form inputs */

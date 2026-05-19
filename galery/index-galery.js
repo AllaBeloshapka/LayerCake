@@ -74,13 +74,12 @@ function displayProducts(productsToShow) {
   });
 }
 
-const localStorageProducts =
-  JSON.parse(localStorage.getItem("products")) || [];
+if (!localStorage.getItem("products")) {
+  localStorage.setItem("products", JSON.stringify(products));
+}
 
-const allProducts = [
-  ...products,
-  ...localStorageProducts,
-];
+const allProducts =
+  JSON.parse(localStorage.getItem("products"));
 
 // Initial gallery render
 displayProducts(allProducts);
