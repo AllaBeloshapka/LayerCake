@@ -60,7 +60,7 @@ function displayProducts(productsToShow) {
       modalName.textContent = product.name;
       modalDescription.textContent = product.description;
       modalIngredients.textContent = product.ingredients;
-      modalSize.textContent = product.size;
+      modalSize.textContent = `${product.weight} kg · Height ${product.height} cm · Diameter ${product.diameter} cm`;
 
       modalButton.textContent = "ORDER";
 

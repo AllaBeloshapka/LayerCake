@@ -251,6 +251,8 @@ const modalCardMessage = document.querySelector(".product-message");
 
 const findProductButton = document.querySelector(".btn-find-product");
 
+const editForm = document.querySelector(".modal-editor-form");
+
 /* =========================
    FIND PRODUCT
 ========================= */
@@ -258,46 +260,66 @@ const findProductButton = document.querySelector(".btn-find-product");
 findProductButton.addEventListener("click", () => {
   const productId = Number(idInput.value);
 
-  const products =
-    JSON.parse(localStorage.getItem("products")) || [];
+  const products = JSON.parse(localStorage.getItem("products")) || [];
 
-  const product = products.find(
-    (item) => item.id === productId
-  );
+  const product = products.find((item) => item.id === productId);
 
   if (!product) {
-  modalCardMessage.textContent =
-    "Product with this ID was not found.";
+    modalCardMessage.textContent = "Product with this ID was not found.";
 
-  descriptionInput.value = "";
-  flavorInput.value = "";
-  ingredientsInput.value = "";
-  weightInput.value = "";
-  heightInput.value = "";
-  diameterInput.value = "";
+    descriptionInput.value = "";
+    flavorInput.value = "";
+    ingredientsInput.value = "";
+    weightInput.value = "";
+    heightInput.value = "";
+    diameterInput.value = "";
 
-  return;
-}
+    return;
+  }
 
-productMessage.textContent = "";
+  productMessage.textContent = "";
 
-descriptionInput.value =
-  product.description || "";
+  descriptionInput.value = product.description || "";
 
-flavorInput.value =
-  product.flavor || "";
+  flavorInput.value = product.flavor || "";
 
-ingredientsInput.value =
-  product.ingredients || "";
+  ingredientsInput.value = product.ingredients || "";
 
-weightInput.value =
-  product.weight || "";
+  weightInput.value = product.weight || "";
 
-heightInput.value =
-  product.height || "";
+  heightInput.value = product.height || "";
 
-diameterInput.value =
-  product.diameter || "";
+  diameterInput.value = product.diameter || "";
 });
 
+/* =========================
+   SAVE PRODUCT CHANGES
+========================= */
 
+editForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const productId = Number(idInput.value);
+
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+
+  const product = products.find((item) => item.id === productId);
+
+  console.log(product);
+
+  product.description = descriptionInput.value;
+
+  product.flavor = flavorInput.value;
+
+  product.ingredients = ingredientsInput.value;
+
+  product.weight = Number(weightInput.value);
+
+  product.height = Number(heightInput.value);
+
+  product.diameter = Number(diameterInput.value);
+
+  localStorage.setItem("products", JSON.stringify(products));
+
+  console.log("Product updated");
+});
