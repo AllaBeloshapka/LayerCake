@@ -137,6 +137,7 @@ function getProducts() {
 }
 
 const productMessage = document.querySelector("#product-message");
+const saveMessage = document.querySelector(".save-message");
 
 /* =========================
    PRODUCT FORM SUBMIT
@@ -148,9 +149,24 @@ productForm.addEventListener("submit", (event) => {
 
   const product = {
     id: productIdInput.value,
+
     name: productNameInput.value,
+
     price: productPriceInput.value,
+
     image: productImageInput.value,
+
+    description: "",
+
+    flavor: "",
+
+    ingredients: "",
+
+    weight: 0,
+
+    height: 0,
+
+    diameter: 0,
   };
 
   if (Number(product.price) < 0) {
@@ -258,11 +274,14 @@ const editForm = document.querySelector(".modal-editor-form");
 ========================= */
 
 findProductButton.addEventListener("click", () => {
-  const productId = Number(idInput.value);
+
+  saveMessage.textContent = "";
+
+  const productId = idInput.value.trim();
 
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
-  const product = products.find((item) => item.id === productId);
+  const product = products.find((item) => String(item.id) === productId);
 
   if (!product) {
     modalCardMessage.textContent = "Product with this ID was not found.";
@@ -299,27 +318,48 @@ findProductButton.addEventListener("click", () => {
 editForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const productId = Number(idInput.value);
+  const productId = idInput.value.trim();
 
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
-  const product = products.find((item) => item.id === productId);
+  const product = products.find((item) => String(item.id) === productId);
 
   console.log(product);
 
-  product.description = descriptionInput.value;
+  if (!product) {
+    productMessage.textContent = "Product with this ID was not found.";
 
-  product.flavor = flavorInput.value;
+    return;
+  }
+productMessage.textContent = "";
 
-  product.ingredients = ingredientsInput.value;
+product.description = descriptionInput.value;
 
-  product.weight = Number(weightInput.value);
+product.flavor = flavorInput.value;
 
-  product.height = Number(heightInput.value);
+product.ingredients = ingredientsInput.value;
 
-  product.diameter = Number(diameterInput.value);
+product.weight = Number(weightInput.value);
 
-  localStorage.setItem("products", JSON.stringify(products));
+product.height = Number(heightInput.value);
 
-  console.log("Product updated");
+product.diameter = Number(diameterInput.value);
+
+try {
+  localStorage.setItem(
+    "products",
+    JSON.stringify(products),
+  );
+
+  saveMessage.textContent =
+    "Product updated successfully.";
+
+  saveMessage.style.color = "green";
+
+} catch (error) {
+  saveMessage.textContent =
+    "Product update failed.";
+
+  saveMessage.style.color = "red";
+}
 });

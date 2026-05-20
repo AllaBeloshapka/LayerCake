@@ -74,12 +74,36 @@ function displayProducts(productsToShow) {
   });
 }
 
-if (!localStorage.getItem("products")) {
-  localStorage.setItem("products", JSON.stringify(products));
-}
+/* =========================
+   MERGE DEFAULT PRODUCTS
+   WITH LOCAL STORAGE DATA
+========================= */
 
-const allProducts =
-  JSON.parse(localStorage.getItem("products"));
+const localStorageProducts =
+  JSON.parse(localStorage.getItem("products")) || [];
+
+const mergedProducts = [...products];
+
+localStorageProducts.forEach((localProduct) => {
+  const existingIndex = mergedProducts.findIndex(
+    (product) =>
+      String(product.id) === String(localProduct.id),
+  );
+
+  if (existingIndex !== -1) {
+    mergedProducts[existingIndex] = localProduct;
+
+  } else {
+    mergedProducts.push(localProduct);
+  }
+});
+
+localStorage.setItem(
+  "products",
+  JSON.stringify(mergedProducts),
+);
+
+const allProducts = mergedProducts;
 
 // Initial gallery render
 displayProducts(allProducts);
