@@ -8,10 +8,15 @@ const products = [
     description:
       "Delicate lavender sponge soaked in a syrup of rose petals and vanilla. A subtle floral and berry aroma fills each bite, creating a light, springtime flavor.",
 
+    flavor:
+      "Lavender, vanilla, wild berries",
+
     ingredients:
       "Wheat flour, sugar, eggs, milk, butter, vanilla, lavender and rose syrup, cream cheese, wild berries.",
 
-    size: "3 kg · Height 50 cm · Diameter 30 cm",
+    weight: 3,
+    height: 50,
+    diameter: 30,
   },
 
   {
@@ -23,10 +28,15 @@ const products = [
     description:
       "Classic vanilla cake with airy sponge layers and whipped cream frosting. Light, sweet, and festive.",
 
+    flavor:
+      "Vanilla cream",
+
     ingredients:
       "Flour, sugar, eggs, vanilla, 33% cream, butter, baking powder, pinch of salt.",
 
-    size: "2.5 kg · Height 40 cm · Diameter 28 cm",
+    weight: 2.5,
+    height: 40,
+    diameter: 28,
   },
 
   {
@@ -38,10 +48,15 @@ const products = [
     description:
       "Spiced with cinnamon, honey, and dried fruits. Warm, festive flavor in every bite.",
 
+    flavor:
+      "Honey, cinnamon, dried fruits",
+
     ingredients:
       "Flour, eggs, butter, cinnamon, honey, raisins, nuts, cloves, dark sugar.",
 
-    size: "2 kg · Height 35 cm · Diameter 25 cm",
+    weight: 2,
+    height: 35,
+    diameter: 25,
   },
 
   {
@@ -53,10 +68,15 @@ const products = [
     description:
       "Strawberry mousse and pink sponge layers decorated with cream flowers. Looks like an edible bouquet.",
 
+    flavor:
+      "Strawberry mousse",
+
     ingredients:
       "Flour, sugar, strawberry puree, cream, eggs, rose-colored icing, buttercream.",
 
-    size: "3 kg · Height 45 cm · Diameter 30 cm",
+    weight: 3,
+    height: 45,
+    diameter: 30,
   },
 
   {
@@ -68,10 +88,15 @@ const products = [
     description:
       "Chocolate and cherry layers with a delicate mousse — a cake full of romance and passion.",
 
+    flavor:
+      "Chocolate and cherry",
+
     ingredients:
       "Chocolate, flour, cream, eggs, sugar, cherries, butter, cocoa.",
 
-    size: "2.8 kg · Height 40 cm · Diameter 28 cm",
+    weight: 2.8,
+    height: 40,
+    diameter: 28,
   },
 
   {
@@ -83,10 +108,15 @@ const products = [
     description:
       "Rich dark chocolate flavor, dense sponge and glossy ganache. Classic perfection.",
 
+    flavor:
+      "Dark chocolate",
+
     ingredients:
       "Flour, eggs, sugar, cocoa, dark chocolate, cream, butter.",
 
-    size: "2.5 kg · Height 38 cm · Diameter 27 cm",
+    weight: 2.5,
+    height: 38,
+    diameter: 27,
   },
 
   {
@@ -98,10 +128,15 @@ const products = [
     description:
       "Three-layered cake for celebrations. Each tier has a different flavor: vanilla, chocolate, and strawberry.",
 
+    flavor:
+      "Vanilla, chocolate, strawberry",
+
     ingredients:
       "Flour, eggs, sugar, cream, chocolate, strawberry puree, vanilla, butter.",
 
-    size: "5 kg · Height 70 cm · Diameter of bottom tier 35 cm",
+    weight: 5,
+    height: 70,
+    diameter: 35,
   },
 
   {
@@ -113,10 +148,15 @@ const products = [
     description:
       "Light pink cream with raspberry flavor and snow-white sponge layers. Airy and delicate.",
 
+    flavor:
+      "Raspberry cream",
+
     ingredients:
       "Flour, sugar, cream, eggs, raspberry puree, butter.",
 
-    size: "2.7 kg · Height 42 cm · Diameter 28 cm",
+    weight: 2.7,
+    height: 42,
+    diameter: 28,
   },
 
   {
@@ -128,10 +168,15 @@ const products = [
     description:
       "Bright, sweet, and fun — like a bag of candies. Layered cake with colorful cream and sprinkles.",
 
+    flavor:
+      "Sweet cream and white chocolate",
+
     ingredients:
       "Flour, sugar, eggs, cream, colored cream, decorative sprinkles, white chocolate.",
 
-    size: "2.3 kg · Height 35 cm · Diameter 26 cm",
+    weight: 2.3,
+    height: 35,
+    diameter: 26,
   },
 
   {
@@ -143,10 +188,15 @@ const products = [
     description:
       "Chocolate sponge with layers of fresh berries and light cream. Refreshing yet rich flavor.",
 
+    flavor:
+      "Chocolate and berries",
+
     ingredients:
       "Chocolate, flour, cream, berries, eggs, sugar, butter.",
 
-    size: "2 kg · Height 35 cm · Diameter 25 cm",
+    weight: 2,
+    height: 35,
+    diameter: 25,
   },
 
   {
@@ -158,10 +208,15 @@ const products = [
     description:
       "Tropical pineapple flavor, soaked in syrup with creamy layers — a light summer delight.",
 
+    flavor:
+      "Pineapple cream",
+
     ingredients:
       "Flour, sugar, pineapple puree, cream, eggs, butter.",
 
-    size: "2.5 kg · Height 38 cm · Diameter 27 cm",
+    weight: 2.5,
+    height: 38,
+    diameter: 27,
   },
 
   {
@@ -173,10 +228,15 @@ const products = [
     description:
       "Homemade childhood flavor — simple sponge and delicate cream. Perfect with tea.",
 
+    flavor:
+      "Vanilla cream",
+
     ingredients:
       "Flour, eggs, sugar, cream, butter, vanilla.",
 
-    size: "2 kg · Height 32 cm · Diameter 25 cm",
+    weight: 2,
+    height: 32,
+    diameter: 25,
   },
 
   {
@@ -188,10 +248,15 @@ const products = [
     description:
       "Light sponge, vanilla cream, and cheerful decorations. Made for kids — no alcohol or strong spices.",
 
+    flavor:
+      "Vanilla cream",
+
     ingredients:
       "Flour, sugar, eggs, cream, butter, natural colorings.",
 
-    size: "1.8 kg · Height 30 cm · Diameter 24 cm",
+    weight: 1.8,
+    height: 30,
+    diameter: 24,
   },
 
   {
@@ -203,10 +268,15 @@ const products = [
     description:
       "Snow-white cake with floral aroma, decorated with sugar flowers. Symbol of celebration and tenderness.",
 
+    flavor:
+      "Vanilla and white chocolate",
+
     ingredients:
       "Flour, sugar, cream, vanilla, eggs, fondant, white chocolate.",
 
-    size: "4 kg · Height 60 cm · Diameter of bottom tier 33 cm",
+    weight: 4,
+    height: 60,
+    diameter: 33,
   },
 
   {
@@ -218,10 +288,15 @@ const products = [
     description:
       "Fresh strawberry puree with light sponge — bright summer flavor you won’t forget.",
 
+    flavor:
+      "Fresh strawberry",
+
     ingredients:
       "Flour, strawberry puree, sugar, cream, eggs, butter.",
 
-    size: "2.3 kg · Height 37 cm · Diameter 26 cm",
+    weight: 2.3,
+    height: 37,
+    diameter: 26,
   },
 
   {
@@ -233,9 +308,14 @@ const products = [
     description:
       "Small cake with classic flavor, perfect for an evening tea.",
 
+    flavor:
+      "Classic vanilla",
+
     ingredients:
       "Flour, sugar, cream, eggs, butter, vanilla.",
 
-    size: "1.5 kg · Height 25 cm · Diameter 22 cm",
+    weight: 1.5,
+    height: 25,
+    diameter: 22,
   },
 ];

@@ -60,7 +60,7 @@ function displayProducts(productsToShow) {
       modalName.textContent = product.name;
       modalDescription.textContent = product.description;
       modalIngredients.textContent = product.ingredients;
-      modalSize.textContent = product.size;
+      modalSize.textContent = `Weight - ${product.weight} kg,  Height - ${product.height} cm,  Diameter - ${product.diameter} cm`;
 
       modalButton.textContent = "ORDER";
 
@@ -74,13 +74,36 @@ function displayProducts(productsToShow) {
   });
 }
 
+/* =========================
+   MERGE DEFAULT PRODUCTS
+   WITH LOCAL STORAGE DATA
+========================= */
+
 const localStorageProducts =
   JSON.parse(localStorage.getItem("products")) || [];
 
-const allProducts = [
-  ...products,
-  ...localStorageProducts,
-];
+const mergedProducts = [...products];
+
+localStorageProducts.forEach((localProduct) => {
+  const existingIndex = mergedProducts.findIndex(
+    (product) =>
+      String(product.id) === String(localProduct.id),
+  );
+
+  if (existingIndex !== -1) {
+    mergedProducts[existingIndex] = localProduct;
+
+  } else {
+    mergedProducts.push(localProduct);
+  }
+});
+
+localStorage.setItem(
+  "products",
+  JSON.stringify(mergedProducts),
+);
+
+const allProducts = mergedProducts;
 
 // Initial gallery render
 displayProducts(allProducts);
