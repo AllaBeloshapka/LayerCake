@@ -3,7 +3,14 @@
 ========================= */
 
 const fakeVisitors = 1000;
-const fakeOrders = 50;
+/* =========================
+   GET ORDERS FROM STORAGE
+========================= */
+
+const orders =
+  JSON.parse(localStorage.getItem("orders")) || [];
+
+const totalOrders = orders.length;
 
 const conversionRateElement =
   document.getElementById("conversion-rate");
@@ -16,7 +23,7 @@ const salesFunnelOrdersElement =
 ========================= */
 
 const conversionRate =
-  (fakeOrders / fakeVisitors) * 100;
+  (totalOrders / fakeVisitors) * 100;
 
 conversionRateElement.textContent =
   `${conversionRate}%`;
@@ -26,4 +33,5 @@ conversionRateElement.textContent =
 ========================= */
 
 salesFunnelOrdersElement.textContent =
-  fakeOrders;
+  totalOrders;
+
