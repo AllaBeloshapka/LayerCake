@@ -1,8 +1,23 @@
 /* =========================
+   VISITORS COUNTER
+========================= */
+
+let visitors =
+  Number(localStorage.getItem("visitors")) || 0;
+
+visitors++;
+
+localStorage.setItem(
+  "visitors",
+  visitors,
+);
+
+/* =========================
    FAKE ANALYTICS DATA
 ========================= */
 
-const fakeVisitors = 1000;
+const totalVisitors = visitors;
+
 /* =========================
    GET ORDERS FROM STORAGE
 ========================= */
@@ -23,10 +38,10 @@ const salesFunnelOrdersElement =
 ========================= */
 
 const conversionRate =
-  (totalOrders / fakeVisitors) * 100;
+  (totalOrders / totalVisitors) * 100;
 
 conversionRateElement.textContent =
-  `${conversionRate}%`;
+  `${conversionRate.toFixed(1)}%`;
 
 /* =========================
    SALES FUNNEL DATA
