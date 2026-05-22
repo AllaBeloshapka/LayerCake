@@ -131,7 +131,7 @@ li {
 
 /* Success numbers */
 
-#convercion {
+.conversion-value {
   padding: 10px;
 
   border: 1px solid red;
