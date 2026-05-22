@@ -1,45 +1,50 @@
 /* =========================
-   VISITORS COUNTER
+   READ VISITORS FROM STORAGE
 ========================= */
 
-let visitors = Number(localStorage.getItem("visitors")) || 0;
-
-visitors++;
-
-localStorage.setItem("visitors", visitors);
-
-/* =========================
-   FAKE ANALYTICS DATA
-========================= */
-
-const totalVisitors = visitors;
+const totalVisitors =
+  Number(localStorage.getItem("visitors")) || 0;
 
 /* =========================
    GET ORDERS FROM STORAGE
 ========================= */
 
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const orders =
+  JSON.parse(localStorage.getItem("orders")) || [];
 
 const totalOrders = orders.length;
 
-const conversionRateElement = document.getElementById("conversion-rate");
+/* =========================
+   GET ANALYTICS ELEMENTS
+========================= */
 
-const salesFunnelOrdersElement = document.getElementById("sales-funnel-orders");
+const conversionRateElement =
+  document.getElementById("conversion-rate");
 
-const websiteVisitorsElement = document.getElementById("website-visitors");
+const salesFunnelOrdersElement =
+  document.getElementById("sales-funnel-orders");
+
+const websiteVisitorsElement =
+  document.getElementById("website-visitors");
 
 /* =========================
    CONVERSION CALCULATION
 ========================= */
 
-const conversionRate = (totalOrders / totalVisitors) * 100;
+const conversionRate =
+  totalVisitors > 0
+    ? (totalOrders / totalVisitors) * 100
+    : 0;
 
-conversionRateElement.textContent = `${conversionRate.toFixed(1)}%`;
+conversionRateElement.textContent =
+  `${conversionRate.toFixed(1)}%`;
 
 /* =========================
-   SALES FUNNEL DATA
+   DISPLAY ANALYTICS DATA
 ========================= */
 
-salesFunnelOrdersElement.textContent = totalOrders;
+salesFunnelOrdersElement.textContent =
+  totalOrders;
 
-websiteVisitorsElement.textContent = totalVisitors;
+websiteVisitorsElement.textContent =
+  totalVisitors;

@@ -1,4 +1,16 @@
+/* =========================
+   VISITORS COUNTER
+========================= */
 
+let visitors =
+  Number(localStorage.getItem("visitors")) || 0;
+
+visitors++;
+
+localStorage.setItem(
+  "visitors",
+  visitors,
+);
 
 // Access DOM elements
 
