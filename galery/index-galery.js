@@ -155,6 +155,7 @@ orderForm.addEventListener("submit", (event) => {
     productId: productId,
     cakeName: productName,
     customerName: name,
+    price: product.price,
     phone,
     email,
 

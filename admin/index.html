@@ -13,6 +13,7 @@
 
     <!-- Scripts -->
     <script src="index.js" defer></script>
+    <script src="statistics.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
@@ -29,20 +30,26 @@
 
         <div class="stat-card">
           <h4>Today</h4>
-          <p>5 orders</p>
-          <h3>200 $</h3>
+
+          <p id="today-orders-count">0 orders</p>
+
+          <h3 id="today-orders-sum">0 $</h3>
         </div>
 
         <div class="stat-card">
           <h4>This week</h4>
-          <p>32 orders</p>
-          <h3>500 $</h3>
+
+          <p id="week-orders-count">0 orders</p>
+
+          <h3 id="week-orders-sum">0 $</h3>
         </div>
 
         <div class="stat-card">
           <h4>This month</h4>
-          <p>120 orders</p>
-          <h3>4000 $</h3>
+
+          <p id="month-orders-count">0 orders</p>
+
+          <h3 id="month-orders-sum">0 $</h3>
         </div>
       </section>
 
