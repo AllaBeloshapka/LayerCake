@@ -33,7 +33,13 @@ const savedProfit =
 const moneyboxValue =
   Math.round(savedProfit * 0.1);
 
-console.log(savedProfit);
+/* =========================
+   DISPLAY MONEYBOX DATA
+========================= */
 
-console.log(moneyboxValue);
+moneyboxAmount.textContent =
+  `Today, that's $${moneyboxValue}.`;
+
+moneyboxTotal.textContent =
+  `Now you have $${moneyboxValue} in your piggy bank for business growth.`;
 
