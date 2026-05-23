@@ -8,56 +8,69 @@ const moneyboxCheckbox = document.getElementById("moneybox-checkbox");
 
 const moneyboxTotal = document.getElementById("moneybox-total");
 
-console.log(moneyboxAmount);
-console.log(moneyboxCheckbox);
-console.log(moneyboxTotal);
-
-/* =========================
-   MONEYBOX PROFIT
-========================= */
-
-const savedProfit = Number(localStorage.getItem("totalProfit")) || 0;
-
-const moneyboxValue = Math.round(savedProfit * 0.1);
-
 /* =========================
    MONEYBOX STORAGE
 ========================= */
 
 let savedMoneybox = Number(localStorage.getItem("moneybox")) || 0;
 
-console.log(savedMoneybox);
+const lastSavedTime = localStorage.getItem("moneyboxLastSavedTime");
 
-const moneyboxChecked = localStorage.getItem("moneyboxChecked") === "true";
+/* =========================
+   GET ORDERS
+========================= */
+
+const moneyboxOrders  = JSON.parse(localStorage.getItem("orders")) || [];
+
+/* =========================
+   CURRENT PERIOD ORDERS
+========================= */
+
+const currentPeriodOrders = moneyboxOrders.filter((order) => {
+  if (!lastSavedTime) {
+    return true;
+  }
+
+  return new Date(order.sentAt) > new Date(lastSavedTime);
+});
+
+/* =========================
+   CURRENT PERIOD PROFIT
+========================= */
+
+const currentPeriodProfit = currentPeriodOrders.reduce(
+  (total, order) => total + Number(order.price || 0),
+  0,
+);
+
+const moneyboxValue = Math.round(currentPeriodProfit * 0.1);
 
 /* =========================
    DISPLAY MONEYBOX DATA
 ========================= */
 
-moneyboxAmount.textContent = `Today, that's $${moneyboxValue}.`;
+moneyboxAmount.textContent = `For the last period, you earned $${currentPeriodProfit}. Save $${moneyboxValue} for business growth.`;
 
-moneyboxTotal.textContent = `Now you have $${moneyboxValue} in your piggy bank for business growth.`;
+moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
 
 /* =========================
    RESTORE CHECKBOX STATE
 ========================= */
 
-moneyboxCheckbox.checked = moneyboxChecked;
+moneyboxCheckbox.checked = moneyboxValue === 0;
 
 /* =========================
    SAVE MONEY TO MONEYBOX
 ========================= */
 
 moneyboxCheckbox.addEventListener("change", () => {
-  if (moneyboxCheckbox.checked && !moneyboxChecked) {
+  if (moneyboxCheckbox.checked && moneyboxValue > 0) {
     savedMoneybox += moneyboxValue;
 
     localStorage.setItem("moneybox", savedMoneybox);
 
+    localStorage.setItem("moneyboxLastSavedTime", new Date().toISOString());
+
     moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
-
-    localStorage.setItem("moneybox", savedMoneybox);
-
-    localStorage.setItem("moneyboxChecked", true);
   }
 });
