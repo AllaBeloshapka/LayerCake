@@ -25,15 +25,15 @@ console.log(moneyboxTotal);
    MONEYBOX PROFIT
 ========================= */
 
-const totalProfit =
+const savedProfit =
   Number(
     localStorage.getItem("totalProfit")
   ) || 0;
 
 const moneyboxValue =
-  Math.round(totalProfit * 0.1);
+  Math.round(savedProfit * 0.1);
 
-console.log(totalProfit);
+console.log(savedProfit);
 
 console.log(moneyboxValue);
 
