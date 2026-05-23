@@ -23,17 +23,30 @@ const salesFunnelOrdersElement = document.getElementById("sales-funnel-orders");
 const websiteVisitorsElement = document.getElementById("website-visitors");
 
 /* =========================
-   TOTAL PROFIT
+   TODAY PROFIT
 ========================= */
 
-const totalProfit = orders.reduce(
-  (total, order) => total + Number(order.price || 0),
-  0,
+const today = new Date()
+  .toISOString()
+  .split("T")[0];
+
+const todayOrders = orders.filter(
+  (order) =>
+    order.sentAt &&
+    order.sentAt.startsWith(today)
 );
 
-localStorage.setItem("totalProfit", totalProfit);
+const totalProfit =
+  todayOrders.reduce(
+    (total, order) =>
+      total + Number(order.price || 0),
+    0
+  );
 
-console.log(totalProfit);
+localStorage.setItem(
+  "totalProfit",
+  totalProfit
+);
 
 /* =========================
    CONVERSION CALCULATION
