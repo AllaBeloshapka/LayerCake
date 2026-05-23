@@ -28,6 +28,8 @@ let savedMoneybox = Number(localStorage.getItem("moneybox")) || 0;
 
 console.log(savedMoneybox);
 
+const moneyboxChecked = localStorage.getItem("moneyboxChecked") === "true";
+
 /* =========================
    DISPLAY MONEYBOX DATA
 ========================= */
@@ -37,22 +39,25 @@ moneyboxAmount.textContent = `Today, that's $${moneyboxValue}.`;
 moneyboxTotal.textContent = `Now you have $${moneyboxValue} in your piggy bank for business growth.`;
 
 /* =========================
+   RESTORE CHECKBOX STATE
+========================= */
+
+moneyboxCheckbox.checked = moneyboxChecked;
+
+/* =========================
    SAVE MONEY TO MONEYBOX
 ========================= */
 
-moneyboxCheckbox.addEventListener(
-  "change",
-  () => {
-    if (moneyboxCheckbox.checked) {
-      savedMoneybox += moneyboxValue;
+moneyboxCheckbox.addEventListener("change", () => {
+  if (moneyboxCheckbox.checked && !moneyboxChecked) {
+    savedMoneybox += moneyboxValue;
 
-      localStorage.setItem(
-        "moneybox",
-        savedMoneybox
-      );
+    localStorage.setItem("moneybox", savedMoneybox);
 
-      moneyboxTotal.textContent =
-        `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
-    }
+    moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
+
+    localStorage.setItem("moneybox", savedMoneybox);
+
+    localStorage.setItem("moneyboxChecked", true);
   }
-);
+});
