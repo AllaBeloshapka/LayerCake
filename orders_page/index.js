@@ -1,4 +1,3 @@
-
 const STATUS_LIST = [
   "New order",
   "In progress",
@@ -8,22 +7,18 @@ const STATUS_LIST = [
 ];
 
 // Orders container
-const ordersContainer =
-  document.querySelector(".orders-container");
+const ordersContainer = document.querySelector(".orders-container");
+
+const backButton = document.querySelector(".back-btn");
 
 // Get orders from localStorage
 function getOrders() {
-  return (
-    JSON.parse(localStorage.getItem("orders")) || []
-  );
+  return JSON.parse(localStorage.getItem("orders")) || [];
 }
 
 // Save orders to localStorage
 function saveOrders(orders) {
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(orders)
-  );
+  localStorage.setItem("orders", JSON.stringify(orders));
 }
 
 // Format date and time
@@ -53,11 +48,14 @@ function formatDate(dateString) {
 // Update order status
 async function updateOrderStatus(orderId, newStatus) {
   try {
-    const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/orders/${orderId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      },
+    );
 
     if (!response.ok) throw new Error("Ошибка при обновлении статуса");
 
@@ -106,12 +104,10 @@ function createStatusSelect(order, orders) {
 
     // Update localStorage
     const updatedOrders = orders.map((o) =>
-      o.id === order.id
-        ? { ...o, status: newStatus }
-        : o
+      o.id === order.id ? { ...o, status: newStatus } : o,
     );
 
-saveOrders(updatedOrders);
+    saveOrders(updatedOrders);
   });
 
   return statusSelect;
@@ -146,7 +142,7 @@ function createOrderCard(order, orders) {
 
   const orderDateTimeP = document.createElement("p");
   orderDateTimeP.textContent = `Order Date & Time: ${formatDateTime(
-    order.orderDateTime
+    order.orderDateTime,
   )}`;
 
   const sentAtP = document.createElement("p");
@@ -164,12 +160,11 @@ function createOrderCard(order, orders) {
     birthDateP,
     orderDateTimeP,
     sentAtP,
-    statusSelect
+    statusSelect,
   );
 
   return orderCard;
 }
-
 
 // Load and display orders (DB)
 // async function loadOrders() {
@@ -237,29 +232,25 @@ function createOrderCard(order, orders) {
 // }
 
 // Load and display orders
-function loadOrders() { 
-const orders = getOrders();
+function loadOrders() {
+  const orders = getOrders();
 
   ordersContainer.innerHTML = "";
 
-if (orders.length === 0) {
-  const noOrdersMsg =
-    document.createElement("p");
+  if (orders.length === 0) {
+    const noOrdersMsg = document.createElement("p");
 
-  noOrdersMsg.textContent =
-    "NO ORDERS YET";
+    noOrdersMsg.textContent = "NO ORDERS YET";
 
-  noOrdersMsg.className =
-    "no-orders-message";
+    noOrdersMsg.className = "no-orders-message";
 
-  ordersContainer.appendChild(noOrdersMsg);
+    ordersContainer.appendChild(noOrdersMsg);
 
-  return;
-}
+    return;
+  }
 
   orders.forEach((order) => {
-    const orderCard =
-      createOrderCard(order, orders);
+    const orderCard = createOrderCard(order, orders);
 
     ordersContainer.appendChild(orderCard);
   });
@@ -268,7 +259,13 @@ if (orders.length === 0) {
 // Load orders on page start
 loadOrders();
 
+/* =========================
+   BACK TO ADMIN PAGE
+========================= */
 
+backButton.addEventListener("click", () => {
+  window.location.href = "../admin/index.html";
+});
 
 // Apply status color styles
 function applyStatusStyle(element, status) {
@@ -277,7 +274,7 @@ function applyStatusStyle(element, status) {
     "status-progress",
     "status-completed",
     "status-reviewed",
-    "status-blacklisted"
+    "status-blacklisted",
   );
 
   const statusClasses = {
@@ -288,9 +285,5 @@ function applyStatusStyle(element, status) {
     Blacklisted: "status-blacklisted",
   };
 
-  element.classList.add(
-    statusClasses[status]
-  );
+  element.classList.add(statusClasses[status]);
 }
-
-
