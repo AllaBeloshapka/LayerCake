@@ -3,6 +3,8 @@ const orderElement = document.querySelector(".order");
 
 const newOrdersElement = document.querySelector(".number_new_orders");
 
+const orderButton = document.querySelector(".btn-order");
+
 /* =========================
    GET ORDERS
 ========================= */
@@ -24,6 +26,14 @@ function updateNewOrdersCount() {
 
   newOrdersElement.textContent = newOrders.length;
 }
+
+/* =========================
+   GO TO ORDERS PAGE
+========================= */
+
+orderButton.addEventListener("click", () => {
+  window.location.href = "../orders_page/index.html";
+});
 
 /* =========================
    INITIAL RENDER
