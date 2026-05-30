@@ -4,14 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LayerCake</title>
+
     <link rel="stylesheet" href="./style-galery.css" />
+
     <script src="./products.js" defer></script>
-    <script src="./index-galery.js" defer></script>
+
+    <script type="module" src="./index-galery.js"></script>
   </head>
 
   <body>
     <div id="root">
-
       <!-- Header -->
       <header class="header"></header>
 
@@ -22,10 +24,7 @@
         </h5>
 
         <h5>
-          <a
-            class="nav"
-            href="../reviews/index_reviews.html"
-          >
+          <a class="nav" href="../reviews/index_reviews.html">
             Customer Reviews
           </a>
         </h5>
@@ -39,7 +38,6 @@
       <!-- Product Modal -->
       <div class="modal">
         <div class="modal-content">
-
           <span class="close">&times;</span>
 
           <h2 class="modal-name"></h2>
@@ -60,9 +58,7 @@
           </p>
 
           <div class="button">
-            <button class="modal-button">
-              ORDER
-            </button>
+            <button class="modal-button">ORDER</button>
           </div>
         </div>
       </div>
@@ -70,7 +66,6 @@
       <!-- Order Form -->
       <div class="box-order-form">
         <form class="order-form">
-
           <span class="close-order">&times;</span>
 
           <div class="name-form">
@@ -113,33 +108,21 @@
           <label>
             Birth Date
 
-            <input
-              type="date"
-              name="birth-date"
-            />
+            <input type="date" name="birth-date" />
           </label>
 
           <label>
             Desired Order Date & Time
 
-            <input
-              type="datetime-local"
-              name="order-datetime"
-            />
+            <input type="datetime-local" name="order-datetime" />
           </label>
 
-          <button
-            type="submit"
-            class="order-btn"
-          >
-            Submit Order
-          </button>
+          <button type="submit" class="order-btn">Submit Order</button>
         </form>
       </div>
 
       <!-- Footer -->
       <footer class="footer-container">
-
         <div class="footer-logo"></div>
 
         <address class="contact-info">

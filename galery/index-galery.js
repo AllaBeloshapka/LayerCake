@@ -1,3 +1,10 @@
+import {
+  getProducts,
+  saveProducts,
+  getOrders,
+  saveOrders,
+} from "../storage/storage.js";
+
 /* =========================
    VISITORS COUNTER
 ========================= */
@@ -91,8 +98,7 @@ function displayProducts(productsToShow) {
    WITH LOCAL STORAGE DATA
 ========================= */
 
-const localStorageProducts =
-  JSON.parse(localStorage.getItem("products")) || [];
+const localStorageProducts = getProducts();
 
 const mergedProducts = [...products];
 
@@ -110,10 +116,7 @@ localStorageProducts.forEach((localProduct) => {
   }
 });
 
-localStorage.setItem(
-  "products",
-  JSON.stringify(mergedProducts),
-);
+saveProducts(mergedProducts);
 
 const allProducts = mergedProducts;
 
