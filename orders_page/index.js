@@ -13,16 +13,6 @@ const ordersContainer = document.querySelector(".orders-container");
 
 const backButton = document.querySelector(".back-btn");
 
-// Get orders from localStorage
-// function getOrders() {
-//   return JSON.parse(localStorage.getItem("orders")) || [];
-// }
-
-// // Save orders to localStorage
-// function saveOrders(orders) {
-//   localStorage.setItem("orders", JSON.stringify(orders));
-// }
-
 // Format date and time
 function formatDateTime(dateString) {
   if (!dateString) return "-";

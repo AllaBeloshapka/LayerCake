@@ -1,17 +1,15 @@
+import {
+  getOrders,
+  getReviews,
+  getProducts,
+} from "../storage/storage.js";
+
 // Order elements
 const orderElement = document.querySelector(".order");
 
 const newOrdersElement = document.querySelector(".number_new_orders");
 
 const orderButton = document.querySelector(".btn-order");
-
-/* =========================
-   GET ORDERS
-========================= */
-
-function getOrders() {
-  return JSON.parse(localStorage.getItem("orders")) || [];
-}
 
 /* =========================
    UPDATE NEW ORDERS COUNT
@@ -60,14 +58,6 @@ const rejectButton = document.querySelector("#btn_reject");
 const reviews = JSON.parse(localStorage.getItem("cakeReviews")) || [];
 
 console.log(reviews);
-
-/* =========================
-   GET REVIEWS
-========================= */
-
-function getReviews() {
-  return JSON.parse(localStorage.getItem("cakeReviews")) || [];
-}
 
 /* =========================
    APPROVE REVIEW
@@ -137,14 +127,6 @@ const productPriceInput = document.querySelector("#product-price");
 const productIdInput = document.querySelector("#product-id");
 
 const productImageInput = document.querySelector("#product-image");
-
-/* =========================
-   GET PRODUCTS
-========================= */
-
-function getProducts() {
-  return JSON.parse(localStorage.getItem("products")) || [];
-}
 
 const productMessage = document.querySelector("#product-message");
 const saveMessage = document.querySelector(".save-message");
