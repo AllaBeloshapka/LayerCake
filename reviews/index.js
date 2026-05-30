@@ -1,3 +1,5 @@
+import { saveReviews } from "../storage/storage.js";
+
 /* =========================
    DOM ELEMENTS
 ========================= */
@@ -56,14 +58,6 @@ cakeReviews.forEach((reviewItem) => {
   // Add card into reviews container
   cardBox.appendChild(card);
 });
-
-/* =========================
-   SUBMIT REVIEW
-========================= */
-
-function saveReviews(reviews) {
-  localStorage.setItem("cakeReviews", JSON.stringify(reviews));
-}
 
 /* =========================
    CONVERT IMAGE

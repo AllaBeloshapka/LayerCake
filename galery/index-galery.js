@@ -1,3 +1,10 @@
+import {
+  getProducts,
+  saveProducts,
+  getOrders,
+  saveOrders,
+} from "../storage/storage.js";
+
 /* =========================
    VISITORS COUNTER
 ========================= */
@@ -91,8 +98,7 @@ function displayProducts(productsToShow) {
    WITH LOCAL STORAGE DATA
 ========================= */
 
-const localStorageProducts =
-  JSON.parse(localStorage.getItem("products")) || [];
+const localStorageProducts = getProducts();
 
 const mergedProducts = [...products];
 
@@ -110,10 +116,7 @@ localStorageProducts.forEach((localProduct) => {
   }
 });
 
-localStorage.setItem(
-  "products",
-  JSON.stringify(mergedProducts),
-);
+saveProducts(mergedProducts);
 
 const allProducts = mergedProducts;
 
@@ -158,39 +161,40 @@ orderForm.addEventListener("submit", (event) => {
     return;
   }
 
-  // Find selected product
+// Find selected product
 
-  const product = products.find((product) => product.id === productId);
+const product = products.find(
+  (product) => product.id === productId,
+);
 
-  const order = {
-    id: Date.now(),
-    productId: productId,
-    cakeName: productName,
-    customerName: name,
-    price: product.price,
-    phone,
-    email,
+const order = {
+  id: Date.now(),
+  productId: productId,
+  cakeName: productName,
+  customerName: name,
+  price: product.price,
+  phone,
+  email,
 
-    birthDate: orderForm["birth-date"].value,
+  birthDate: orderForm["birth-date"].value,
 
-    orderDateTime: orderForm["order-datetime"].value,
+  orderDateTime: orderForm["order-datetime"].value,
 
-    status: "New order",
+  status: "New order",
 
-    sentAt: new Date().toISOString(),
-  };
+  sentAt: new Date().toISOString(),
+};
 
-  // Save order to localStorage
+// Save order
 
-  const orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
+const orders = getOrders();
 
-  orders.push(order);
+orders.push(order);
 
-  localStorage.setItem("orders", JSON.stringify(orders));
+saveOrders(orders);
 
-  // Reset and close form
+// Reset and close form
 
-  orderFormBox.style.display = "none";
-  orderForm.reset();
+orderFormBox.style.display = "none";
+orderForm.reset();
 });
