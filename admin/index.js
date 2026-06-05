@@ -55,7 +55,7 @@ const rejectButton = document.querySelector("#btn_reject");
    LOAD REVIEWS
 ========================= */
 
-const reviews = JSON.parse(localStorage.getItem("cakeReviews")) || [];
+const reviews = getReviews();
 
 console.log(reviews);
 
