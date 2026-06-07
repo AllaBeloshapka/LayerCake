@@ -3,6 +3,7 @@ import {
   getReviews,
   getProducts,
   saveReviews,
+  saveProducts,
 } from "../storage/storage.js";
 
 // Order elements
@@ -186,7 +187,7 @@ productForm.addEventListener("submit", (event) => {
 
   products.push(product);
 
-  localStorage.setItem("products", JSON.stringify(products));
+  saveProducts(products);
 
   productMessage.textContent = "Product created";
 
@@ -216,7 +217,12 @@ deleteForm.addEventListener("submit", (event) => {
 
   const products = getProducts();
 
+  console.log("DELETE ID:", deleteId);
+  console.log("PRODUCTS:", products);
+
   const productIndex = products.findIndex((product) => product.id === deleteId);
+
+  console.log("INDEX:", productIndex);
 
   if (productIndex === -1) {
     deleteMessage.textContent = "Product not found";
@@ -228,7 +234,7 @@ deleteForm.addEventListener("submit", (event) => {
 
   products.splice(productIndex, 1);
 
-  localStorage.setItem("products", JSON.stringify(products));
+  saveProducts(products);
 
   deleteMessage.textContent = "Product deleted";
 
@@ -236,7 +242,7 @@ deleteForm.addEventListener("submit", (event) => {
 
   deleteForm.reset();
 
-  displayProducts(getProducts());
+  // displayProducts(getProducts());
 });
 
 /* =========================
@@ -267,7 +273,6 @@ const editForm = document.querySelector(".modal-editor-form");
 ========================= */
 
 findProductButton.addEventListener("click", () => {
-
   saveMessage.textContent = "";
 
   const productId = idInput.value.trim();
@@ -324,35 +329,29 @@ editForm.addEventListener("submit", (event) => {
 
     return;
   }
-productMessage.textContent = "";
+  productMessage.textContent = "";
 
-product.description = descriptionInput.value;
+  product.description = descriptionInput.value;
 
-product.flavor = flavorInput.value;
+  product.flavor = flavorInput.value;
 
-product.ingredients = ingredientsInput.value;
+  product.ingredients = ingredientsInput.value;
 
-product.weight = Number(weightInput.value);
+  product.weight = Number(weightInput.value);
 
-product.height = Number(heightInput.value);
+  product.height = Number(heightInput.value);
 
-product.diameter = Number(diameterInput.value);
+  product.diameter = Number(diameterInput.value);
 
-try {
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products),
-  );
+  try {
+    saveProducts(products);
 
-  saveMessage.textContent =
-    "Product updated successfully.";
+    saveMessage.textContent = "Product updated successfully.";
 
-  saveMessage.style.color = "green";
+    saveMessage.style.color = "green";
+  } catch (error) {
+    saveMessage.textContent = "Product update failed.";
 
-} catch (error) {
-  saveMessage.textContent =
-    "Product update failed.";
-
-  saveMessage.style.color = "red";
-}
+    saveMessage.style.color = "red";
+  }
 });
