@@ -2,6 +2,7 @@ import {
   getOrders,
   getReviews,
   getProducts,
+  saveReviews,
 } from "../storage/storage.js";
 
 // Order elements
@@ -72,7 +73,7 @@ approveButton.addEventListener("click", () => {
 
   pendingReview.status = "approved";
 
-  localStorage.setItem("cakeReviews", JSON.stringify(reviews));
+  saveReviews(reviews);
 
   renderPendingReview();
 });
