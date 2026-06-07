@@ -93,8 +93,6 @@ sendReviewButton.addEventListener("click", () => {
       reviewTextarea.value = "";
 
       reviewPhotoInput.value = "";
-
-      console.log(cakeReviews);
     });
 
     return;
@@ -115,6 +113,4 @@ sendReviewButton.addEventListener("click", () => {
   reviewTextarea.value = "";
 
   reviewPhotoInput.value = "";
-
-  console.log(cakeReviews);
 });
