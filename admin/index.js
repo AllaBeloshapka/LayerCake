@@ -59,8 +59,6 @@ const rejectButton = document.querySelector("#btn_reject");
 
 const reviews = getReviews();
 
-console.log(reviews);
-
 /* =========================
    APPROVE REVIEW
 ========================= */
@@ -195,7 +193,6 @@ productForm.addEventListener("submit", (event) => {
 
   productForm.reset();
 
-  console.log(product);
 });
 
 /* =========================
@@ -217,12 +214,7 @@ deleteForm.addEventListener("submit", (event) => {
 
   const products = getProducts();
 
-  console.log("DELETE ID:", deleteId);
-  console.log("PRODUCTS:", products);
-
   const productIndex = products.findIndex((product) => product.id === deleteId);
-
-  console.log("INDEX:", productIndex);
 
   if (productIndex === -1) {
     deleteMessage.textContent = "Product not found";
@@ -242,7 +234,6 @@ deleteForm.addEventListener("submit", (event) => {
 
   deleteForm.reset();
 
-  // displayProducts(getProducts());
 });
 
 /* =========================
@@ -321,8 +312,6 @@ editForm.addEventListener("submit", (event) => {
   const products = JSON.parse(localStorage.getItem("products")) || [];
 
   const product = products.find((item) => String(item.id) === productId);
-
-  console.log(product);
 
   if (!product) {
     productMessage.textContent = "Product with this ID was not found.";
