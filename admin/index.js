@@ -268,7 +268,7 @@ findProductButton.addEventListener("click", () => {
 
   const productId = idInput.value.trim();
 
-  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const products = getProducts();
 
   const product = products.find((item) => String(item.id) === productId);
 
@@ -309,7 +309,7 @@ editForm.addEventListener("submit", (event) => {
 
   const productId = idInput.value.trim();
 
-  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const products = getProducts();
 
   const product = products.find((item) => String(item.id) === productId);
 

@@ -31,3 +31,11 @@ export function saveProducts(products) {
     JSON.stringify(products),
   );
 }
+
+export function getVisitors() {
+  return Number(localStorage.getItem("visitors")) || 0;
+}
+
+export function saveVisitors(count) {
+  localStorage.setItem("visitors", count);
+}

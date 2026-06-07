@@ -3,21 +3,19 @@ import {
   saveProducts,
   getOrders,
   saveOrders,
+  getVisitors,
+  saveVisitors,
 } from "../storage/storage.js";
 
 /* =========================
    VISITORS COUNTER
 ========================= */
 
-let visitors =
-  Number(localStorage.getItem("visitors")) || 0;
+let visitors = getVisitors();
 
 visitors++;
 
-localStorage.setItem(
-  "visitors",
-  visitors,
-);
+saveVisitors(visitors);
 
 // Access DOM elements
 
