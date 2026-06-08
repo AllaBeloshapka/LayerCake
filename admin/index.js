@@ -1,17 +1,17 @@
+import {
+  getOrders,
+  getReviews,
+  getProducts,
+  saveReviews,
+  saveProducts,
+} from "../storage/storage.js";
+
 // Order elements
 const orderElement = document.querySelector(".order");
 
 const newOrdersElement = document.querySelector(".number_new_orders");
 
 const orderButton = document.querySelector(".btn-order");
-
-/* =========================
-   GET ORDERS
-========================= */
-
-function getOrders() {
-  return JSON.parse(localStorage.getItem("orders")) || [];
-}
 
 /* =========================
    UPDATE NEW ORDERS COUNT
@@ -57,17 +57,7 @@ const rejectButton = document.querySelector("#btn_reject");
    LOAD REVIEWS
 ========================= */
 
-const reviews = JSON.parse(localStorage.getItem("cakeReviews")) || [];
-
-console.log(reviews);
-
-/* =========================
-   GET REVIEWS
-========================= */
-
-function getReviews() {
-  return JSON.parse(localStorage.getItem("cakeReviews")) || [];
-}
+const reviews = getReviews();
 
 /* =========================
    APPROVE REVIEW
@@ -82,7 +72,7 @@ approveButton.addEventListener("click", () => {
 
   pendingReview.status = "approved";
 
-  localStorage.setItem("cakeReviews", JSON.stringify(reviews));
+  saveReviews(reviews);
 
   renderPendingReview();
 });
@@ -137,14 +127,6 @@ const productPriceInput = document.querySelector("#product-price");
 const productIdInput = document.querySelector("#product-id");
 
 const productImageInput = document.querySelector("#product-image");
-
-/* =========================
-   GET PRODUCTS
-========================= */
-
-function getProducts() {
-  return JSON.parse(localStorage.getItem("products")) || [];
-}
 
 const productMessage = document.querySelector("#product-message");
 const saveMessage = document.querySelector(".save-message");
@@ -203,7 +185,7 @@ productForm.addEventListener("submit", (event) => {
 
   products.push(product);
 
-  localStorage.setItem("products", JSON.stringify(products));
+  saveProducts(products);
 
   productMessage.textContent = "Product created";
 
@@ -211,7 +193,6 @@ productForm.addEventListener("submit", (event) => {
 
   productForm.reset();
 
-  console.log(product);
 });
 
 /* =========================
@@ -245,7 +226,7 @@ deleteForm.addEventListener("submit", (event) => {
 
   products.splice(productIndex, 1);
 
-  localStorage.setItem("products", JSON.stringify(products));
+  saveProducts(products);
 
   deleteMessage.textContent = "Product deleted";
 
@@ -253,7 +234,6 @@ deleteForm.addEventListener("submit", (event) => {
 
   deleteForm.reset();
 
-  displayProducts(getProducts());
 });
 
 /* =========================
@@ -284,12 +264,11 @@ const editForm = document.querySelector(".modal-editor-form");
 ========================= */
 
 findProductButton.addEventListener("click", () => {
-
   saveMessage.textContent = "";
 
   const productId = idInput.value.trim();
 
-  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const products = getProducts();
 
   const product = products.find((item) => String(item.id) === productId);
 
@@ -330,46 +309,38 @@ editForm.addEventListener("submit", (event) => {
 
   const productId = idInput.value.trim();
 
-  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const products = getProducts();
 
   const product = products.find((item) => String(item.id) === productId);
-
-  console.log(product);
 
   if (!product) {
     productMessage.textContent = "Product with this ID was not found.";
 
     return;
   }
-productMessage.textContent = "";
+  productMessage.textContent = "";
 
-product.description = descriptionInput.value;
+  product.description = descriptionInput.value;
 
-product.flavor = flavorInput.value;
+  product.flavor = flavorInput.value;
 
-product.ingredients = ingredientsInput.value;
+  product.ingredients = ingredientsInput.value;
 
-product.weight = Number(weightInput.value);
+  product.weight = Number(weightInput.value);
 
-product.height = Number(heightInput.value);
+  product.height = Number(heightInput.value);
 
-product.diameter = Number(diameterInput.value);
+  product.diameter = Number(diameterInput.value);
 
-try {
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products),
-  );
+  try {
+    saveProducts(products);
 
-  saveMessage.textContent =
-    "Product updated successfully.";
+    saveMessage.textContent = "Product updated successfully.";
 
-  saveMessage.style.color = "green";
+    saveMessage.style.color = "green";
+  } catch (error) {
+    saveMessage.textContent = "Product update failed.";
 
-} catch (error) {
-  saveMessage.textContent =
-    "Product update failed.";
-
-  saveMessage.style.color = "red";
-}
+    saveMessage.style.color = "red";
+  }
 });

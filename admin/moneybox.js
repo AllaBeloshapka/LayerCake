@@ -28,12 +28,14 @@ const moneyboxOrders = JSON.parse(localStorage.getItem("orders")) || [];
    CURRENT PERIOD ORDERS
 ========================= */
 
+const lastSavedDate = lastSavedTime ? new Date(lastSavedTime) : null;
+
 const currentPeriodOrders = moneyboxOrders.filter((order) => {
-  if (!lastSavedTime) {
+  if (!lastSavedDate) {
     return true;
   }
 
-  return new Date(order.sentAt) > new Date(lastSavedTime);
+  return new Date(order.sentAt) > lastSavedDate;
 });
 
 /* =========================

@@ -1,21 +1,11 @@
-
-/* =========================
-   GET ORDERS FROM STORAGE
-========================= */
-
-function getOrdersFromStorage() {
-  const orders =
-    JSON.parse(localStorage.getItem("orders")) || [];
-
-  return orders;
-}
+import { getOrders } from "../storage/storage.js";
 
 /* =========================
    TODAY ORDERS COUNT
 ========================= */
 
 function renderTodayOrdersCount() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 
@@ -48,7 +38,7 @@ renderTodayOrdersCount();
 ========================= */
 
 function renderWeekOrdersCount() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 
@@ -82,7 +72,7 @@ renderWeekOrdersCount();
 ========================= */
 
 function renderMonthOrdersCount() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 
@@ -115,7 +105,7 @@ renderMonthOrdersCount();
 ========================= */
 
 function renderTodayOrdersRevenue() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 
@@ -159,7 +149,7 @@ renderTodayOrdersRevenue();
 ========================= */
 
 function renderWeekOrdersRevenue() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 
@@ -203,7 +193,7 @@ renderWeekOrdersRevenue();
 ========================= */
 
 function renderMonthOrdersRevenue() {
-  const orders = getOrdersFromStorage();
+  const orders = getOrders();
 
   const today = new Date();
 

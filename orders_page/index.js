@@ -13,16 +13,6 @@ const ordersContainer = document.querySelector(".orders-container");
 
 const backButton = document.querySelector(".back-btn");
 
-// Get orders from localStorage
-// function getOrders() {
-//   return JSON.parse(localStorage.getItem("orders")) || [];
-// }
-
-// // Save orders to localStorage
-// function saveOrders(orders) {
-//   localStorage.setItem("orders", JSON.stringify(orders));
-// }
-
 // Format date and time
 function formatDateTime(dateString) {
   if (!dateString) return "-";
@@ -61,8 +51,7 @@ async function updateOrderStatus(orderId, newStatus) {
 
     if (!response.ok) throw new Error("Ошибка при обновлении статуса");
 
-    const updatedOrder = await response.json();
-    console.log("✅ Статус успешно обновлён:", updatedOrder);
+    await response.json();
 
     // Плавная подсветка карточки, чтобы показать, что статус изменился
     const card = document.querySelector(`[data-id="${orderId}"]`);
@@ -167,71 +156,6 @@ function createOrderCard(order, orders) {
 
   return orderCard;
 }
-
-// Load and display orders (DB)
-// async function loadOrders() {
-//   try {
-//     const response = await fetch(
-//       "http://localhost:5000/api/orders"
-//     );
-
-//     const orders = await response.json();
-
-//     ordersContainer.innerHTML = "";
-
-//     if (!orders || orders.length === 0) {
-//       const noOrdersMsg =
-//         document.createElement("p");
-
-//       noOrdersMsg.textContent =
-//         "NO ORDERS YET";
-
-//       noOrdersMsg.style.fontSize = "20px";
-//       noOrdersMsg.style.fontWeight = "bold";
-//       noOrdersMsg.style.color = "#fff";
-
-//       ordersContainer.appendChild(noOrdersMsg);
-
-//       return;
-//     }
-
-//     // Render orders from backend
-//     orders.forEach((order) => {
-//       const orderCard =
-//         createOrderCard(order, orders);
-
-//       ordersContainer.appendChild(orderCard);
-//     });
-//   } catch (err) {
-//     console.error(
-//       "Ошибка при загрузке заказов:",
-//       err
-//     );
-
-//     // Load orders from localStorage
-//     const orders =
-//       JSON.parse(localStorage.getItem("orders")) || [];
-
-//     ordersContainer.innerHTML = "";
-
-//     if (orders.length > 0) {
-//       // Render orders from localStorage
-//       orders.forEach((order) => {
-//         const orderCard =
-//           createOrderCard(order, orders);
-
-//         ordersContainer.appendChild(orderCard);
-//       });
-//     } else {
-//       ordersContainer.innerHTML = `
-//         <p style="color:red;">
-//           Error loading orders.
-//           No local data available.
-//         </p>
-//       `;
-//     }
-//   }
-// }
 
 // Load and display orders
 function loadOrders() {
