@@ -658,3 +658,306 @@ li {
 
   font-size: 30px;
 }
+@media (max-width: 768px) {
+  .admin-header {
+    height: auto;
+    min-height: 100px;
+    padding: 20px 12px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .main {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .stats,
+  .website-success,
+  .development,
+  .important,
+  .website_management,
+  .edit-modalcard {
+    width: 100%;
+    padding: 20px 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stat-card,
+  .promotion,
+  .moneybox,
+  .motivation,
+  #order,
+  .review-box,
+  .review,
+  #edit-product-form,
+  .form {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .stat-card,
+  .promotion,
+  .moneybox,
+  .motivation {
+    padding: 16px;
+    font-size: 16px;
+  }
+
+  .website-success {
+    font-size: 16px;
+  }
+
+  .development {
+    flex-direction: column;
+  }
+
+  .motivation {
+    margin: 0;
+  }
+
+  .important {
+    flex-direction: column;
+  }
+
+  #order {
+    height: auto;
+    padding: 20px;
+    font-size: 18px;
+  }
+
+  #text {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .number_new_orders {
+    padding: 14px;
+    font-size: 36px;
+  }
+
+  .btn-order,
+  .btn,
+  .product-btn,
+  .btn-modalcard {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    min-height: 44px;
+    margin: 12px 0;
+    font-size: 18px;
+  }
+
+  .review {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+
+  .text-review {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .foto {
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .block-btn {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .website_management {
+    flex-direction: column;
+  }
+
+  #edit-product-form,
+  .form {
+    height: auto;
+    padding: 20px 12px;
+  }
+
+  .product-form,
+  .input-id,
+  .form-group,
+  #description-input,
+  #flavor-input,
+  #ingredients-input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .edit-form {
+    flex-direction: column;
+    gap: 20px;
+    font-size: 18px;
+  }
+
+  .box-1 {
+    width: 100%;
+    padding: 0;
+  }
+
+  .edit-modalcard h2 {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .edit-modalcard h3 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .btn-modalcard {
+    margin-left: 0;
+  }
+
+  .footer {
+    height: auto;
+    min-height: 80px;
+    padding: 20px 12px;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+    text-align: center;
+  }
+}
+@media (max-width: 950px) and (max-height: 500px) {
+  .admin-header {
+    height: auto;
+    min-height: 80px;
+    padding: 16px 12px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .stats,
+  .website-success,
+  .development,
+  .important,
+  .website_management,
+  .edit-modalcard {
+    width: 100%;
+    padding: 20px 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .stat-card,
+  .promotion,
+  .moneybox,
+  .motivation,
+  #order,
+  .review-box,
+  .review,
+  #edit-product-form,
+  .form {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .stat-card,
+  .promotion,
+  .moneybox,
+  .motivation {
+    padding: 16px;
+    font-size: 18px;
+  }
+
+  .website-success {
+    font-size: 18px;
+  }
+
+  .important,
+  .website_management,
+  .edit-form {
+    flex-direction: column;
+  }
+
+  #order {
+    height: auto;
+    padding: 20px;
+    font-size: 18px;
+  }
+
+  #text {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .number_new_orders {
+    font-size: 36px;
+  }
+
+  .review {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .text-review {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .foto {
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .block-btn {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #edit-product-form,
+  .form {
+    height: auto;
+    padding: 20px 12px;
+  }
+
+  .product-form,
+  .input-id,
+  .form-group,
+  #description-input,
+  #flavor-input,
+  #ingredients-input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .btn-order,
+  .btn,
+  .product-btn,
+  .btn-modalcard {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    min-height: 44px;
+    margin: 12px 0;
+    font-size: 18px;
+  }
+
+  .btn-modalcard {
+    margin-left: 0;
+  }
+
+  .footer {
+    height: auto;
+    min-height: 70px;
+    padding: 16px 12px;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 20px;
+    text-align: center;
+  }
+}
