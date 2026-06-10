@@ -296,7 +296,7 @@ nav a:hover {
    FOOTER
 ========================= */
 
-.footer-container {
+/* .footer-container {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
@@ -321,13 +321,13 @@ nav a:hover {
     Times,
     "Times New Roman",
     serif;
-}
+} */
 
 /* =========================
    FOOTER LOGO
 ========================= */
 
-#foto-name {
+/* #foto-name {
   display: flex;
 
   width: 200px;
@@ -338,12 +338,12 @@ nav a:hover {
   background-image: url(./assets/name-footer.png);
   background-size: cover;
   background-position: center;
-}
+} */
 
 /* =========================
    FOOTER CONTACTS
 ========================= */
 
-.contact {
+/* .contact {
   margin: 50px;
-}
+} */
