@@ -354,7 +354,7 @@ nav a:hover {
 
 /* Footer */
 
-.footer-container {
+/* .footer-container {
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
@@ -370,11 +370,11 @@ nav a:hover {
   font-size: 20px;
 
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-}
+} */
 
 /* Footer logo */
 
-.footer-logo {
+/* .footer-logo {
   display: flex;
 
   width: 200px;
@@ -384,4 +384,4 @@ nav a:hover {
   background-image: url("../assets/name-footer.png");
   background-position: center;
   background-size: cover;
-}
+} */
