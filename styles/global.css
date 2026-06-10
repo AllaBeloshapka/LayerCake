@@ -117,6 +117,31 @@ nav a:hover {
     transform: scale(1.05);
   }
 }
+
+@media (min-width: 769px) and (max-width: 1368px) and (min-height: 601px) {
+  .header {
+    min-height: 220px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .navigation,
+  nav {
+    justify-content: center;
+    gap: clamp(32px, 6vw, 120px);
+    padding: 10px 32px;
+  }
+
+  .navigation a,
+  nav a {
+    font-size: 24px;
+  }
+
+  .navigation a:hover,
+  nav a:hover {
+    transform: scale(1.1);
+  }
+}
 /* =========================
    PUBLIC FOOTER
 ========================= */
@@ -175,5 +200,12 @@ nav a:hover {
     width: 180px;
     height: 72px;
     margin: 10px auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1368px) and (min-height: 601px) {
+  .footer-container {
+    padding: 24px 32px;
+    gap: 16px;
   }
 }

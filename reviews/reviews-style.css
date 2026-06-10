@@ -262,6 +262,51 @@ li {
   }
 }
 
+@media (min-width: 769px) and (max-width: 1368px) and (min-height: 601px) {
+  #root {
+    min-height: 100vh;
+  }
+
+  .main {
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .card_box {
+    width: 100%;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px 0;
+  }
+
+  .card {
+    min-width: 0;
+    width: calc(50% - 24px);
+    max-width: 360px;
+    min-height: auto;
+    max-height: none;
+  }
+
+  .review {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+    max-height: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+  }
+
+  .img {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
 /* Temporarily hide review form.
    It will be moved to a separate review submission page later. */
    .user_form {
