@@ -62,7 +62,7 @@ nav {
   width: 100%;
   min-height: 50px;
   gap: clamp(20px, 8vw, 200px);
-  padding: 8px 20px;
+  padding: 8px 80px;
 
   background-color: #e7c69e;
   border-top: 1px solid #682b08;
@@ -74,7 +74,8 @@ nav a {
   color: #682b08;
   text-decoration: none;
   transition: all 0.3s ease;
-
+  font-size: 30px;
+  font-weight: 700;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
@@ -135,7 +136,7 @@ nav a:hover {
   border-top: 1px solid #682b08;
 
   color: #682b08;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .footer-logo,
