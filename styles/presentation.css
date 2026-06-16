@@ -408,6 +408,9 @@
     .presentation-page {
       width: min(100% - 24px, 520px);
       padding: 20px 0 56px;
+      .hero-cake-image {
+        display: none;
+      }
     }
   
     .hero-content {
