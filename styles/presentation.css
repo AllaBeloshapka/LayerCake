@@ -55,17 +55,40 @@
   
   .hero-section {
     min-height: 92vh;
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: end;
+    align-content: center;
+    gap: 0;
   }
-  
+
   .hero-content {
+    min-width: 0;
     padding: 48px;
     border: 1px solid var(--border-soft);
     border-radius: 34px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
     box-shadow: var(--shadow-soft);
     backdrop-filter: blur(18px);
+  }
+
+  .hero-cake-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: min(78vh, 640px);
+    align-self: end;
+    justify-self: start;
+    object-fit: contain;
+    object-position: bottom left;
+    border: none;
+    background: none;
+    filter:
+      drop-shadow(0 28px 48px rgba(0, 0, 0, 0.34))
+      drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+    pointer-events: none;
+    user-select: none;
   }
   
   .eyebrow {
@@ -345,7 +368,18 @@
   
     .hero-section {
       min-height: auto;
+      grid-template-columns: 2fr 1fr;
+      align-content: start;
+      gap: 0;
       padding: 32px 0;
+    }
+
+    .hero-cake-image {
+      width: 100%;
+      max-height: 320px;
+      align-self: end;
+      justify-self: start;
+      object-position: bottom left;
     }
 
     .tech-stack-layout {
@@ -379,6 +413,22 @@
     .hero-content {
       padding: 26px 22px;
       border-radius: 26px;
+    }
+
+    .hero-section {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+      align-content: start;
+      gap: 16px;
+    }
+
+    .hero-cake-image {
+      width: min(200px, 70%);
+      max-height: 220px;
+      margin: 0 auto;
+      align-self: center;
+      justify-self: center;
+      object-position: bottom center;
     }
   
     .hero-description {
