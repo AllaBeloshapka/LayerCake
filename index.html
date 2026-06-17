@@ -3,13 +3,184 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LayerCake</title>
-    <meta http-equiv="refresh" content="0; url=./about/index.html" />
+    <title>LayerCake | Project Presentation</title>
+
+    <link rel="stylesheet" href="./styles/global.css" />
+    <link rel="stylesheet" href="./styles/presentation.css" />
   </head>
+
   <body>
-    <p>
-      Opening LayerCake...
-      <a href="./about/index.html">Go to About page</a>
-    </p>
+    <main class="presentation-page">
+      <section class="hero-section">
+        <div class="hero-content">
+          <p class="eyebrow">Portfolio project</p>
+
+          <h1>LayerCake</h1>
+
+          <p class="hero-subtitle">
+            A responsive business website for a custom cake shop.
+          </p>
+
+          <p class="hero-description">
+            LayerCake combines a customer-facing cake shop experience with
+            admin tools for orders, reviews, product management, and business
+            statistics.
+          </p>
+
+          <div class="hero-actions">
+            <a class="primary-button" href="./about/index.html">
+              Open Cake Shop
+            </a>
+
+            <a class="secondary-button" href="./admin/index.html">
+              Open Admin Panel
+            </a>
+          </div>
+
+          <a class="scroll-hint" href="#business-value">
+            <span class="scroll-hint-text">Scroll down</span>
+            <span class="scroll-hint-arrow" aria-hidden="true">↓</span>
+          </a>
+        </div>
+
+        <img
+          class="hero-cake-image"
+          src="./assets/5-removebg-preview.png"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
+
+      <section class="section-block" id="business-value">
+        <div class="section-header">
+          <p class="eyebrow">Business value</p>
+          <h2>What this project does for a small business</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Customer-friendly cake browsing</h3>
+            <p>
+              Customers can explore cakes, prices, descriptions, and product
+              details from mobile, tablet, or desktop screens.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Digital order flow</h3>
+            <p>
+              The project includes an order flow that helps collect customer
+              requests and keeps orders visible for the business owner.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Reviews and trust</h3>
+            <p>
+              Approved customer reviews help future customers understand the
+              quality of the service before placing an order.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-header">
+          <p class="eyebrow">Customer experience</p>
+          <h2>Designed for real users</h2>
+        </div>
+
+        <div class="link-grid">
+          <a class="demo-link-card" href="./about/index.html">
+            <span>About page</span>
+            <strong>Open customer start page</strong>
+          </a>
+
+          <a class="demo-link-card" href="./galery/index-galery.html">
+            <span>Gallery</span>
+            <strong>Browse cake products</strong>
+          </a>
+
+          <a class="demo-link-card" href="./reviews/index_reviews.html">
+            <span>Reviews</span>
+            <strong>Read customer feedback</strong>
+          </a>
+
+          <a class="demo-link-card" href="./orders_page/index.html">
+            <span>Orders</span>
+            <strong>View order page demo</strong>
+          </a>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-header">
+          <p class="eyebrow">Admin tools</p>
+          <h2>Tools for managing the shop</h2>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Order management</h3>
+            <p>
+              The admin area helps the owner view orders and update their
+              status.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Review moderation</h3>
+            <p>
+              Customer reviews can be checked before they become visible on the
+              public reviews page.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Business statistics</h3>
+            <p>
+              The dashboard includes statistics, conversion ideas, and a
+              moneybox concept for future business growth.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block tech-stack-section">
+        <div class="tech-stack-layout">
+          <div class="section-header">
+            <p class="eyebrow">Tech stack</p>
+            <h2>Built with simple and clear frontend tools</h2>
+          </div>
+
+          <div class="hero-card" aria-label="LayerCake tech stack">
+            <ul class="tech-list">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+              <li>LocalStorage</li>
+              <li>Responsive Design</li>
+              <li>Git / GitHub</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block next-steps">
+        <div class="section-header">
+          <p class="eyebrow">Next development steps</p>
+          <h2>Prepared for future improvements</h2>
+        </div>
+
+        <ul class="next-list">
+          <li>Move review submission to a dedicated page.</li>
+          <li>Add admin login and password protection.</li>
+          <li>Connect backend and database instead of LocalStorage.</li>
+          <li>Improve product image upload and storage.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="./scripts/presentation.js"></script>
   </body>
 </html>
