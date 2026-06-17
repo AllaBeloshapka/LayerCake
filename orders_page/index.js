@@ -13,6 +13,10 @@ const ordersContainer = document.querySelector(".orders-container");
 
 const backButton = document.querySelector(".back-btn");
 
+const ordersSearchInput = document.getElementById("ordersSearchInput");
+const ordersSearchBtn = document.getElementById("ordersSearchBtn");
+const filterByStatus = document.getElementById("filterByStatus");
+
 // Format date and time
 function formatDateTime(dateString) {
   if (!dateString) return "-";
@@ -99,6 +103,7 @@ function createStatusSelect(order, orders) {
     );
 
     saveOrders(updatedOrders);
+    applyFilters();
   });
 
   return statusSelect;
@@ -157,13 +162,55 @@ function createOrderCard(order, orders) {
   return orderCard;
 }
 
+function matchesSearch(order, searchTerm) {
+  const term = searchTerm.trim().toLowerCase();
+
+  if (!term) {
+    return true;
+  }
+
+  const cakeName = String(order.cakeName ?? "").toLowerCase();
+  const customerName = String(order.customerName ?? "").toLowerCase();
+  const phone = String(order.phone ?? "").toLowerCase();
+
+  return (
+    cakeName.includes(term) ||
+    customerName.includes(term) ||
+    phone.includes(term)
+  );
+}
+
+function filterOrders(orders) {
+  const searchTerm = ordersSearchInput.value;
+  const status = filterByStatus.value;
+
+  return orders.filter((order) => {
+    if (status !== "all" && order.status !== status) {
+      return false;
+    }
+
+    if (!matchesSearch(order, searchTerm)) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function hasActiveFilters() {
+  return (
+    ordersSearchInput.value.trim() !== "" || filterByStatus.value !== "all"
+  );
+}
+
 // Load and display orders
 function loadOrders() {
-  const orders = getOrders();
+  const allOrders = getOrders();
+  const filteredOrders = filterOrders(allOrders);
 
   ordersContainer.innerHTML = "";
 
-  if (orders.length === 0) {
+  if (allOrders.length === 0) {
     const noOrdersMsg = document.createElement("p");
 
     noOrdersMsg.textContent = "NO ORDERS YET";
@@ -175,15 +222,43 @@ function loadOrders() {
     return;
   }
 
-  orders.forEach((order) => {
-    const orderCard = createOrderCard(order, orders);
+  if (filteredOrders.length === 0) {
+    const noResultsMsg = document.createElement("p");
+
+    noResultsMsg.textContent = hasActiveFilters()
+      ? "NO ORDERS MATCH YOUR FILTERS"
+      : "NO ORDERS YET";
+
+    noResultsMsg.className = "no-orders-message";
+
+    ordersContainer.appendChild(noResultsMsg);
+
+    return;
+  }
+
+  filteredOrders.forEach((order) => {
+    const orderCard = createOrderCard(order, allOrders);
 
     ordersContainer.appendChild(orderCard);
   });
 }
 
+function applyFilters() {
+  loadOrders();
+}
+
 // Load orders on page start
 loadOrders();
+
+ordersSearchBtn.addEventListener("click", applyFilters);
+
+ordersSearchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    applyFilters();
+  }
+});
+
+filterByStatus.addEventListener("change", applyFilters);
 
 /* =========================
    BACK TO ADMIN PAGE
