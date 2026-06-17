@@ -115,6 +115,12 @@ function createOrderCard(order, orders) {
   orderCard.className = "order-card";
   orderCard.dataset.id = order._id || order.id;
 
+  const orderCardContent = document.createElement("div");
+  orderCardContent.className = "order-card-content";
+
+  const orderCardActions = document.createElement("div");
+  orderCardActions.className = "order-card-actions";
+
   const idP = document.createElement("p");
   idP.textContent = `Order ID: ${order._id || order.id || "-"}`;
 
@@ -122,15 +128,19 @@ function createOrderCard(order, orders) {
   productP.textContent = `Product ID: ${order.productId ?? "-"}`;
 
   const cakeNameP = document.createElement("p");
+  cakeNameP.className = "order-card-wrap";
   cakeNameP.textContent = `Cake Name: ${order.cakeName ?? "-"}`;
 
   const customerNameP = document.createElement("p");
+  customerNameP.className = "order-card-wrap";
   customerNameP.textContent = `Customer Name: ${order.customerName ?? "-"}`;
 
   const phoneP = document.createElement("p");
+  phoneP.className = "order-card-wrap";
   phoneP.textContent = `Phone: ${order.phone ?? "-"}`;
 
   const emailP = document.createElement("p");
+  emailP.className = "order-card-wrap";
   emailP.textContent = `Email: ${order.email ?? "-"}`;
 
   const birthDateP = document.createElement("p");
@@ -146,7 +156,7 @@ function createOrderCard(order, orders) {
 
   const statusSelect = createStatusSelect(order, orders);
 
-  orderCard.append(
+  orderCardContent.append(
     idP,
     productP,
     cakeNameP,
@@ -156,8 +166,11 @@ function createOrderCard(order, orders) {
     birthDateP,
     orderDateTimeP,
     sentAtP,
-    statusSelect,
   );
+
+  orderCardActions.appendChild(statusSelect);
+
+  orderCard.append(orderCardContent, orderCardActions);
 
   return orderCard;
 }

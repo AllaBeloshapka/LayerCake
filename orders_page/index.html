@@ -11,38 +11,39 @@
 
   <body id="root">
     <main>
-      
-      <button type="button" class="back-btn">← Back to admin</button>
+      <div class="orders-topbar">
+        <button type="button" class="back-btn">← Back to admin</button>
 
-      <section class="orders-filters">
-        <div class="orders-search">
-          <input
-            type="text"
-            id="ordersSearchInput"
-            class="orders-filter-input"
-            placeholder="Search by cake, customer or phone"
-          />
-      
-          <button
-            type="button"
-            id="ordersSearchBtn"
-            class="orders-search-btn"
-            aria-label="Search orders"
-          >
-            🔍
-          </button>
-        </div>
-      
-        <select id="filterByStatus" class="orders-filter-select">
-          <option value="all">All statuses</option>
-          <option value="New order">New order</option>
-          <option value="In progress">In progress</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
-      </section>      
+        <section class="orders-filters">
+          <div class="orders-search">
+            <input
+              type="text"
+              id="ordersSearchInput"
+              class="orders-filter-input"
+              placeholder="Search by cake, customer or phone"
+            />
+
+            <button
+              type="button"
+              id="ordersSearchBtn"
+              class="orders-search-btn"
+              aria-label="Search orders"
+            >
+              🔍
+            </button>
+          </div>
+
+          <select id="filterByStatus" class="orders-filter-select">
+            <option value="all">All statuses</option>
+            <option value="New order">New order</option>
+            <option value="In progress">In progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </section>
+      </div>
+
       <div class="orders-container"></div>
-
     </main>
   </body>
 </html>
