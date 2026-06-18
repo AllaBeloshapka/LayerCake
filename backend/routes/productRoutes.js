@@ -7,4 +7,15 @@ router.get("/", (req, res) => {
   res.json(testProducts);
 });
 
+router.get("/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const product = testProducts.find((item) => item.id === id);
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404).json({ message: "Product not found" });
+  }
+});
+
 module.exports = router;
