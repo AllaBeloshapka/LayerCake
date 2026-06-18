@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const connectDB = require("./config/db");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -16,6 +18,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`LayerCake backend is running on http://localhost:${PORT}`);
-});
+async function startServer() {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`LayerCake backend is running on http://localhost:${PORT}`);
+  });
+}
+
+startServer();
