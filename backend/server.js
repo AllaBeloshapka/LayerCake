@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/products", productRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({
