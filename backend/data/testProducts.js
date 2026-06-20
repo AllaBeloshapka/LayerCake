@@ -1,6 +1,6 @@
 const testProducts = [
   {
-    id: 1,
+    productCode: 1,
     name: "Napoleon Cake",
     price: 1200,
     image: "/images/napoleon.jpg",
@@ -13,7 +13,7 @@ const testProducts = [
     diameter: 28,
   },
   {
-    id: 2,
+    productCode: 2,
     name: "Honey Cake",
     price: 950,
     image: "/images/medovik.jpg",
@@ -26,7 +26,7 @@ const testProducts = [
     diameter: 26,
   },
   {
-    id: 3,
+    productCode: 3,
     name: "Red Velvet Cake",
     price: 1500,
     image: "/images/red-velvet.jpg",
