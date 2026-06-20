@@ -135,33 +135,24 @@ const saveMessage = document.querySelector(".save-message");
    PRODUCT FORM SUBMIT
 ========================= */
 
-productForm.addEventListener("submit", (event) => {
+productForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   productMessage.textContent = "";
 
-  const product = {
-    id: productIdInput.value,
-
+  const productData = {
+    productCode: Number(productIdInput.value),
     name: productNameInput.value,
-
-    price: productPriceInput.value,
-
-    image: productImageInput.value,
-
+    price: Number(productPriceInput.value),
+    image: productImageInput.value || "",
     description: "",
-
     flavor: "",
-
     ingredients: "",
-
     weight: 0,
-
     height: 0,
-
     diameter: 0,
   };
 
-  if (Number(product.price) < 0) {
+  if (Number(productData.price) < 0) {
     productMessage.textContent = "Price cannot be negative";
 
     productMessage.style.color = "red";
@@ -169,30 +160,47 @@ productForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const products = getProducts();
+  try {
+    const response = await fetch("http://localhost:3000/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productData),
+    });
 
-  const existingProduct = products.find(
-    (productItem) => productItem.id === product.id,
-  );
+    if (response.status === 409) {
+      productMessage.textContent = "Product code already exists";
 
-  if (existingProduct) {
-    productMessage.textContent = "ID already exists";
+      productMessage.style.color = "red";
+
+      return;
+    }
+
+    if (response.status === 400) {
+      productMessage.textContent = "Invalid product data";
+
+      productMessage.style.color = "red";
+
+      return;
+    }
+
+    if (!response.ok) {
+      productMessage.textContent = "Failed to create product";
+
+      productMessage.style.color = "red";
+
+      return;
+    }
+
+    productMessage.textContent = "Product created";
+
+    productMessage.style.color = "green";
+
+    productForm.reset();
+  } catch (error) {
+    productMessage.textContent = "Failed to create product";
 
     productMessage.style.color = "red";
-
-    return;
   }
-
-  products.push(product);
-
-  saveProducts(products);
-
-  productMessage.textContent = "Product created";
-
-  productMessage.style.color = "green";
-
-  productForm.reset();
-
 });
 
 /* =========================
