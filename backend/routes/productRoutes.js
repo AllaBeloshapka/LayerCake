@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const product = testProducts.find((item) => item.id === id);
+  const productCode = Number(req.params.id);
+  const product = testProducts.find((item) => item.productCode === productCode);
 
   if (product) {
     res.json(product);
