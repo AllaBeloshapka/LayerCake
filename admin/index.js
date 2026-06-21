@@ -139,20 +139,9 @@ productForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   productMessage.textContent = "";
 
-  const productData = {
-    productCode: Number(productIdInput.value),
-    name: productNameInput.value,
-    price: Number(productPriceInput.value),
-    image: productImageInput.value || "",
-    description: "",
-    flavor: "",
-    ingredients: "",
-    weight: 0,
-    height: 0,
-    diameter: 0,
-  };
+  const price = Number(productPriceInput.value);
 
-  if (Number(productData.price) < 0) {
+  if (price < 0) {
     productMessage.textContent = "Price cannot be negative";
 
     productMessage.style.color = "red";
@@ -168,11 +157,22 @@ productForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  const formData = new FormData();
+  formData.append("productCode", Number(productIdInput.value));
+  formData.append("name", productNameInput.value);
+  formData.append("price", price);
+  formData.append("image", productImageInput.files[0]);
+  formData.append("description", "");
+  formData.append("flavor", "");
+  formData.append("ingredients", "");
+  formData.append("weight", 0);
+  formData.append("height", 0);
+  formData.append("diameter", 0);
+
   try {
     const response = await fetch("http://localhost:3000/api/products", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(productData),
+      body: formData,
     });
 
     if (response.status === 409) {
