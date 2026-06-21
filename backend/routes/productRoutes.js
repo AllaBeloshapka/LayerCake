@@ -1,5 +1,8 @@
 const express = require("express");
 const Product = require("../models/Product");
+const upload = require("../middleware/upload");
+const { convertToWebP } = require("../services/imageService");
+const { uploadProductImage } = require("../services/s3Service");
 
 const router = express.Router();
 
@@ -12,9 +15,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const productData = {
+      productCode: Number(req.body.productCode),
+      name: req.body.name,
+      price: Number(req.body.price),
+      description: req.body.description || "",
+      flavor: req.body.flavor || "",
+      ingredients: req.body.ingredients || "",
+      weight: Number(req.body.weight) || 0,
+      height: Number(req.body.height) || 0,
+      diameter: Number(req.body.diameter) || 0,
+    };
+
+    if (req.file) {
+      const webpBuffer = await convertToWebP(req.file.buffer);
+      const key = `products/${productData.productCode}-${Date.now()}.webp`;
+      productData.image = await uploadProductImage(webpBuffer, key);
+    } else if (req.body.image) {
+      productData.image = req.body.image;
+    }
+
+    const product = await Product.create(productData);
     res.status(201).json(product);
   } catch (error) {
     if (error.code === 11000) {
