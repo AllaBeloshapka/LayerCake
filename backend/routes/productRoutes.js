@@ -37,6 +37,12 @@ router.post("/", upload.single("image"), async (req, res) => {
       productData.image = req.body.image;
     }
 
+    if (!productData.image) {
+      return res.status(400).json({
+        message: "Product image is required",
+      });
+    }
+
     const product = await Product.create(productData);
     res.status(201).json(product);
   } catch (error) {
