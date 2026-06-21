@@ -160,6 +160,14 @@ productForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (!productImageInput.files || productImageInput.files.length === 0) {
+    productMessage.textContent = "Product image is required";
+
+    productMessage.style.color = "red";
+
+    return;
+  }
+
   try {
     const response = await fetch("http://localhost:3000/api/products", {
       method: "POST",
