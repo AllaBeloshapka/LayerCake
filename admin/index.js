@@ -1,9 +1,7 @@
 import {
   getOrders,
   getReviews,
-  getProducts,
   saveReviews,
-  saveProducts,
 } from "../storage/storage.js";
 
 // Order elements
