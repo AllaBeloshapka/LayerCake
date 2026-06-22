@@ -91,4 +91,41 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const productCode = Number(req.params.id);
+
+    const updateData = {
+      name: req.body.name,
+      price: Number(req.body.price),
+      description: req.body.description || "",
+      flavor: req.body.flavor || "",
+      ingredients: req.body.ingredients || "",
+      weight: Number(req.body.weight) || 0,
+      height: Number(req.body.height) || 0,
+      diameter: Number(req.body.diameter) || 0,
+    };
+
+    const product = await Product.findOneAndUpdate(
+      { productCode },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+      return;
+    }
+
+    res.json(product);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      res.status(400).json({ message: "Invalid product data" });
+      return;
+    }
+
+    res.status(500).json({ message: "Failed to update product" });
+  }
+});
+
 module.exports = router;
