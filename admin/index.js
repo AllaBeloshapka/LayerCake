@@ -221,35 +221,49 @@ const deleteIdInput = document.querySelector("#delete-id");
 
 const deleteMessage = document.querySelector("#message");
 
-deleteForm.addEventListener("submit", (event) => {
+deleteForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   deleteMessage.textContent = "";
 
-  const deleteId = deleteIdInput.value;
+  const deleteId = deleteIdInput.value.trim();
 
-  const products = getProducts();
-
-  const productIndex = products.findIndex((product) => product.id === deleteId);
-
-  if (productIndex === -1) {
-    deleteMessage.textContent = "Product not found";
+  if (!deleteId) {
+    deleteMessage.textContent = "Product code is required";
 
     deleteMessage.style.color = "red";
 
     return;
   }
 
-  products.splice(productIndex, 1);
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${deleteId}`,
+      {
+        method: "DELETE",
+      },
+    );
 
-  saveProducts(products);
+    if (response.ok) {
+      deleteMessage.textContent = "Product deleted";
 
-  deleteMessage.textContent = "Product deleted";
+      deleteMessage.style.color = "green";
 
-  deleteMessage.style.color = "green";
+      deleteForm.reset();
 
-  deleteForm.reset();
+      return;
+    }
 
+    const error = await response.json();
+
+    deleteMessage.textContent = error.message || "Failed to delete product";
+
+    deleteMessage.style.color = "red";
+  } catch (error) {
+    deleteMessage.textContent = "Failed to delete product";
+
+    deleteMessage.style.color = "red";
+  }
 });
 
 /* =========================
