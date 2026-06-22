@@ -293,17 +293,13 @@ const editForm = document.querySelector(".modal-editor-form");
    FIND PRODUCT
 ========================= */
 
-findProductButton.addEventListener("click", () => {
+findProductButton.addEventListener("click", async () => {
   saveMessage.textContent = "";
 
   const productId = idInput.value.trim();
 
-  const products = getProducts();
-
-  const product = products.find((item) => String(item.id) === productId);
-
-  if (!product) {
-    modalCardMessage.textContent = "Product with this ID was not found.";
+  if (!productId) {
+    modalCardMessage.textContent = "Product code is required";
 
     descriptionInput.value = "";
     flavorInput.value = "";
@@ -315,59 +311,112 @@ findProductButton.addEventListener("click", () => {
     return;
   }
 
-  productMessage.textContent = "";
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+    );
 
-  descriptionInput.value = product.description || "";
+    if (!response.ok) {
+      modalCardMessage.textContent = "Product with this ID was not found.";
 
-  flavorInput.value = product.flavor || "";
+      descriptionInput.value = "";
+      flavorInput.value = "";
+      ingredientsInput.value = "";
+      weightInput.value = "";
+      heightInput.value = "";
+      diameterInput.value = "";
 
-  ingredientsInput.value = product.ingredients || "";
+      return;
+    }
 
-  weightInput.value = product.weight || "";
+    const product = await response.json();
 
-  heightInput.value = product.height || "";
+    productMessage.textContent = "";
+    modalCardMessage.textContent = "";
 
-  diameterInput.value = product.diameter || "";
+    descriptionInput.value = product.description || "";
+    flavorInput.value = product.flavor || "";
+    ingredientsInput.value = product.ingredients || "";
+    weightInput.value = product.weight || "";
+    heightInput.value = product.height || "";
+    diameterInput.value = product.diameter || "";
+  } catch (error) {
+    modalCardMessage.textContent = "Product with this ID was not found.";
+
+    descriptionInput.value = "";
+    flavorInput.value = "";
+    ingredientsInput.value = "";
+    weightInput.value = "";
+    heightInput.value = "";
+    diameterInput.value = "";
+  }
 });
 
 /* =========================
    SAVE PRODUCT CHANGES
 ========================= */
 
-editForm.addEventListener("submit", (event) => {
+editForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const productId = idInput.value.trim();
 
-  const products = getProducts();
+  if (!productId) {
+    productMessage.textContent = "Product code is required.";
 
-  const product = products.find((item) => String(item.id) === productId);
-
-  if (!product) {
-    productMessage.textContent = "Product with this ID was not found.";
+    productMessage.style.color = "red";
 
     return;
   }
-  productMessage.textContent = "";
-
-  product.description = descriptionInput.value;
-
-  product.flavor = flavorInput.value;
-
-  product.ingredients = ingredientsInput.value;
-
-  product.weight = Number(weightInput.value);
-
-  product.height = Number(heightInput.value);
-
-  product.diameter = Number(diameterInput.value);
 
   try {
-    saveProducts(products);
+    const getResponse = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+    );
 
-    saveMessage.textContent = "Product updated successfully.";
+    if (!getResponse.ok) {
+      productMessage.textContent = "Product with this ID was not found.";
 
-    saveMessage.style.color = "green";
+      return;
+    }
+
+    const currentProduct = await getResponse.json();
+
+    productMessage.textContent = "";
+
+    const updateData = {
+      name: currentProduct.name,
+      price: currentProduct.price,
+      description: descriptionInput.value,
+      flavor: flavorInput.value,
+      ingredients: ingredientsInput.value,
+      weight: Number(weightInput.value),
+      height: Number(heightInput.value),
+      diameter: Number(diameterInput.value),
+    };
+
+    const response = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      },
+    );
+
+    if (response.ok) {
+      saveMessage.textContent = "Product updated successfully.";
+
+      saveMessage.style.color = "green";
+
+      return;
+    }
+
+    const error = await response.json();
+
+    saveMessage.textContent = error.message || "Product update failed.";
+
+    saveMessage.style.color = "red";
   } catch (error) {
     saveMessage.textContent = "Product update failed.";
 
