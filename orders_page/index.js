@@ -1,5 +1,3 @@
-import { saveOrders } from "../storage/storage.js";
-
 const STATUS_LIST = [
   "New order",
   "In progress",
@@ -47,9 +45,9 @@ function formatDate(dateString) {
 async function updateOrderStatus(orderId, newStatus) {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/orders/${orderId}`,
+      `http://localhost:3000/api/orders/${orderId}/status`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       },
@@ -66,9 +64,12 @@ async function updateOrderStatus(orderId, newStatus) {
       card.style.backgroundColor = "#d4ffd4";
       setTimeout(() => (card.style.backgroundColor = ""), 1000);
     }
+
+    return true;
   } catch (error) {
     console.error("❌ Ошибка при изменении статуса:", error);
     alert("Не удалось обновить статус. Проверь соединение с сервером.");
+    return false;
   }
 }
 
@@ -94,18 +95,23 @@ function createStatusSelect(order, orders) {
   applyStatusStyle(statusSelect, order.status);
 
   // Handle status change
-  statusSelect.addEventListener("change", () => {
+  statusSelect.addEventListener("change", async () => {
+    const orderId = order._id;
     const newStatus = statusSelect.value;
 
     applyStatusStyle(statusSelect, newStatus);
 
-    // Update localStorage
-    const updatedOrders = orders.map((o) =>
-      o.id === order.id ? { ...o, status: newStatus } : o,
-    );
+    const success = await updateOrderStatus(orderId, newStatus);
 
-    saveOrders(updatedOrders);
-    applyFilters();
+    if (success) {
+      allOrders = allOrders.map((o) =>
+        o._id === orderId ? { ...o, status: newStatus } : o,
+      );
+      applyFilters();
+    } else {
+      statusSelect.value = order.status;
+      applyStatusStyle(statusSelect, order.status);
+    }
   });
 
   return statusSelect;
