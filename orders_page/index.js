@@ -1,4 +1,4 @@
-import { getOrders, saveOrders } from "../storage/storage.js";
+import { saveOrders } from "../storage/storage.js";
 
 const STATUS_LIST = [
   "New order",
@@ -16,6 +16,8 @@ const backButton = document.querySelector(".back-btn");
 const ordersSearchInput = document.getElementById("ordersSearchInput");
 const ordersSearchBtn = document.getElementById("ordersSearchBtn");
 const filterByStatus = document.getElementById("filterByStatus");
+
+let allOrders = [];
 
 // Format date and time
 function formatDateTime(dateString) {
@@ -217,43 +219,60 @@ function hasActiveFilters() {
 }
 
 // Load and display orders
-function loadOrders() {
-  const allOrders = getOrders();
-  const filteredOrders = filterOrders(allOrders);
+async function loadOrders() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-  ordersContainer.innerHTML = "";
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-  if (allOrders.length === 0) {
-    const noOrdersMsg = document.createElement("p");
+    allOrders = await response.json();
+    const filteredOrders = filterOrders(allOrders);
 
-    noOrdersMsg.textContent = "NO ORDERS YET";
+    ordersContainer.innerHTML = "";
 
-    noOrdersMsg.className = "no-orders-message";
+    if (allOrders.length === 0) {
+      const noOrdersMsg = document.createElement("p");
 
-    ordersContainer.appendChild(noOrdersMsg);
+      noOrdersMsg.textContent = "NO ORDERS YET";
 
-    return;
+      noOrdersMsg.className = "no-orders-message";
+
+      ordersContainer.appendChild(noOrdersMsg);
+
+      return;
+    }
+
+    if (filteredOrders.length === 0) {
+      const noResultsMsg = document.createElement("p");
+
+      noResultsMsg.textContent = hasActiveFilters()
+        ? "NO ORDERS MATCH YOUR FILTERS"
+        : "NO ORDERS YET";
+
+      noResultsMsg.className = "no-orders-message";
+
+      ordersContainer.appendChild(noResultsMsg);
+
+      return;
+    }
+
+    filteredOrders.forEach((order) => {
+      const orderCard = createOrderCard(order, allOrders);
+
+      ordersContainer.appendChild(orderCard);
+    });
+  } catch (error) {
+    console.error("Failed to load orders:", error);
+    ordersContainer.innerHTML = "";
+
+    const errorMsg = document.createElement("p");
+    errorMsg.textContent = "FAILED TO LOAD ORDERS";
+    errorMsg.className = "no-orders-message";
+
+    ordersContainer.appendChild(errorMsg);
   }
-
-  if (filteredOrders.length === 0) {
-    const noResultsMsg = document.createElement("p");
-
-    noResultsMsg.textContent = hasActiveFilters()
-      ? "NO ORDERS MATCH YOUR FILTERS"
-      : "NO ORDERS YET";
-
-    noResultsMsg.className = "no-orders-message";
-
-    ordersContainer.appendChild(noResultsMsg);
-
-    return;
-  }
-
-  filteredOrders.forEach((order) => {
-    const orderCard = createOrderCard(order, allOrders);
-
-    ordersContainer.appendChild(orderCard);
-  });
 }
 
 function applyFilters() {
