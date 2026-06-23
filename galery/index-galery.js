@@ -135,10 +135,8 @@ closeOrderButton.addEventListener("click", () => {
 
 // Handle order form submission
 
-orderForm.addEventListener("submit", (event) => {
+orderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-
-  orderFormBox.style.display = "none";
 
   const name = orderForm["customer-name"].value.trim();
   const phone = orderForm["customer-phone"].value.trim();
@@ -162,29 +160,33 @@ orderForm.addEventListener("submit", (event) => {
   }
 
   const order = {
-    id: Date.now(),
-    productId: productCode,
+    productCode,
     cakeName: productName,
     customerName: name,
     price: product.price,
     phone,
     email,
-
     birthDate: orderForm["birth-date"].value,
-
     orderDateTime: orderForm["order-datetime"].value,
-
-    status: "New order",
-
-    sentAt: new Date().toISOString(),
   };
 
-  const orders = getOrders();
+  try {
+    const response = await fetch("http://localhost:3000/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(order),
+    });
 
-  orders.push(order);
+    if (!response.ok) {
+      const error = await response.json();
+      alert(error.message || "Failed to send order");
+      return;
+    }
 
-  saveOrders(orders);
-
-  orderFormBox.style.display = "none";
-  orderForm.reset();
+    orderFormBox.style.display = "none";
+    orderForm.reset();
+    alert("Order sent successfully!");
+  } catch {
+    alert("Failed to send order");
+  }
 });
