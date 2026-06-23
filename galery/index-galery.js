@@ -1,6 +1,4 @@
 import {
-  getOrders,
-  saveOrders,
   getVisitors,
   saveVisitors,
 } from "../storage/storage.js";
