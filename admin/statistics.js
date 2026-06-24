@@ -1,12 +1,8 @@
-import { getOrders } from "../storage/storage.js";
-
 /* =========================
    TODAY ORDERS COUNT
 ========================= */
 
-function renderTodayOrdersCount() {
-  const orders = getOrders();
-
+function renderTodayOrdersCount(orders) {
   const today = new Date();
 
   const todayOrders = orders.filter((order) => {
@@ -31,15 +27,11 @@ function renderTodayOrdersCount() {
     `${todayOrders.length} orders`;
 }
 
-renderTodayOrdersCount();
-
 /* =========================
    WEEK ORDERS COUNT
 ========================= */
 
-function renderWeekOrdersCount() {
-  const orders = getOrders();
-
+function renderWeekOrdersCount(orders) {
   const today = new Date();
 
   const weekAgo = new Date();
@@ -65,15 +57,12 @@ function renderWeekOrdersCount() {
   weekOrdersCountElement.textContent =
     `${weekOrders.length} orders`;
 }
-renderWeekOrdersCount();
 
 /* =========================
    MONTH ORDERS COUNT
 ========================= */
 
-function renderMonthOrdersCount() {
-  const orders = getOrders();
-
+function renderMonthOrdersCount(orders) {
   const today = new Date();
 
   const monthOrders = orders.filter((order) => {
@@ -98,15 +87,11 @@ function renderMonthOrdersCount() {
     `${monthOrders.length} orders`;
 }
 
-renderMonthOrdersCount();
-
 /* =========================
    TODAY ORDERS REVENUE
 ========================= */
 
-function renderTodayOrdersRevenue() {
-  const orders = getOrders();
-
+function renderTodayOrdersRevenue(orders) {
   const today = new Date();
 
   const todayOrders = orders.filter((order) => {
@@ -142,15 +127,11 @@ function renderTodayOrdersRevenue() {
     `${totalRevenue} $`;
 }
 
-renderTodayOrdersRevenue();
-
 /* =========================
    WEEK ORDERS REVENUE
 ========================= */
 
-function renderWeekOrdersRevenue() {
-  const orders = getOrders();
-
+function renderWeekOrdersRevenue(orders) {
   const today = new Date();
 
   const weekAgo = new Date();
@@ -186,15 +167,11 @@ function renderWeekOrdersRevenue() {
     `${totalRevenue} $`;
 }
 
-renderWeekOrdersRevenue();
-
 /* =========================
    MONTH ORDERS REVENUE
 ========================= */
 
-function renderMonthOrdersRevenue() {
-  const orders = getOrders();
-
+function renderMonthOrdersRevenue(orders) {
   const today = new Date();
 
   const monthOrders = orders.filter((order) => {
@@ -227,4 +204,33 @@ function renderMonthOrdersRevenue() {
   monthRevenueElement.textContent =
     `${totalRevenue} $`;
 }
-renderMonthOrdersRevenue();
+
+async function loadStatistics() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const orders = await response.json();
+
+    renderTodayOrdersCount(orders);
+    renderWeekOrdersCount(orders);
+    renderMonthOrdersCount(orders);
+    renderTodayOrdersRevenue(orders);
+    renderWeekOrdersRevenue(orders);
+    renderMonthOrdersRevenue(orders);
+  } catch (error) {
+    console.error("Failed to load statistics:", error);
+
+    document.getElementById("today-orders-count").textContent = "0 orders";
+    document.getElementById("week-orders-count").textContent = "0 orders";
+    document.getElementById("month-orders-count").textContent = "0 orders";
+    document.getElementById("today-orders-sum").textContent = "0 $";
+    document.getElementById("week-orders-sum").textContent = "0 $";
+    document.getElementById("month-orders-sum").textContent = "0 $";
+  }
+}
+
+loadStatistics();
