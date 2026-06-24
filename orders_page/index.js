@@ -73,7 +73,7 @@ async function updateOrderStatus(orderId, newStatus) {
   }
 }
 
-function createStatusSelect(order, orders) {
+function createStatusSelect(order) {
   const statusSelect = document.createElement("select");
 
   statusSelect.className = "statusSelect";
@@ -162,7 +162,7 @@ function createOrderCard(order, orders) {
   const sentAtP = document.createElement("p");
   sentAtP.textContent = `Sent At: ${formatDateTime(order.sentAt)}`;
 
-  const statusSelect = createStatusSelect(order, orders);
+  const statusSelect = createStatusSelect(order);
 
   orderCardContent.append(
     idP,
