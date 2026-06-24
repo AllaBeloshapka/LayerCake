@@ -1,5 +1,4 @@
 import {
-  getOrders,
   getReviews,
   saveReviews,
 } from "../storage/storage.js";
@@ -15,14 +14,25 @@ const orderButton = document.querySelector(".btn-order");
    UPDATE NEW ORDERS COUNT
 ========================= */
 
-function updateNewOrdersCount() {
-  const orders = getOrders();
+async function updateNewOrdersCount() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-  const newOrders = orders.filter(
-    (orderItem) => orderItem.status === "New order",
-  );
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-  newOrdersElement.textContent = newOrders.length;
+    const orders = await response.json();
+
+    const newOrders = orders.filter(
+      (orderItem) => orderItem.status === "New order",
+    );
+
+    newOrdersElement.textContent = newOrders.length;
+  } catch (error) {
+    console.error("Failed to load new orders count:", error);
+    newOrdersElement.textContent = "0";
+  }
 }
 
 /* =========================
