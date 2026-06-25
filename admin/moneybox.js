@@ -18,50 +18,46 @@ let savedMoneybox = Number(localStorage.getItem("moneybox")) || 0;
 
 const lastSavedTime = localStorage.getItem("moneyboxLastSavedTime");
 
-/* =========================
-   GET ORDERS
-========================= */
+let moneyboxValue = 0;
 
-const moneyboxOrders = JSON.parse(localStorage.getItem("orders")) || [];
+async function loadMoneyboxOrders() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-/* =========================
-   CURRENT PERIOD ORDERS
-========================= */
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-const lastSavedDate = lastSavedTime ? new Date(lastSavedTime) : null;
+    const moneyboxOrders = await response.json();
 
-const currentPeriodOrders = moneyboxOrders.filter((order) => {
-  if (!lastSavedDate) {
-    return true;
+    const lastSavedDate = lastSavedTime ? new Date(lastSavedTime) : null;
+
+    const currentPeriodOrders = moneyboxOrders.filter((order) => {
+      if (!lastSavedDate) {
+        return true;
+      }
+
+      return new Date(order.sentAt) > lastSavedDate;
+    });
+
+    const currentPeriodProfit = currentPeriodOrders.reduce(
+      (total, order) => total + Number(order.price || 0),
+      0,
+    );
+
+    moneyboxValue = Math.round(currentPeriodProfit * 0.1);
+
+    moneyboxAmount.textContent = `For the last period, you earned $${currentPeriodProfit}. Save $${moneyboxValue} for business growth.`;
+
+    moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
+
+    moneyboxCheckbox.checked = moneyboxValue === 0;
+  } catch (error) {
+    console.error("Failed to load moneybox orders:", error);
+    moneyboxAmount.textContent = "Could not load moneybox data.";
+    moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
   }
-
-  return new Date(order.sentAt) > lastSavedDate;
-});
-
-/* =========================
-   CURRENT PERIOD PROFIT
-========================= */
-
-const currentPeriodProfit = currentPeriodOrders.reduce(
-  (total, order) => total + Number(order.price || 0),
-  0,
-);
-
-const moneyboxValue = Math.round(currentPeriodProfit * 0.1);
-
-/* =========================
-   DISPLAY MONEYBOX DATA
-========================= */
-
-moneyboxAmount.textContent = `For the last period, you earned $${currentPeriodProfit}. Save $${moneyboxValue} for business growth.`;
-
-moneyboxTotal.textContent = `Now you have $${savedMoneybox} in your piggy bank for business growth.`;
-
-/* =========================
-   RESTORE CHECKBOX STATE
-========================= */
-
-moneyboxCheckbox.checked = moneyboxValue === 0;
+}
 
 /* =========================
    SAVE MONEY TO MONEYBOX
@@ -97,3 +93,5 @@ resetMoneyboxBtn.addEventListener(
       "Now you have $0 in your piggy bank for business growth.";
   }
 );
+
+loadMoneyboxOrders();
