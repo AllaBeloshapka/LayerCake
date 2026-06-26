@@ -1,5 +1,3 @@
-import { saveReviews } from "../storage/storage.js";
-
 /* =========================
    DOM ELEMENTS
 ========================= */
@@ -30,87 +28,48 @@ main.prepend(cardBox);
    RENDER REVIEWS
 ========================= */
 
-cakeReviews.forEach((reviewItem) => {
-  // Create review card
-  const card = document.createElement("div");
+async function loadApprovedReviews() {
+  try {
+    const response = await fetch("http://localhost:3000/api/reviews");
 
-  card.className = "card";
+    if (!response.ok) {
+      throw new Error("Failed to fetch reviews");
+    }
 
-  // Create review text
-  const reviewText = document.createElement("p");
+    const reviews = await response.json();
 
-  reviewText.className = "review";
-  reviewText.textContent = reviewItem.text;
+    cardBox.innerHTML = "";
 
-  // Create review image
-  const image = document.createElement("img");
+    reviews.forEach((reviewItem) => {
+      const card = document.createElement("div");
 
-  image.className = "img";
-  image.src = reviewItem.img;
-  image.alt = "Cake review photo";
+      card.className = "card";
 
-  // Add image into review text
-  reviewText.appendChild(image);
+      const reviewText = document.createElement("p");
 
-  // Add review text into card
-  card.appendChild(reviewText);
+      reviewText.className = "review";
+      reviewText.textContent = reviewItem.text;
 
-  // Add card into reviews container
-  cardBox.appendChild(card);
-});
+      const image = document.createElement("img");
 
-/* =========================
-   CONVERT IMAGE
-========================= */
+      image.className = "img";
+      image.src = reviewItem.image || "./assets/cake.png";
+      image.alt = "Cake review photo";
 
-function convertImageToBase64(file, callback) {
-  const reader = new FileReader();
+      reviewText.appendChild(image);
 
-  reader.onload = () => {
-    callback(reader.result);
-  };
+      card.appendChild(reviewText);
 
-  reader.readAsDataURL(file);
+      cardBox.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Failed to load approved reviews:", error);
+    cardBox.innerHTML = "";
+  }
 }
 
+loadApprovedReviews();
+
 sendReviewButton.addEventListener("click", () => {
-  const file = reviewPhotoInput.files[0];
-
-  if (file) {
-    convertImageToBase64(file, (imageBase64) => {
-      const review = {
-        id: crypto.randomUUID(),
-        text: reviewTextarea.value,
-        img: imageBase64,
-        status: "pending",
-        createdAt: Date.now(),
-      };
-
-      cakeReviews.push(review);
-
-      saveReviews(cakeReviews);
-
-      reviewTextarea.value = "";
-
-      reviewPhotoInput.value = "";
-    });
-
-    return;
-  }
-
-  const review = {
-    id: crypto.randomUUID(),
-    text: reviewTextarea.value,
-    img: "",
-    status: "pending",
-    createdAt: Date.now(),
-  };
-
-  cakeReviews.push(review);
-
-  saveReviews(cakeReviews);
-
-  reviewTextarea.value = "";
-
-  reviewPhotoInput.value = "";
+  console.log("Review submit will be connected to API later");
 });
