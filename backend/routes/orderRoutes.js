@@ -12,6 +12,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      res.status(404).json({ message: "Order not found" });
+      return;
+    }
+
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch order" });
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const orderData = {
