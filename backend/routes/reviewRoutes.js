@@ -1,6 +1,9 @@
 const express = require("express");
 const Review = require("../models/Review");
 const Product = require("../models/Product");
+const upload = require("../middleware/upload");
+const { convertToWebP } = require("../services/imageService");
+const { uploadProductImage } = require("../services/s3Service");
 
 const router = express.Router();
 
@@ -26,7 +29,7 @@ router.get("/pending", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { orderId, productCode, cakeName, customerName, rating, text, image } =
       req.body;
@@ -72,6 +75,12 @@ router.post("/", async (req, res) => {
       image: image || "",
       productImage: product.image || "",
     };
+
+    if (req.file) {
+      const webpBuffer = await convertToWebP(req.file.buffer);
+      const key = `reviews/${orderId}-${Date.now()}.webp`;
+      reviewData.image = await uploadProductImage(webpBuffer, key);
+    }
 
     if (rating !== undefined) {
       reviewData.rating = Number(rating);
