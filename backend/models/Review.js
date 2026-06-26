@@ -33,6 +33,10 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    productImage: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],
