@@ -79,7 +79,32 @@ async function loadPendingReviews() {
    APPROVE REVIEW
 ========================= */
 
-approveButton.addEventListener("click", () => {});
+approveButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
+
+  if (!pendingReview) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "approved" }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to approve review");
+    }
+
+    await loadPendingReviews();
+  } catch (error) {
+    console.error("Failed to approve review:", error);
+  }
+});
 /* =========================
    RENDER REVIEW
 ========================= */
