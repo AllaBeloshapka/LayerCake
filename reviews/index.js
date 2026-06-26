@@ -53,7 +53,7 @@ async function loadApprovedReviews() {
       const image = document.createElement("img");
 
       image.className = "img";
-      image.src = reviewItem.image || "./assets/cake.png";
+      image.src = reviewItem.image || reviewItem.productImage || "./assets/cake.png";
       image.alt = "Cake review photo";
 
       reviewText.appendChild(image);
