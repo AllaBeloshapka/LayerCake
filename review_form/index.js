@@ -4,8 +4,12 @@ const customerGreeting = document.getElementById("customer-greeting");
 const orderCakeName = document.getElementById("order-cake-name");
 const orderDate = document.getElementById("order-date");
 const orderCakeImage = document.getElementById("order-cake-image");
+const reviewForm = document.querySelector(".review-form");
+const reviewTextarea = document.getElementById("review-text");
+const sendReviewButton = document.querySelector(".send-review-btn");
 
 let selectedRating = 5;
+let loadedOrder = null;
 
 function updateStarRating() {
   starButtons.forEach((button) => {
@@ -49,6 +53,8 @@ async function loadOrderDetails() {
 
     const order = await response.json();
 
+    loadedOrder = order;
+
     customerGreeting.textContent = `Hello, ${order.customerName}!`;
     orderCakeName.textContent = order.cakeName;
     orderDate.textContent = `Order date: ${new Date(
@@ -81,4 +87,34 @@ async function loadOrderDetails() {
 
 loadOrderDetails();
 
-// selectedRating will be used later when submitting the review.
+reviewForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!loadedOrder || sendReviewButton.disabled) {
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        orderId: loadedOrder._id,
+        productCode: loadedOrder.productCode,
+        cakeName: loadedOrder.cakeName,
+        customerName: loadedOrder.customerName,
+        rating: selectedRating,
+        text: reviewTextarea.value.trim(),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit review");
+    }
+
+    console.log("Review submitted successfully");
+    sendReviewButton.disabled = true;
+  } catch (error) {
+    console.error("Failed to submit review:", error);
+  }
+});
