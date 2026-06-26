@@ -155,9 +155,28 @@ function renderPendingReview() {
     return;
   }
 
-  reviewText.textContent = pendingReview.text;
+  reviewText.textContent = "";
 
-  reviewImage.src = pendingReview.image || "./assets/cake.png";
+  const customerLine = document.createElement("div");
+  customerLine.textContent = `Customer: ${pendingReview.customerName ?? "-"}`;
+  reviewText.appendChild(customerLine);
+
+  const cakeLine = document.createElement("div");
+  cakeLine.textContent = `Cake: ${pendingReview.cakeName ?? "-"}`;
+  reviewText.appendChild(cakeLine);
+
+  const ratingLine = document.createElement("div");
+  ratingLine.textContent = `Rating: ${pendingReview.rating ?? "-"}/5`;
+  reviewText.appendChild(ratingLine);
+
+  const textLine = document.createElement("div");
+  textLine.textContent = pendingReview.text ?? "";
+  reviewText.appendChild(textLine);
+
+  reviewImage.src =
+    pendingReview.image ||
+    pendingReview.productImage ||
+    "./assets/cake.png";
 
   reviewImage.style.display = "block";
 
