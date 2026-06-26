@@ -27,22 +27,35 @@
 
       <!-- Main content -->
       <main class="main">
-        <h1>Leave a Review</h1>
+        <section class="review-intro">
+          <h1 id="customer-greeting">Hello!</h1>
+          <p>Thank you for choosing LayerCake.</p>
+          <p>We would really appreciate your feedback.</p>
+        </section>
 
-        <p class="order-info">Your order information will appear here.</p>
+        <section class="order-card">
+          <img id="order-cake-image" src="" alt="Ordered cake photo" />
+          <div>
+            <p>Your cake</p>
+            <h2 id="order-cake-name">Cake name will appear here</h2>
+            <p id="order-date">Order information will appear here.</p>
+          </div>
+        </section>
 
         <form class="review-form">
-          <label for="rating">Rating</label>
+          <div class="rating-block">
+            <p>How would you rate your cake?</p>
+            <div class="star-rating" aria-label="Rating">
+              <button type="button" class="star-btn" data-rating="1">★</button>
+              <button type="button" class="star-btn" data-rating="2">★</button>
+              <button type="button" class="star-btn" data-rating="3">★</button>
+              <button type="button" class="star-btn" data-rating="4">★</button>
+              <button type="button" class="star-btn" data-rating="5">★</button>
+            </div>
+            <p class="rating-hint">Click a star to rate.</p>
+          </div>
 
-          <select id="rating" name="rating">
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
-          </select>
-
-          <label for="review-text">Review text</label>
+          <label for="review-text">Tell us about your experience</label>
 
           <textarea
             id="review-text"
