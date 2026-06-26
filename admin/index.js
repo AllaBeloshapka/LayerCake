@@ -105,6 +105,37 @@ approveButton.addEventListener("click", async () => {
     console.error("Failed to approve review:", error);
   }
 });
+
+/* =========================
+   REJECT REVIEW
+========================= */
+
+rejectButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
+
+  if (!pendingReview) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "rejected" }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to reject review");
+    }
+
+    await loadPendingReviews();
+  } catch (error) {
+    console.error("Failed to reject review:", error);
+  }
+});
 /* =========================
    RENDER REVIEW
 ========================= */
