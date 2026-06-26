@@ -1,5 +1,6 @@
 const express = require("express");
 const Review = require("../models/Review");
+const Product = require("../models/Product");
 
 const router = express.Router();
 
@@ -55,6 +56,13 @@ router.post("/", async (req, res) => {
       return;
     }
 
+    const product = await Product.findOne({ productCode: Number(productCode) });
+
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+      return;
+    }
+
     const reviewData = {
       orderId,
       productCode: Number(productCode),
@@ -62,6 +70,7 @@ router.post("/", async (req, res) => {
       customerName,
       text,
       image: image || "",
+      productImage: product.image || "",
     };
 
     if (rating !== undefined) {
