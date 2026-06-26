@@ -6,6 +6,7 @@ const orderDate = document.getElementById("order-date");
 const orderCakeImage = document.getElementById("order-cake-image");
 const reviewForm = document.querySelector(".review-form");
 const reviewTextarea = document.getElementById("review-text");
+const reviewPhotoInput = document.getElementById("review-photo");
 const sendReviewButton = document.querySelector(".send-review-btn");
 const reviewSuccessModal = document.getElementById("review-success-modal");
 const reviewSuccessTitle = document.getElementById("review-success-title");
@@ -107,17 +108,21 @@ reviewForm.addEventListener("submit", async (event) => {
   }
 
   try {
+    const formData = new FormData();
+    formData.append("orderId", loadedOrder._id);
+    formData.append("productCode", loadedOrder.productCode);
+    formData.append("cakeName", loadedOrder.cakeName);
+    formData.append("customerName", loadedOrder.customerName);
+    formData.append("rating", selectedRating);
+    formData.append("text", reviewTextarea.value.trim());
+
+    if (reviewPhotoInput.files[0]) {
+      formData.append("image", reviewPhotoInput.files[0]);
+    }
+
     const response = await fetch("http://localhost:3000/api/reviews", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        orderId: loadedOrder._id,
-        productCode: loadedOrder.productCode,
-        cakeName: loadedOrder.cakeName,
-        customerName: loadedOrder.customerName,
-        rating: selectedRating,
-        text: reviewTextarea.value.trim(),
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
