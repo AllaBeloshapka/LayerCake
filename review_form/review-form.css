@@ -63,14 +63,26 @@ label {
   line-height: 1.4;
 }
 
-.order-card {
+.review-layout {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
+  justify-content: center;
   gap: 28px;
-  max-width: 760px;
   width: 100%;
-  padding: 18px;
+  max-width: 1500px;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 28px;
+  max-width: 460px;
+  min-height: 520px;
+  width: 100%;
+  padding: 24px;
   color: #682b08;
   background-color: #feeeba;
   border: 2px solid #d99a3a;
@@ -78,10 +90,10 @@ label {
 }
 
 #order-cake-image {
-  width: 220px;
-  height: 160px;
+  width: 100%;
+  height: 360px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .rating-block {
@@ -129,7 +141,8 @@ label {
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  max-width: 600px;
+  max-width: 760px;
+  min-height: 520px;
   padding: 24px;
   background-color: #feeeba;
   border: 4px solid #682b08;
@@ -218,8 +231,13 @@ label {
     font-size: 18px;
   }
 
+  .review-layout {
+    flex-direction: column;
+  }
+
   .order-card {
     flex-direction: column;
+    max-width: 100%;
     text-align: center;
   }
 
