@@ -1,8 +1,3 @@
-import {
-  getReviews,
-  saveReviews,
-} from "../storage/storage.js";
-
 // Order elements
 const orderElement = document.querySelector(".order");
 
@@ -61,37 +56,36 @@ const approveButton = document.querySelector("#btn-approve");
 
 const rejectButton = document.querySelector("#btn_reject");
 
-/* =========================
-   LOAD REVIEWS
-========================= */
+let pendingReviews = [];
 
-const reviews = getReviews();
+async function loadPendingReviews() {
+  try {
+    const response = await fetch("http://localhost:3000/api/reviews/pending");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch pending reviews");
+    }
+
+    pendingReviews = await response.json();
+  } catch (error) {
+    console.error("Failed to load pending reviews:", error);
+    pendingReviews = [];
+  }
+
+  renderPendingReview();
+}
 
 /* =========================
    APPROVE REVIEW
 ========================= */
 
-approveButton.addEventListener("click", () => {
-  const reviews = getReviews();
-
-  const pendingReview = reviews.find((review) => review.status === "pending");
-
-  if (!pendingReview) return;
-
-  pendingReview.status = "approved";
-
-  saveReviews(reviews);
-
-  renderPendingReview();
-});
+approveButton.addEventListener("click", () => {});
 /* =========================
    RENDER REVIEW
 ========================= */
 
 function renderPendingReview() {
-  const reviews = getReviews();
-
-  const pendingReview = reviews.find((review) => review.status === "pending");
+  const pendingReview = pendingReviews[0];
 
   if (!pendingReview) {
     reviewText.textContent = "No reviews pending moderation";
@@ -107,7 +101,7 @@ function renderPendingReview() {
 
   reviewText.textContent = pendingReview.text;
 
-  reviewImage.src = pendingReview.img || "./assets/cake.png";
+  reviewImage.src = pendingReview.image || "./assets/cake.png";
 
   reviewImage.style.display = "block";
 
@@ -120,7 +114,7 @@ function renderPendingReview() {
    INITIAL RENDER
 ========================= */
 
-renderPendingReview();
+loadPendingReviews();
 
 /* =========================
    PRODUCT FORM
