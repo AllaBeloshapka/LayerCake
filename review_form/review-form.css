@@ -208,6 +208,68 @@ label {
   text-align: center;
 }
 
+.review-success-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: rgba(104, 43, 8, 0.55);
+  z-index: 1000;
+}
+
+.review-success-modal[hidden] {
+  display: none;
+}
+
+.review-success-dialog {
+  width: 100%;
+  max-width: 520px;
+  padding: 32px 28px;
+  text-align: center;
+  color: #682b08;
+  background-color: #feeeba;
+  border: 4px solid #682b08;
+  border-radius: 18px;
+}
+
+.review-success-dialog h2 {
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+
+.review-success-dialog p {
+  margin-bottom: 10px;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.review-success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.review-success-btn {
+  min-width: 160px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #682b08;
+  color: #e7c69e;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.review-success-btn:hover {
+  background-color: #993d08;
+}
+
 /* =========================
    MOBILE
 ========================= */

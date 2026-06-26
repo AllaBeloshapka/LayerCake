@@ -7,6 +7,9 @@ const orderCakeImage = document.getElementById("order-cake-image");
 const reviewForm = document.querySelector(".review-form");
 const reviewTextarea = document.getElementById("review-text");
 const sendReviewButton = document.querySelector(".send-review-btn");
+const reviewSuccessModal = document.getElementById("review-success-modal");
+const reviewSuccessTitle = document.getElementById("review-success-title");
+const reviewSuccessCloseButton = document.querySelector(".review-success-close");
 
 let selectedRating = 5;
 let loadedOrder = null;
@@ -87,6 +90,15 @@ async function loadOrderDetails() {
 
 loadOrderDetails();
 
+function showReviewSuccessModal(customerName) {
+  reviewSuccessTitle.textContent = `Thank you, ${customerName}!`;
+  reviewSuccessModal.hidden = false;
+}
+
+reviewSuccessCloseButton.addEventListener("click", () => {
+  reviewSuccessModal.hidden = true;
+});
+
 reviewForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -114,6 +126,7 @@ reviewForm.addEventListener("submit", async (event) => {
 
     console.log("Review submitted successfully");
     sendReviewButton.disabled = true;
+    showReviewSuccessModal(loadedOrder.customerName);
   } catch (error) {
     console.error("Failed to submit review:", error);
   }
