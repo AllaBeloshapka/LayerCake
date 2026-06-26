@@ -13,6 +13,7 @@ body {
 }
 
 h1,
+h2,
 p,
 label {
   margin: 0;
@@ -44,15 +45,79 @@ label {
   font-size: 32px;
 }
 
-.order-info {
-  max-width: 600px;
+.review-intro {
+  max-width: 760px;
   width: 100%;
-  padding: 16px;
+  color: #682b08;
+  text-align: center;
+}
+
+.review-intro h1 {
+  margin-bottom: 12px;
+  font-size: 42px;
+  font-weight: bold;
+}
+
+.review-intro p {
+  font-size: 22px;
+  line-height: 1.4;
+}
+
+.order-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+  max-width: 760px;
+  width: 100%;
+  padding: 18px;
   color: #682b08;
   background-color: #feeeba;
-  border: 2px solid #682b08;
-  border-radius: 10px;
-  text-align: center;
+  border: 2px solid #d99a3a;
+  border-radius: 18px;
+}
+
+#order-cake-image {
+  width: 220px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.rating-block {
+  color: #682b08;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.star-rating {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.star-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #f5a623;
+  font-size: 46px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.star-btn:hover {
+  transform: scale(1.08);
+}
+
+.star-btn.is-active {
+  color: #f5a623;
+}
+
+.rating-hint {
+  font-size: 16px;
+  font-weight: normal;
 }
 
 /* =========================
@@ -90,7 +155,9 @@ label {
 }
 
 .review-form textarea {
-  min-height: 120px;
+  min-height: 180px;
+  font-size: 18px;
+  line-height: 1.5;
   resize: vertical;
 }
 
@@ -143,7 +210,30 @@ label {
     text-align: center;
   }
 
-  .order-info,
+  .review-intro h1 {
+    font-size: 32px;
+  }
+
+  .review-intro p {
+    font-size: 18px;
+  }
+
+  .order-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #order-cake-image {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 11 / 8;
+  }
+
+  .star-btn {
+    font-size: 38px;
+  }
+
   .review-form {
     max-width: 100%;
   }
