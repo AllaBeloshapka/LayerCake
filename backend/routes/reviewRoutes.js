@@ -1,5 +1,6 @@
 const express = require("express");
 const Review = require("../models/Review");
+const Order = require("../models/Order");
 const Product = require("../models/Product");
 const upload = require("../middleware/upload");
 const { convertToWebP } = require("../services/imageService");
@@ -121,6 +122,26 @@ router.patch("/:id/status", async (req, res) => {
     if (!review) {
       res.status(404).json({ message: "Review not found" });
       return;
+    }
+
+    if (status === "approved" && review.orderId) {
+      try {
+        const order = await Order.findById(review.orderId);
+
+        if (!order) {
+          console.error(
+            `Related order not found for approved review ${review._id}`,
+          );
+        } else {
+          order.status = "Reviewed";
+          await order.save();
+        }
+      } catch (error) {
+        console.error(
+          `Failed to update order status for approved review ${review._id}:`,
+          error,
+        );
+      }
     }
 
     res.json(review);
