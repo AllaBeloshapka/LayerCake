@@ -115,7 +115,7 @@ router.patch("/:id/status", async (req, res) => {
     const review = await Review.findByIdAndUpdate(
       req.params.id,
       { status },
-      { new: true, runValidators: true },
+      { returnDocument: "after", runValidators: true },
     );
 
     if (!review) {
