@@ -56,6 +56,15 @@ const approveButton = document.querySelector("#btn-approve");
 
 const rejectButton = document.querySelector("#btn_reject");
 
+const replacePhotoButton = document.createElement("button");
+
+replacePhotoButton.type = "button";
+replacePhotoButton.className = "btn replace-photo-btn";
+replacePhotoButton.textContent = "Replace with Gallery Photo";
+replacePhotoButton.style.display = "none";
+
+rejectButton.insertAdjacentElement("afterend", replacePhotoButton);
+
 let pendingReviews = [];
 
 async function loadPendingReviews() {
@@ -136,6 +145,34 @@ rejectButton.addEventListener("click", async () => {
     console.error("Failed to reject review:", error);
   }
 });
+
+replacePhotoButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
+
+  if (!pendingReview || !pendingReview.image) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/remove-photo`,
+      {
+        method: "PATCH",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to remove review photo");
+    }
+
+    const updatedReview = await response.json();
+
+    pendingReviews[0] = updatedReview;
+    renderPendingReview();
+  } catch (error) {
+    console.error("Failed to replace review photo:", error);
+  }
+});
 /* =========================
    RENDER REVIEW
 ========================= */
@@ -151,6 +188,8 @@ function renderPendingReview() {
     approveButton.style.display = "none";
 
     rejectButton.style.display = "none";
+
+    replacePhotoButton.style.display = "none";
 
     return;
   }
@@ -183,6 +222,8 @@ function renderPendingReview() {
   approveButton.style.display = "block";
 
   rejectButton.style.display = "block";
+
+  replacePhotoButton.style.display = pendingReview.image ? "block" : "none";
 }
 
 /* =========================
