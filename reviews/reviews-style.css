@@ -88,6 +88,7 @@ li {
   border-radius: 10px;
 
   word-wrap: break-word;
+  overflow: hidden;
 }
 
 /* =========================
@@ -120,6 +121,7 @@ li {
 
   white-space: normal;
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .review-customer {
@@ -144,6 +146,11 @@ li {
 .review-text {
   grid-column: 1;
   line-height: 1.5;
+  min-width: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* =========================
