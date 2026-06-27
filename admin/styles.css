@@ -287,6 +287,7 @@ li {
   flex-direction: column;
 
   gap: 20px;
+  max-width: 100%;
 }
 
 /* Review content */
@@ -303,6 +304,9 @@ li {
   box-shadow: inset 0 4px 10px black;
 
   background: #eeeeee;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Review text */
@@ -313,10 +317,25 @@ li {
   gap: 8px;
 
   width: 400px;
+  max-width: 100%;
+  min-width: 0;
   padding: 20px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-size: 20px;
+}
+
+.text-review > div {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.text-review > div:last-child {
+  max-height: 180px;
+  overflow-y: auto;
 }
 
 /* Review image */
