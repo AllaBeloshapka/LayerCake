@@ -1,5 +1,6 @@
 const express = require("express");
 const Order = require("../models/Order");
+const { sendReviewRequestEmail } = require("../services/emailService.js");
 
 const router = express.Router();
 
@@ -56,23 +57,41 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id/status", async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, sendReviewEmail } = req.body;
 
     if (!status) {
       res.status(400).json({ message: "Status is required" });
       return;
     }
 
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true, runValidators: true },
-    );
+    const order = await Order.findById(req.params.id);
 
     if (!order) {
       res.status(404).json({ message: "Order not found" });
       return;
     }
+
+    order.status = status;
+
+    if (
+      status === "Completed" &&
+      sendReviewEmail === true &&
+      order.email &&
+      order.reviewEmailSent !== true
+    ) {
+      const frontendBaseUrl =
+        process.env.FRONTEND_BASE_URL || "http://localhost:5500";
+      const reviewLink = `${frontendBaseUrl}/review_form/index.html?orderId=${order._id}`;
+
+      try {
+        await sendReviewRequestEmail(order, reviewLink);
+        order.reviewEmailSent = true;
+      } catch (error) {
+        console.error("Failed to send review request email:", error);
+      }
+    }
+
+    await order.save();
 
     res.json(order);
   } catch (error) {
