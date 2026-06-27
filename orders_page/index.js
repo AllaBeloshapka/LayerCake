@@ -79,7 +79,10 @@ async function updateOrderStatus(orderId, newStatus, extraPayload = {}) {
 
     if (!response.ok) throw new Error("Ошибка при обновлении статуса");
 
-    await response.json();
+    const responseData = await response.json();
+    const updatedOrder = responseData.order ?? responseData;
+    const reviewEmail = responseData.reviewEmail;
+    const emailWasRequested = extraPayload.sendReviewEmail === true;
 
     // Плавная подсветка карточки, чтобы показать, что статус изменился
     const card = document.querySelector(`[data-id="${orderId}"]`);
@@ -89,11 +92,24 @@ async function updateOrderStatus(orderId, newStatus, extraPayload = {}) {
       setTimeout(() => (card.style.backgroundColor = ""), 1000);
     }
 
-    return true;
+    if (reviewEmail?.failed === true) {
+      alert(
+        reviewEmail.message ||
+          "Order was completed, but the review email was not sent. Please check email settings and try again.",
+      );
+    } else if (
+      emailWasRequested &&
+      reviewEmail?.requested === true &&
+      reviewEmail?.skipped === true
+    ) {
+      alert(reviewEmail.message);
+    }
+
+    return { order: updatedOrder, reviewEmail };
   } catch (error) {
     console.error("❌ Ошибка при изменении статуса:", error);
     alert("Не удалось обновить статус. Проверь соединение с сервером.");
-    return false;
+    return null;
   }
 }
 
@@ -167,11 +183,11 @@ function createStatusSelect(order) {
 
     applyStatusStyle(statusSelect, newStatus);
 
-    const success = await updateOrderStatus(orderId, newStatus);
+    const result = await updateOrderStatus(orderId, newStatus);
 
-    if (success) {
+    if (result) {
       allOrders = allOrders.map((o) =>
-        o._id === orderId ? { ...o, status: newStatus } : o,
+        o._id === orderId ? { ...o, ...result.order } : o,
       );
       applyFilters();
     } else {
@@ -374,13 +390,13 @@ completedStatusSendButton.addEventListener("click", async () => {
 
   setCompletedStatusSending();
 
-  const success = await updateOrderStatus(orderId, "Completed", {
+  const result = await updateOrderStatus(orderId, "Completed", {
     sendReviewEmail: true,
   });
 
-  if (success) {
+  if (result) {
     allOrders = allOrders.map((o) =>
-      o._id === orderId ? { ...o, status: "Completed" } : o,
+      o._id === orderId ? { ...o, ...result.order } : o,
     );
     applyFilters();
     hideCompletedConfirmationModal();

@@ -73,16 +73,56 @@ router.patch("/:id/status", async (req, res) => {
 
     order.status = status;
 
+    if (sendReviewEmail !== true) {
+      await order.save();
+      res.json({
+        order,
+        reviewEmail: {
+          requested: false,
+          sent: false,
+          failed: false,
+          skipped: true,
+          message: "Review email was not requested.",
+        },
+      });
+      return;
+    }
+
     const shouldSendReviewEmail =
       status === "Completed" &&
-      sendReviewEmail === true &&
       order.email &&
       order.reviewEmailSent !== true &&
       order.reviewEmailSending !== true;
 
     if (!shouldSendReviewEmail) {
       await order.save();
-      res.json(order);
+
+      let skipMessage = "Review email was skipped.";
+
+      if (status !== "Completed") {
+        skipMessage =
+          "Review email was skipped because the order status is not Completed.";
+      } else if (!order.email) {
+        skipMessage =
+          "Review email was skipped because the order has no email address.";
+      } else if (order.reviewEmailSent === true) {
+        skipMessage =
+          "Review email was skipped because a review email was already sent.";
+      } else if (order.reviewEmailSending === true) {
+        skipMessage =
+          "Review email was skipped because a review email is already being sent.";
+      }
+
+      res.json({
+        order,
+        reviewEmail: {
+          requested: true,
+          sent: false,
+          failed: false,
+          skipped: true,
+          message: skipMessage,
+        },
+      });
       return;
     }
 
@@ -102,7 +142,17 @@ router.patch("/:id/status", async (req, res) => {
 
     if (!lockedOrder) {
       const latestOrder = await Order.findById(order._id);
-      res.json(latestOrder);
+      res.json({
+        order: latestOrder,
+        reviewEmail: {
+          requested: true,
+          sent: false,
+          failed: false,
+          skipped: true,
+          message:
+            "Review email was already being sent or was already sent.",
+        },
+      });
       return;
     }
 
@@ -117,15 +167,36 @@ router.patch("/:id/status", async (req, res) => {
       lockedOrder.reviewEmailSentAt = new Date();
       lockedOrder.reviewEmailFailedAt = null;
       await lockedOrder.save();
+
+      res.json({
+        order: lockedOrder,
+        reviewEmail: {
+          requested: true,
+          sent: true,
+          failed: false,
+          skipped: false,
+          message: "Review email was sent successfully.",
+        },
+      });
     } catch (error) {
       console.error("Failed to send review request email:", error);
       lockedOrder.reviewEmailSent = false;
       lockedOrder.reviewEmailSending = false;
       lockedOrder.reviewEmailFailedAt = new Date();
       await lockedOrder.save();
-    }
 
-    res.json(lockedOrder);
+      res.json({
+        order: lockedOrder,
+        reviewEmail: {
+          requested: true,
+          sent: false,
+          failed: true,
+          skipped: false,
+          message:
+            "Order was completed, but the review email was not sent. Please check email settings and try again.",
+        },
+      });
+    }
   } catch (error) {
     res.status(500).json({ message: "Failed to update order status" });
   }
