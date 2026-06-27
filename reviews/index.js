@@ -5,16 +5,6 @@
 const main = document.querySelector(".main");
 
 /* =========================
-   REVIEW FORM ELEMENTS
-========================= */
-
-const reviewTextarea = document.querySelector(".user_input_form");
-
-const reviewPhotoInput = document.querySelector("#foto_input");
-
-const sendReviewButton = document.querySelector(".send_btn");
-
-/* =========================
    REVIEWS CONTAINER
 ========================= */
 
@@ -109,7 +99,3 @@ async function loadApprovedReviews() {
 }
 
 loadApprovedReviews();
-
-sendReviewButton.addEventListener("click", () => {
-  console.log("Review submit will be connected to API later");
-});
