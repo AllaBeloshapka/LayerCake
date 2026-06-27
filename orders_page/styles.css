@@ -404,6 +404,15 @@ main {
   background: #006600;
 }
 
+.status-modal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-modal-btn-primary:disabled:hover {
+  background: #008000;
+}
+
 .status-modal-btn-secondary {
   background: rgb(247, 228, 228);
   color: #2b0000;

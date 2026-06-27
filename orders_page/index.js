@@ -21,6 +21,22 @@ const completedStatusBackButton = document.getElementById("completed-status-back
 
 let allOrders = [];
 let pendingCompletedStatusChange = null;
+let isCompletedStatusSending = false;
+
+const SEND_EMAIL_BUTTON_TEXT = "Send email";
+const SENDING_EMAIL_BUTTON_TEXT = "Sending...";
+
+function resetCompletedStatusSendButton() {
+  isCompletedStatusSending = false;
+  completedStatusSendButton.disabled = false;
+  completedStatusSendButton.textContent = SEND_EMAIL_BUTTON_TEXT;
+}
+
+function setCompletedStatusSending() {
+  isCompletedStatusSending = true;
+  completedStatusSendButton.disabled = true;
+  completedStatusSendButton.textContent = SENDING_EMAIL_BUTTON_TEXT;
+}
 
 // Format date and time
 function formatDateTime(dateString) {
@@ -91,12 +107,14 @@ function showCompletedConfirmationModal({
     previousStatus,
     statusSelect,
   };
+  resetCompletedStatusSendButton();
   completedStatusModal.hidden = false;
 }
 
 function hideCompletedConfirmationModal() {
   completedStatusModal.hidden = true;
   pendingCompletedStatusChange = null;
+  resetCompletedStatusSendButton();
 }
 
 function revertPendingStatusSelect() {
@@ -347,12 +365,14 @@ ordersSearchInput.addEventListener("keydown", (event) => {
 filterByStatus.addEventListener("change", applyFilters);
 
 completedStatusSendButton.addEventListener("click", async () => {
-  if (!pendingCompletedStatusChange) {
+  if (!pendingCompletedStatusChange || isCompletedStatusSending) {
     return;
   }
 
   const { orderId, previousStatus, statusSelect } =
     pendingCompletedStatusChange;
+
+  setCompletedStatusSending();
 
   const success = await updateOrderStatus(orderId, "Completed", {
     sendReviewEmail: true,
@@ -365,6 +385,7 @@ completedStatusSendButton.addEventListener("click", async () => {
     applyFilters();
     hideCompletedConfirmationModal();
   } else {
+    resetCompletedStatusSendButton();
     statusSelect.value = previousStatus;
     applyStatusStyle(statusSelect, previousStatus);
     hideCompletedConfirmationModal();
