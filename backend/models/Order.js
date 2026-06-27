@@ -47,6 +47,18 @@ const orderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    reviewEmailSending: {
+      type: Boolean,
+      default: false,
+    },
+    reviewEmailSentAt: {
+      type: Date,
+      default: null,
+    },
+    reviewEmailFailedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
