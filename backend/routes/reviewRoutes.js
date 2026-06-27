@@ -129,4 +129,23 @@ router.patch("/:id/status", async (req, res) => {
   }
 });
 
+router.patch("/:id/remove-photo", async (req, res) => {
+  try {
+    const review = await Review.findByIdAndUpdate(
+      req.params.id,
+      { image: "" },
+      { returnDocument: "after", runValidators: true },
+    );
+
+    if (!review) {
+      res.status(404).json({ message: "Review not found" });
+      return;
+    }
+
+    res.json(review);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to remove review photo" });
+  }
+});
+
 module.exports = router;
