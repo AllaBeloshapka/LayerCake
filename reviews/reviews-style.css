@@ -71,13 +71,14 @@ li {
 .card {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
 
-  min-width: 400px;
-  max-width: 400px;
+  width: 100%;
+  min-width: 320px;
+  max-width: 560px;
 
-  min-height: 300px;
-  max-height: 300px;
+  min-height: auto;
+  max-height: none;
 
   color: #682b08;
 
@@ -94,15 +95,19 @@ li {
 ========================= */
 
 .review {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  column-gap: 16px;
+  row-gap: 8px;
 
-  min-width: 370px;
-  max-width: 370px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
 
-  min-height: 270px;
-  max-height: 270px;
+  min-height: auto;
+  max-height: none;
 
-  padding: 10px;
+  padding: 16px;
 
   color: #682b08;
 
@@ -117,17 +122,51 @@ li {
   word-break: break-word;
 }
 
+.review-customer {
+  grid-column: 1;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.review-date {
+  grid-column: 1;
+  font-size: 16px;
+}
+
+.review-rating {
+  grid-column: 1;
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 2px;
+}
+
+.review-text {
+  grid-column: 1;
+  line-height: 1.5;
+}
+
 /* =========================
    REVIEW IMAGE
 ========================= */
 
 .img {
-  width: 150px;
-  height: min-content;
+  grid-column: 2;
+  grid-row: 1 / span 4;
 
-  margin-bottom: 10px;
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  max-height: 220px;
+
+  object-fit: cover;
+
+  margin-bottom: 0;
 
   border-radius: 10px;
+
+  align-self: start;
+  justify-self: end;
 }
 
 /* =========================
@@ -244,6 +283,8 @@ li {
   }
 
   .review {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     min-width: 0;
     max-width: 100%;
@@ -251,13 +292,22 @@ li {
     min-height: auto;
     max-height: none;
 
-    flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .review-customer,
+  .review-date,
+  .review-rating,
+  .review-text {
+    width: 100%;
   }
 
   .img {
+    grid-column: auto;
+    grid-row: auto;
     width: 100%;
     max-width: 220px;
+    max-height: none;
     margin: 0 auto;
   }
 }
@@ -289,20 +339,24 @@ li {
   }
 
   .review {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     width: 100%;
     max-width: 100%;
     min-height: auto;
     max-height: none;
-    flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     gap: 12px;
     font-size: 18px;
   }
 
   .img {
+    grid-column: auto;
+    grid-row: auto;
     width: 100%;
     max-width: 200px;
+    max-height: none;
     margin: 0 auto;
   }
 }
