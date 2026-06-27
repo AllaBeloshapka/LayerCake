@@ -45,5 +45,31 @@
 
       <div class="orders-container"></div>
     </main>
+
+    <div class="status-modal-overlay" id="completed-status-modal" hidden>
+      <div class="status-modal-box">
+        <h2 class="status-modal-title">Complete this order?</h2>
+        <p class="status-modal-text">
+          The order will be marked as completed and the customer will receive an
+          email with a review link.
+        </p>
+        <div class="status-modal-actions">
+          <button
+            type="button"
+            class="status-modal-btn status-modal-btn-primary"
+            id="completed-status-send"
+          >
+            Send email
+          </button>
+          <button
+            type="button"
+            class="status-modal-btn status-modal-btn-secondary"
+            id="completed-status-back"
+          >
+            Back to previous status
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

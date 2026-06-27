@@ -15,7 +15,12 @@ const ordersSearchInput = document.getElementById("ordersSearchInput");
 const ordersSearchBtn = document.getElementById("ordersSearchBtn");
 const filterByStatus = document.getElementById("filterByStatus");
 
+const completedStatusModal = document.getElementById("completed-status-modal");
+const completedStatusSendButton = document.getElementById("completed-status-send");
+const completedStatusBackButton = document.getElementById("completed-status-back");
+
 let allOrders = [];
+let pendingCompletedStatusChange = null;
 
 // Format date and time
 function formatDateTime(dateString) {
@@ -42,14 +47,17 @@ function formatDate(dateString) {
 }
 
 // Update order status
-async function updateOrderStatus(orderId, newStatus) {
+async function updateOrderStatus(orderId, newStatus, extraPayload = {}) {
   try {
     const response = await fetch(
       `http://localhost:3000/api/orders/${orderId}/status`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({
+          status: newStatus,
+          ...extraPayload,
+        }),
       },
     );
 
@@ -71,6 +79,35 @@ async function updateOrderStatus(orderId, newStatus) {
     alert("Не удалось обновить статус. Проверь соединение с сервером.");
     return false;
   }
+}
+
+function showCompletedConfirmationModal({
+  orderId,
+  previousStatus,
+  statusSelect,
+}) {
+  pendingCompletedStatusChange = {
+    orderId,
+    previousStatus,
+    statusSelect,
+  };
+  completedStatusModal.hidden = false;
+}
+
+function hideCompletedConfirmationModal() {
+  completedStatusModal.hidden = true;
+  pendingCompletedStatusChange = null;
+}
+
+function revertPendingStatusSelect() {
+  if (!pendingCompletedStatusChange) {
+    return;
+  }
+
+  const { previousStatus, statusSelect } = pendingCompletedStatusChange;
+
+  statusSelect.value = previousStatus;
+  applyStatusStyle(statusSelect, previousStatus);
 }
 
 function createStatusSelect(order) {
@@ -98,6 +135,17 @@ function createStatusSelect(order) {
   statusSelect.addEventListener("change", async () => {
     const orderId = order._id;
     const newStatus = statusSelect.value;
+    const previousStatus = order.status;
+
+    if (newStatus === "Completed") {
+      applyStatusStyle(statusSelect, newStatus);
+      showCompletedConfirmationModal({
+        orderId,
+        previousStatus,
+        statusSelect,
+      });
+      return;
+    }
 
     applyStatusStyle(statusSelect, newStatus);
 
@@ -297,6 +345,36 @@ ordersSearchInput.addEventListener("keydown", (event) => {
 });
 
 filterByStatus.addEventListener("change", applyFilters);
+
+completedStatusSendButton.addEventListener("click", async () => {
+  if (!pendingCompletedStatusChange) {
+    return;
+  }
+
+  const { orderId, previousStatus, statusSelect } =
+    pendingCompletedStatusChange;
+
+  const success = await updateOrderStatus(orderId, "Completed", {
+    sendReviewEmail: true,
+  });
+
+  if (success) {
+    allOrders = allOrders.map((o) =>
+      o._id === orderId ? { ...o, status: "Completed" } : o,
+    );
+    applyFilters();
+    hideCompletedConfirmationModal();
+  } else {
+    statusSelect.value = previousStatus;
+    applyStatusStyle(statusSelect, previousStatus);
+    hideCompletedConfirmationModal();
+  }
+});
+
+completedStatusBackButton.addEventListener("click", () => {
+  revertPendingStatusSelect();
+  hideCompletedConfirmationModal();
+});
 
 /* =========================
    BACK TO ADMIN PAGE
