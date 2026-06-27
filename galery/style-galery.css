@@ -21,9 +21,11 @@ body {
   display: grid;
 
   grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
+    auto-fill,
+    minmax(250px, 280px)
   );
+
+  justify-content: center;
 
   gap: 20px;
   padding: 20px;
@@ -37,6 +39,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  width: 100%;
+  max-width: 280px;
 
   padding: 15px;
 
@@ -70,9 +75,10 @@ body {
 }
 
 /* Product images */
-
 .card img {
-  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 10px;
 }
 
@@ -338,7 +344,8 @@ body {
 
 @media (min-width: 769px) and (max-width: 1368px) and (min-height: 601px) {
   .gallery {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 280px));
+    justify-content: center;
     gap: 16px;
     padding: 16px 24px;
     width: 100%;

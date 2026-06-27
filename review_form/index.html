@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Pastry Chef: Leave a Review</title>
+
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="review-form.css" type="text/css" />
+
+    <script type="module" src="index.js" defer></script>
+  </head>
+
+  <body>
+    <div id="root">
+      <!-- Header -->
+      <header class="header"></header>
+
+      <!-- Navigation -->
+      <nav>
+        <h5 class="nav-text">
+          <a href="../galery/index-galery.html"> Cake Gallery & Prices </a>
+        </h5>
+      </nav>
+
+      <!-- Main content -->
+      <main class="main">
+        <section class="review-intro">
+          <h1 id="customer-greeting">Hello!</h1>
+          <p>Thank you for choosing LayerCake.</p>
+          <p>We would really appreciate your feedback.</p>
+        </section>
+
+        <div class="review-layout">
+          <section class="order-card">
+            <img id="order-cake-image" src="" alt="Ordered cake photo" />
+            <div>
+              <p>Your cake</p>
+              <h2 id="order-cake-name">Cake name will appear here</h2>
+              <p id="order-date">Order information will appear here.</p>
+            </div>
+          </section>
+
+          <form class="review-form">
+          <div class="rating-block">
+            <p>How would you rate your cake?</p>
+            <div class="star-rating" aria-label="Rating">
+              <button type="button" class="star-btn" data-rating="1">★</button>
+              <button type="button" class="star-btn" data-rating="2">★</button>
+              <button type="button" class="star-btn" data-rating="3">★</button>
+              <button type="button" class="star-btn" data-rating="4">★</button>
+              <button type="button" class="star-btn" data-rating="5">★</button>
+            </div>
+            <p class="rating-hint">Click a star to rate.</p>
+          </div>
+
+          <label for="review-text">Tell us about your experience</label>
+
+          <textarea
+            id="review-text"
+            name="text"
+            required
+            placeholder="Please tell us what you liked about your cake."
+          ></textarea>
+
+          <label for="review-photo">Photo</label>
+
+          <input
+            type="file"
+            id="review-photo"
+            name="image"
+            accept="image/*"
+          />
+
+          <p class="photo-hint">
+            Photo is optional. If you do not upload one, we will use the cake
+            photo from your order. If you picked the wrong photo, click the
+            file button again to choose another one.
+          </p>
+
+          <button type="submit" class="send-review-btn">Send Review</button>
+
+          <p class="review-message"></p>
+          </form>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer-container">
+        <div id="foto-name"></div>
+
+        <div class="contact">
+          <p>Pick up your order at:</p>
+          <p>38-39 Bell Blvd,</p>
+          <p>Bayside, NY 11361</p>
+        </div>
+
+        <div class="contact">
+          <p>info@gmail.com</p>
+          <p>Tel. +0 000 00 00 000</p>
+        </div>
+      </footer>
+    </div>
+
+    <div class="review-success-modal" id="review-success-modal" hidden>
+      <div class="review-success-dialog">
+        <h2 id="review-success-title">Thank you!</h2>
+        <p>We have received your review.</p>
+        <p>It will appear after moderation.</p>
+        <div class="review-success-actions">
+          <a class="review-success-btn" href="../galery/index-galery.html">
+            Back to Gallery
+          </a>
+          <button type="button" class="review-success-btn review-success-close">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

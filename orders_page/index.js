@@ -1,5 +1,3 @@
-import { getOrders, saveOrders } from "../storage/storage.js";
-
 const STATUS_LIST = [
   "New order",
   "In progress",
@@ -16,6 +14,29 @@ const backButton = document.querySelector(".back-btn");
 const ordersSearchInput = document.getElementById("ordersSearchInput");
 const ordersSearchBtn = document.getElementById("ordersSearchBtn");
 const filterByStatus = document.getElementById("filterByStatus");
+
+const completedStatusModal = document.getElementById("completed-status-modal");
+const completedStatusSendButton = document.getElementById("completed-status-send");
+const completedStatusBackButton = document.getElementById("completed-status-back");
+
+let allOrders = [];
+let pendingCompletedStatusChange = null;
+let isCompletedStatusSending = false;
+
+const SEND_EMAIL_BUTTON_TEXT = "Send email";
+const SENDING_EMAIL_BUTTON_TEXT = "Sending...";
+
+function resetCompletedStatusSendButton() {
+  isCompletedStatusSending = false;
+  completedStatusSendButton.disabled = false;
+  completedStatusSendButton.textContent = SEND_EMAIL_BUTTON_TEXT;
+}
+
+function setCompletedStatusSending() {
+  isCompletedStatusSending = true;
+  completedStatusSendButton.disabled = true;
+  completedStatusSendButton.textContent = SENDING_EMAIL_BUTTON_TEXT;
+}
 
 // Format date and time
 function formatDateTime(dateString) {
@@ -42,20 +63,26 @@ function formatDate(dateString) {
 }
 
 // Update order status
-async function updateOrderStatus(orderId, newStatus) {
+async function updateOrderStatus(orderId, newStatus, extraPayload = {}) {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/orders/${orderId}`,
+      `http://localhost:3000/api/orders/${orderId}/status`,
       {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
+        body: JSON.stringify({
+          status: newStatus,
+          ...extraPayload,
+        }),
       },
     );
 
     if (!response.ok) throw new Error("Ошибка при обновлении статуса");
 
-    await response.json();
+    const responseData = await response.json();
+    const updatedOrder = responseData.order ?? responseData;
+    const reviewEmail = responseData.reviewEmail;
+    const emailWasRequested = extraPayload.sendReviewEmail === true;
 
     // Плавная подсветка карточки, чтобы показать, что статус изменился
     const card = document.querySelector(`[data-id="${orderId}"]`);
@@ -64,13 +91,60 @@ async function updateOrderStatus(orderId, newStatus) {
       card.style.backgroundColor = "#d4ffd4";
       setTimeout(() => (card.style.backgroundColor = ""), 1000);
     }
+
+    if (reviewEmail?.failed === true) {
+      alert(
+        reviewEmail.message ||
+          "Order was completed, but the review email was not sent. Please check email settings and try again.",
+      );
+    } else if (
+      emailWasRequested &&
+      reviewEmail?.requested === true &&
+      reviewEmail?.skipped === true
+    ) {
+      alert(reviewEmail.message);
+    }
+
+    return { order: updatedOrder, reviewEmail };
   } catch (error) {
     console.error("❌ Ошибка при изменении статуса:", error);
     alert("Не удалось обновить статус. Проверь соединение с сервером.");
+    return null;
   }
 }
 
-function createStatusSelect(order, orders) {
+function showCompletedConfirmationModal({
+  orderId,
+  previousStatus,
+  statusSelect,
+}) {
+  pendingCompletedStatusChange = {
+    orderId,
+    previousStatus,
+    statusSelect,
+  };
+  resetCompletedStatusSendButton();
+  completedStatusModal.hidden = false;
+}
+
+function hideCompletedConfirmationModal() {
+  completedStatusModal.hidden = true;
+  pendingCompletedStatusChange = null;
+  resetCompletedStatusSendButton();
+}
+
+function revertPendingStatusSelect() {
+  if (!pendingCompletedStatusChange) {
+    return;
+  }
+
+  const { previousStatus, statusSelect } = pendingCompletedStatusChange;
+
+  statusSelect.value = previousStatus;
+  applyStatusStyle(statusSelect, previousStatus);
+}
+
+function createStatusSelect(order) {
   const statusSelect = document.createElement("select");
 
   statusSelect.className = "statusSelect";
@@ -92,18 +166,34 @@ function createStatusSelect(order, orders) {
   applyStatusStyle(statusSelect, order.status);
 
   // Handle status change
-  statusSelect.addEventListener("change", () => {
+  statusSelect.addEventListener("change", async () => {
+    const orderId = order._id;
     const newStatus = statusSelect.value;
+    const previousStatus = order.status;
+
+    if (newStatus === "Completed") {
+      applyStatusStyle(statusSelect, newStatus);
+      showCompletedConfirmationModal({
+        orderId,
+        previousStatus,
+        statusSelect,
+      });
+      return;
+    }
 
     applyStatusStyle(statusSelect, newStatus);
 
-    // Update localStorage
-    const updatedOrders = orders.map((o) =>
-      o.id === order.id ? { ...o, status: newStatus } : o,
-    );
+    const result = await updateOrderStatus(orderId, newStatus);
 
-    saveOrders(updatedOrders);
-    applyFilters();
+    if (result) {
+      allOrders = allOrders.map((o) =>
+        o._id === orderId ? { ...o, ...result.order } : o,
+      );
+      applyFilters();
+    } else {
+      statusSelect.value = order.status;
+      applyStatusStyle(statusSelect, order.status);
+    }
   });
 
   return statusSelect;
@@ -154,7 +244,7 @@ function createOrderCard(order, orders) {
   const sentAtP = document.createElement("p");
   sentAtP.textContent = `Sent At: ${formatDateTime(order.sentAt)}`;
 
-  const statusSelect = createStatusSelect(order, orders);
+  const statusSelect = createStatusSelect(order);
 
   orderCardContent.append(
     idP,
@@ -217,43 +307,60 @@ function hasActiveFilters() {
 }
 
 // Load and display orders
-function loadOrders() {
-  const allOrders = getOrders();
-  const filteredOrders = filterOrders(allOrders);
+async function loadOrders() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-  ordersContainer.innerHTML = "";
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-  if (allOrders.length === 0) {
-    const noOrdersMsg = document.createElement("p");
+    allOrders = await response.json();
+    const filteredOrders = filterOrders(allOrders);
 
-    noOrdersMsg.textContent = "NO ORDERS YET";
+    ordersContainer.innerHTML = "";
 
-    noOrdersMsg.className = "no-orders-message";
+    if (allOrders.length === 0) {
+      const noOrdersMsg = document.createElement("p");
 
-    ordersContainer.appendChild(noOrdersMsg);
+      noOrdersMsg.textContent = "NO ORDERS YET";
 
-    return;
+      noOrdersMsg.className = "no-orders-message";
+
+      ordersContainer.appendChild(noOrdersMsg);
+
+      return;
+    }
+
+    if (filteredOrders.length === 0) {
+      const noResultsMsg = document.createElement("p");
+
+      noResultsMsg.textContent = hasActiveFilters()
+        ? "NO ORDERS MATCH YOUR FILTERS"
+        : "NO ORDERS YET";
+
+      noResultsMsg.className = "no-orders-message";
+
+      ordersContainer.appendChild(noResultsMsg);
+
+      return;
+    }
+
+    filteredOrders.forEach((order) => {
+      const orderCard = createOrderCard(order, allOrders);
+
+      ordersContainer.appendChild(orderCard);
+    });
+  } catch (error) {
+    console.error("Failed to load orders:", error);
+    ordersContainer.innerHTML = "";
+
+    const errorMsg = document.createElement("p");
+    errorMsg.textContent = "FAILED TO LOAD ORDERS";
+    errorMsg.className = "no-orders-message";
+
+    ordersContainer.appendChild(errorMsg);
   }
-
-  if (filteredOrders.length === 0) {
-    const noResultsMsg = document.createElement("p");
-
-    noResultsMsg.textContent = hasActiveFilters()
-      ? "NO ORDERS MATCH YOUR FILTERS"
-      : "NO ORDERS YET";
-
-    noResultsMsg.className = "no-orders-message";
-
-    ordersContainer.appendChild(noResultsMsg);
-
-    return;
-  }
-
-  filteredOrders.forEach((order) => {
-    const orderCard = createOrderCard(order, allOrders);
-
-    ordersContainer.appendChild(orderCard);
-  });
 }
 
 function applyFilters() {
@@ -272,6 +379,39 @@ ordersSearchInput.addEventListener("keydown", (event) => {
 });
 
 filterByStatus.addEventListener("change", applyFilters);
+
+completedStatusSendButton.addEventListener("click", async () => {
+  if (!pendingCompletedStatusChange || isCompletedStatusSending) {
+    return;
+  }
+
+  const { orderId, previousStatus, statusSelect } =
+    pendingCompletedStatusChange;
+
+  setCompletedStatusSending();
+
+  const result = await updateOrderStatus(orderId, "Completed", {
+    sendReviewEmail: true,
+  });
+
+  if (result) {
+    allOrders = allOrders.map((o) =>
+      o._id === orderId ? { ...o, ...result.order } : o,
+    );
+    applyFilters();
+    hideCompletedConfirmationModal();
+  } else {
+    resetCompletedStatusSendButton();
+    statusSelect.value = previousStatus;
+    applyStatusStyle(statusSelect, previousStatus);
+    hideCompletedConfirmationModal();
+  }
+});
+
+completedStatusBackButton.addEventListener("click", () => {
+  revertPendingStatusSelect();
+  hideCompletedConfirmationModal();
+});
 
 /* =========================
    BACK TO ADMIN PAGE

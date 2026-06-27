@@ -337,3 +337,105 @@ main {
   font-size: 20px;
   font-weight: bold;
 }
+
+/* =========================
+   COMPLETED STATUS MODAL
+========================= */
+
+.status-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1000;
+}
+
+.status-modal-overlay[hidden] {
+  display: none;
+}
+
+.status-modal-box {
+  width: 100%;
+  max-width: 480px;
+  padding: 28px 24px;
+  border-radius: 12px;
+  background: #fff3f3;
+  color: #2b0000;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.status-modal-title {
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.status-modal-text {
+  margin-bottom: 24px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.status-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.status-modal-btn {
+  flex: 1 1 180px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.status-modal-btn-primary {
+  background: #008000;
+  color: #fff;
+}
+
+.status-modal-btn-primary:hover {
+  background: #006600;
+}
+
+.status-modal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status-modal-btn-primary:disabled:hover {
+  background: #008000;
+}
+
+.status-modal-btn-secondary {
+  background: rgb(247, 228, 228);
+  color: #2b0000;
+}
+
+.status-modal-btn-secondary:hover {
+  background: rgb(235, 210, 210);
+}
+
+@media (max-width: 600px) {
+  .status-modal-box {
+    padding: 20px 16px;
+  }
+
+  .status-modal-title {
+    font-size: 20px;
+  }
+
+  .status-modal-actions {
+    flex-direction: column;
+  }
+
+  .status-modal-btn {
+    width: 100%;
+  }
+}

@@ -5,14 +5,6 @@
 const totalVisitors = Number(localStorage.getItem("visitors")) || 0;
 
 /* =========================
-   GET ORDERS FROM STORAGE
-========================= */
-
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
-
-const totalOrders = orders.length;
-
-/* =========================
    GET ANALYTICS ELEMENTS
 ========================= */
 
@@ -22,45 +14,54 @@ const salesFunnelOrdersElement = document.getElementById("sales-funnel-orders");
 
 const websiteVisitorsElement = document.getElementById("website-visitors");
 
-/* =========================
-   TODAY PROFIT
-========================= */
+async function loadAnalytics() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-const today = new Date()
-  .toISOString()
-  .split("T")[0];
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-const todayOrders = orders.filter(
-  (order) =>
-    order.sentAt &&
-    order.sentAt.startsWith(today)
-);
+    const orders = await response.json();
 
-const totalProfit =
-  todayOrders.reduce(
-    (total, order) =>
-      total + Number(order.price || 0),
-    0
-  );
+    const totalOrders = orders.length;
 
-localStorage.setItem(
-  "totalProfit",
-  totalProfit
-);
+    const today = new Date()
+      .toISOString()
+      .split("T")[0];
 
-/* =========================
-   CONVERSION CALCULATION
-========================= */
+    const todayOrders = orders.filter(
+      (order) =>
+        order.sentAt &&
+        order.sentAt.startsWith(today)
+    );
 
-const conversionRate =
-  totalVisitors > 0 ? (totalOrders / totalVisitors) * 100 : 0;
+    const totalProfit =
+      todayOrders.reduce(
+        (total, order) =>
+          total + Number(order.price || 0),
+        0
+      );
 
-conversionRateElement.textContent = `${conversionRate.toFixed(1)}%`;
+    localStorage.setItem(
+      "totalProfit",
+      totalProfit
+    );
 
-/* =========================
-   DISPLAY ANALYTICS DATA
-========================= */
+    const conversionRate =
+      totalVisitors > 0 ? (totalOrders / totalVisitors) * 100 : 0;
 
-salesFunnelOrdersElement.textContent = totalOrders;
+    conversionRateElement.textContent = `${conversionRate.toFixed(1)}%`;
 
-websiteVisitorsElement.textContent = totalVisitors;
+    salesFunnelOrdersElement.textContent = totalOrders;
+
+    websiteVisitorsElement.textContent = totalVisitors;
+  } catch (error) {
+    console.error("Failed to load analytics orders:", error);
+    conversionRateElement.textContent = "0.0%";
+    salesFunnelOrdersElement.textContent = "0";
+    websiteVisitorsElement.textContent = totalVisitors;
+  }
+}
+
+loadAnalytics();

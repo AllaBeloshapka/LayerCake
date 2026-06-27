@@ -1,11 +1,3 @@
-import {
-  getOrders,
-  getReviews,
-  getProducts,
-  saveReviews,
-  saveProducts,
-} from "../storage/storage.js";
-
 // Order elements
 const orderElement = document.querySelector(".order");
 
@@ -17,14 +9,25 @@ const orderButton = document.querySelector(".btn-order");
    UPDATE NEW ORDERS COUNT
 ========================= */
 
-function updateNewOrdersCount() {
-  const orders = getOrders();
+async function updateNewOrdersCount() {
+  try {
+    const response = await fetch("http://localhost:3000/api/orders");
 
-  const newOrders = orders.filter(
-    (orderItem) => orderItem.status === "New order",
-  );
+    if (!response.ok) {
+      throw new Error("Failed to fetch orders");
+    }
 
-  newOrdersElement.textContent = newOrders.length;
+    const orders = await response.json();
+
+    const newOrders = orders.filter(
+      (orderItem) => orderItem.status === "New order",
+    );
+
+    newOrdersElement.textContent = newOrders.length;
+  } catch (error) {
+    console.error("Failed to load new orders count:", error);
+    newOrdersElement.textContent = "0";
+  }
 }
 
 /* =========================
@@ -53,37 +56,129 @@ const approveButton = document.querySelector("#btn-approve");
 
 const rejectButton = document.querySelector("#btn_reject");
 
-/* =========================
-   LOAD REVIEWS
-========================= */
+const replacePhotoButton = document.createElement("button");
 
-const reviews = getReviews();
+replacePhotoButton.type = "button";
+replacePhotoButton.className = "btn replace-photo-btn";
+replacePhotoButton.textContent = "Replace with Gallery Photo";
+replacePhotoButton.style.display = "none";
+
+rejectButton.insertAdjacentElement("afterend", replacePhotoButton);
+
+let pendingReviews = [];
+
+async function loadPendingReviews() {
+  try {
+    const response = await fetch("http://localhost:3000/api/reviews/pending");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch pending reviews");
+    }
+
+    pendingReviews = await response.json();
+  } catch (error) {
+    console.error("Failed to load pending reviews:", error);
+    pendingReviews = [];
+  }
+
+  renderPendingReview();
+}
 
 /* =========================
    APPROVE REVIEW
 ========================= */
 
-approveButton.addEventListener("click", () => {
-  const reviews = getReviews();
+approveButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
 
-  const pendingReview = reviews.find((review) => review.status === "pending");
+  if (!pendingReview) {
+    return;
+  }
 
-  if (!pendingReview) return;
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "approved" }),
+      },
+    );
 
-  pendingReview.status = "approved";
+    if (!response.ok) {
+      throw new Error("Failed to approve review");
+    }
 
-  saveReviews(reviews);
+    await loadPendingReviews();
+  } catch (error) {
+    console.error("Failed to approve review:", error);
+  }
+});
 
-  renderPendingReview();
+/* =========================
+   REJECT REVIEW
+========================= */
+
+rejectButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
+
+  if (!pendingReview) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "rejected" }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to reject review");
+    }
+
+    await loadPendingReviews();
+  } catch (error) {
+    console.error("Failed to reject review:", error);
+  }
+});
+
+replacePhotoButton.addEventListener("click", async () => {
+  const pendingReview = pendingReviews[0];
+
+  if (!pendingReview || !pendingReview.image) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/reviews/${pendingReview._id}/remove-photo`,
+      {
+        method: "PATCH",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to remove review photo");
+    }
+
+    const updatedReview = await response.json();
+
+    pendingReviews[0] = updatedReview;
+    renderPendingReview();
+  } catch (error) {
+    console.error("Failed to replace review photo:", error);
+  }
 });
 /* =========================
    RENDER REVIEW
 ========================= */
 
 function renderPendingReview() {
-  const reviews = getReviews();
-
-  const pendingReview = reviews.find((review) => review.status === "pending");
+  const pendingReview = pendingReviews[0];
 
   if (!pendingReview) {
     reviewText.textContent = "No reviews pending moderation";
@@ -94,25 +189,48 @@ function renderPendingReview() {
 
     rejectButton.style.display = "none";
 
+    replacePhotoButton.style.display = "none";
+
     return;
   }
 
-  reviewText.textContent = pendingReview.text;
+  reviewText.textContent = "";
 
-  reviewImage.src = pendingReview.img || "./assets/cake.png";
+  const customerLine = document.createElement("div");
+  customerLine.textContent = `Customer: ${pendingReview.customerName ?? "-"}`;
+  reviewText.appendChild(customerLine);
+
+  const cakeLine = document.createElement("div");
+  cakeLine.textContent = `Cake: ${pendingReview.cakeName ?? "-"}`;
+  reviewText.appendChild(cakeLine);
+
+  const ratingLine = document.createElement("div");
+  ratingLine.textContent = `Rating: ${pendingReview.rating ?? "-"}/5`;
+  reviewText.appendChild(ratingLine);
+
+  const textLine = document.createElement("div");
+  textLine.textContent = pendingReview.text ?? "";
+  reviewText.appendChild(textLine);
+
+  reviewImage.src =
+    pendingReview.image ||
+    pendingReview.productImage ||
+    "./assets/cake.png";
 
   reviewImage.style.display = "block";
 
   approveButton.style.display = "block";
 
   rejectButton.style.display = "block";
+
+  replacePhotoButton.style.display = pendingReview.image ? "block" : "none";
 }
 
 /* =========================
    INITIAL RENDER
 ========================= */
 
-renderPendingReview();
+loadPendingReviews();
 
 /* =========================
    PRODUCT FORM
@@ -135,33 +253,13 @@ const saveMessage = document.querySelector(".save-message");
    PRODUCT FORM SUBMIT
 ========================= */
 
-productForm.addEventListener("submit", (event) => {
+productForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   productMessage.textContent = "";
 
-  const product = {
-    id: productIdInput.value,
+  const price = Number(productPriceInput.value);
 
-    name: productNameInput.value,
-
-    price: productPriceInput.value,
-
-    image: productImageInput.value,
-
-    description: "",
-
-    flavor: "",
-
-    ingredients: "",
-
-    weight: 0,
-
-    height: 0,
-
-    diameter: 0,
-  };
-
-  if (Number(product.price) < 0) {
+  if (price < 0) {
     productMessage.textContent = "Price cannot be negative";
 
     productMessage.style.color = "red";
@@ -169,30 +267,66 @@ productForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const products = getProducts();
-
-  const existingProduct = products.find(
-    (productItem) => productItem.id === product.id,
-  );
-
-  if (existingProduct) {
-    productMessage.textContent = "ID already exists";
+  if (!productImageInput.files || productImageInput.files.length === 0) {
+    productMessage.textContent = "Product image is required";
 
     productMessage.style.color = "red";
 
     return;
   }
 
-  products.push(product);
+  const formData = new FormData();
+  formData.append("productCode", Number(productIdInput.value));
+  formData.append("name", productNameInput.value);
+  formData.append("price", price);
+  formData.append("image", productImageInput.files[0]);
+  formData.append("description", "");
+  formData.append("flavor", "");
+  formData.append("ingredients", "");
+  formData.append("weight", 0);
+  formData.append("height", 0);
+  formData.append("diameter", 0);
 
-  saveProducts(products);
+  try {
+    const response = await fetch("http://localhost:3000/api/products", {
+      method: "POST",
+      body: formData,
+    });
 
-  productMessage.textContent = "Product created";
+    if (response.status === 409) {
+      productMessage.textContent = "Product code already exists";
 
-  productMessage.style.color = "green";
+      productMessage.style.color = "red";
 
-  productForm.reset();
+      return;
+    }
 
+    if (response.status === 400) {
+      productMessage.textContent = "Invalid product data";
+
+      productMessage.style.color = "red";
+
+      return;
+    }
+
+    if (!response.ok) {
+      productMessage.textContent = "Failed to create product";
+
+      productMessage.style.color = "red";
+
+      return;
+    }
+
+    productMessage.textContent = "Product created";
+
+    productMessage.style.color = "green";
+
+    productForm.reset();
+  } catch (error) {
+    productMessage.textContent = "Failed to create product";
+
+    productMessage.style.color = "red";
+  }
 });
 
 /* =========================
@@ -205,35 +339,49 @@ const deleteIdInput = document.querySelector("#delete-id");
 
 const deleteMessage = document.querySelector("#message");
 
-deleteForm.addEventListener("submit", (event) => {
+deleteForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   deleteMessage.textContent = "";
 
-  const deleteId = deleteIdInput.value;
+  const deleteId = deleteIdInput.value.trim();
 
-  const products = getProducts();
-
-  const productIndex = products.findIndex((product) => product.id === deleteId);
-
-  if (productIndex === -1) {
-    deleteMessage.textContent = "Product not found";
+  if (!deleteId) {
+    deleteMessage.textContent = "Product code is required";
 
     deleteMessage.style.color = "red";
 
     return;
   }
 
-  products.splice(productIndex, 1);
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${deleteId}`,
+      {
+        method: "DELETE",
+      },
+    );
 
-  saveProducts(products);
+    if (response.ok) {
+      deleteMessage.textContent = "Product deleted";
 
-  deleteMessage.textContent = "Product deleted";
+      deleteMessage.style.color = "green";
 
-  deleteMessage.style.color = "green";
+      deleteForm.reset();
 
-  deleteForm.reset();
+      return;
+    }
 
+    const error = await response.json();
+
+    deleteMessage.textContent = error.message || "Failed to delete product";
+
+    deleteMessage.style.color = "red";
+  } catch (error) {
+    deleteMessage.textContent = "Failed to delete product";
+
+    deleteMessage.style.color = "red";
+  }
 });
 
 /* =========================
@@ -263,17 +411,13 @@ const editForm = document.querySelector(".modal-editor-form");
    FIND PRODUCT
 ========================= */
 
-findProductButton.addEventListener("click", () => {
+findProductButton.addEventListener("click", async () => {
   saveMessage.textContent = "";
 
   const productId = idInput.value.trim();
 
-  const products = getProducts();
-
-  const product = products.find((item) => String(item.id) === productId);
-
-  if (!product) {
-    modalCardMessage.textContent = "Product with this ID was not found.";
+  if (!productId) {
+    modalCardMessage.textContent = "Product code is required";
 
     descriptionInput.value = "";
     flavorInput.value = "";
@@ -285,59 +429,112 @@ findProductButton.addEventListener("click", () => {
     return;
   }
 
-  productMessage.textContent = "";
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+    );
 
-  descriptionInput.value = product.description || "";
+    if (!response.ok) {
+      modalCardMessage.textContent = "Product with this ID was not found.";
 
-  flavorInput.value = product.flavor || "";
+      descriptionInput.value = "";
+      flavorInput.value = "";
+      ingredientsInput.value = "";
+      weightInput.value = "";
+      heightInput.value = "";
+      diameterInput.value = "";
 
-  ingredientsInput.value = product.ingredients || "";
+      return;
+    }
 
-  weightInput.value = product.weight || "";
+    const product = await response.json();
 
-  heightInput.value = product.height || "";
+    productMessage.textContent = "";
+    modalCardMessage.textContent = "";
 
-  diameterInput.value = product.diameter || "";
+    descriptionInput.value = product.description || "";
+    flavorInput.value = product.flavor || "";
+    ingredientsInput.value = product.ingredients || "";
+    weightInput.value = product.weight || "";
+    heightInput.value = product.height || "";
+    diameterInput.value = product.diameter || "";
+  } catch (error) {
+    modalCardMessage.textContent = "Product with this ID was not found.";
+
+    descriptionInput.value = "";
+    flavorInput.value = "";
+    ingredientsInput.value = "";
+    weightInput.value = "";
+    heightInput.value = "";
+    diameterInput.value = "";
+  }
 });
 
 /* =========================
    SAVE PRODUCT CHANGES
 ========================= */
 
-editForm.addEventListener("submit", (event) => {
+editForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const productId = idInput.value.trim();
 
-  const products = getProducts();
+  if (!productId) {
+    productMessage.textContent = "Product code is required.";
 
-  const product = products.find((item) => String(item.id) === productId);
-
-  if (!product) {
-    productMessage.textContent = "Product with this ID was not found.";
+    productMessage.style.color = "red";
 
     return;
   }
-  productMessage.textContent = "";
-
-  product.description = descriptionInput.value;
-
-  product.flavor = flavorInput.value;
-
-  product.ingredients = ingredientsInput.value;
-
-  product.weight = Number(weightInput.value);
-
-  product.height = Number(heightInput.value);
-
-  product.diameter = Number(diameterInput.value);
 
   try {
-    saveProducts(products);
+    const getResponse = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+    );
 
-    saveMessage.textContent = "Product updated successfully.";
+    if (!getResponse.ok) {
+      productMessage.textContent = "Product with this ID was not found.";
 
-    saveMessage.style.color = "green";
+      return;
+    }
+
+    const currentProduct = await getResponse.json();
+
+    productMessage.textContent = "";
+
+    const updateData = {
+      name: currentProduct.name,
+      price: currentProduct.price,
+      description: descriptionInput.value,
+      flavor: flavorInput.value,
+      ingredients: ingredientsInput.value,
+      weight: Number(weightInput.value),
+      height: Number(heightInput.value),
+      diameter: Number(diameterInput.value),
+    };
+
+    const response = await fetch(
+      `http://localhost:3000/api/products/${productId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      },
+    );
+
+    if (response.ok) {
+      saveMessage.textContent = "Product updated successfully.";
+
+      saveMessage.style.color = "green";
+
+      return;
+    }
+
+    const error = await response.json();
+
+    saveMessage.textContent = error.message || "Product update failed.";
+
+    saveMessage.style.color = "red";
   } catch (error) {
     saveMessage.textContent = "Product update failed.";
 

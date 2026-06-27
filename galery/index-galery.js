@@ -1,8 +1,4 @@
 import {
-  getProducts,
-  saveProducts,
-  getOrders,
-  saveOrders,
   getVisitors,
   saveVisitors,
 } from "../storage/storage.js";
@@ -46,10 +42,10 @@ function displayProducts(productsToShow) {
   productsToShow.forEach((product) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.dataset.id = product.id;
+    card.dataset.productCode = product.productCode;
 
     const idElement = document.createElement("p");
-    idElement.textContent = `#${product.id}`;
+    idElement.textContent = `#${product.productCode}`;
     idElement.className = "id";
 
     const image = document.createElement("img");
@@ -83,7 +79,7 @@ function displayProducts(productsToShow) {
 
       // Save product data for order form
 
-      modalButton.dataset.id = product.id;
+      modalButton.dataset.productCode = product.productCode;
       modalButton.dataset.name = product.name;
     });
 
@@ -92,34 +88,29 @@ function displayProducts(productsToShow) {
 }
 
 /* =========================
-   MERGE DEFAULT PRODUCTS
-   WITH LOCAL STORAGE DATA
+   LOAD PRODUCTS FROM API
 ========================= */
 
-const localStorageProducts = getProducts();
+let allProducts = [];
 
-const mergedProducts = [...products];
+async function loadGalleryProducts() {
+  try {
+    const response = await fetch("http://localhost:3000/api/products");
 
-localStorageProducts.forEach((localProduct) => {
-  const existingIndex = mergedProducts.findIndex(
-    (product) =>
-      String(product.id) === String(localProduct.id),
-  );
+    if (!response.ok) {
+      throw new Error("Failed to fetch products");
+    }
 
-  if (existingIndex !== -1) {
-    mergedProducts[existingIndex] = localProduct;
-
-  } else {
-    mergedProducts.push(localProduct);
+    allProducts = await response.json();
+    displayProducts(allProducts);
+  } catch (error) {
+    console.error("Failed to load gallery products:", error);
+    allProducts = [];
+    displayProducts(allProducts);
   }
-});
+}
 
-saveProducts(mergedProducts);
-
-const allProducts = mergedProducts;
-
-// Initial gallery render
-displayProducts(allProducts);
+loadGalleryProducts();
 
 // Close product modal
 
@@ -142,16 +133,14 @@ closeOrderButton.addEventListener("click", () => {
 
 // Handle order form submission
 
-orderForm.addEventListener("submit", (event) => {
+orderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-
-  orderFormBox.style.display = "none";
 
   const name = orderForm["customer-name"].value.trim();
   const phone = orderForm["customer-phone"].value.trim();
   const email = orderForm["customer-email"].value.trim();
 
-  const productId = Number(modalButton.dataset.id);
+  const productCode = Number(modalButton.dataset.productCode);
   const productName = modalButton.dataset.name;
 
   if (!name || !phone || !email) {
@@ -159,40 +148,43 @@ orderForm.addEventListener("submit", (event) => {
     return;
   }
 
-// Find selected product
+  const product = allProducts.find(
+    (item) => item.productCode === productCode,
+  );
 
-const product = products.find(
-  (product) => product.id === productId,
-);
+  if (!product) {
+    alert("Product not found. Please reload the page and try again.");
+    return;
+  }
 
-const order = {
-  id: Date.now(),
-  productId: productId,
-  cakeName: productName,
-  customerName: name,
-  price: product.price,
-  phone,
-  email,
+  const order = {
+    productCode,
+    cakeName: productName,
+    customerName: name,
+    price: product.price,
+    phone,
+    email,
+    birthDate: orderForm["birth-date"].value,
+    orderDateTime: orderForm["order-datetime"].value,
+  };
 
-  birthDate: orderForm["birth-date"].value,
+  try {
+    const response = await fetch("http://localhost:3000/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(order),
+    });
 
-  orderDateTime: orderForm["order-datetime"].value,
+    if (!response.ok) {
+      const error = await response.json();
+      alert(error.message || "Failed to send order");
+      return;
+    }
 
-  status: "New order",
-
-  sentAt: new Date().toISOString(),
-};
-
-// Save order
-
-const orders = getOrders();
-
-orders.push(order);
-
-saveOrders(orders);
-
-// Reset and close form
-
-orderFormBox.style.display = "none";
-orderForm.reset();
+    orderFormBox.style.display = "none";
+    orderForm.reset();
+    alert("Order sent successfully!");
+  } catch {
+    alert("Failed to send order");
+  }
 });
