@@ -73,27 +73,59 @@ router.patch("/:id/status", async (req, res) => {
 
     order.status = status;
 
-    if (
+    const shouldSendReviewEmail =
       status === "Completed" &&
       sendReviewEmail === true &&
       order.email &&
-      order.reviewEmailSent !== true
-    ) {
-      const frontendBaseUrl =
-        process.env.FRONTEND_BASE_URL || "http://localhost:5500";
-      const reviewLink = `${frontendBaseUrl}/review_form/index.html?orderId=${order._id}`;
+      order.reviewEmailSent !== true &&
+      order.reviewEmailSending !== true;
 
-      try {
-        await sendReviewRequestEmail(order, reviewLink);
-        order.reviewEmailSent = true;
-      } catch (error) {
-        console.error("Failed to send review request email:", error);
-      }
+    if (!shouldSendReviewEmail) {
+      await order.save();
+      res.json(order);
+      return;
     }
 
-    await order.save();
+    const lockedOrder = await Order.findOneAndUpdate(
+      {
+        _id: order._id,
+        reviewEmailSent: { $ne: true },
+        reviewEmailSending: { $ne: true },
+      },
+      {
+        status,
+        reviewEmailSending: true,
+        reviewEmailFailedAt: null,
+      },
+      { new: true, runValidators: true },
+    );
 
-    res.json(order);
+    if (!lockedOrder) {
+      const latestOrder = await Order.findById(order._id);
+      res.json(latestOrder);
+      return;
+    }
+
+    const frontendBaseUrl =
+      process.env.FRONTEND_BASE_URL || "http://localhost:5500";
+    const reviewLink = `${frontendBaseUrl}/review_form/index.html?orderId=${lockedOrder._id}`;
+
+    try {
+      await sendReviewRequestEmail(lockedOrder, reviewLink);
+      lockedOrder.reviewEmailSent = true;
+      lockedOrder.reviewEmailSending = false;
+      lockedOrder.reviewEmailSentAt = new Date();
+      lockedOrder.reviewEmailFailedAt = null;
+      await lockedOrder.save();
+    } catch (error) {
+      console.error("Failed to send review request email:", error);
+      lockedOrder.reviewEmailSent = false;
+      lockedOrder.reviewEmailSending = false;
+      lockedOrder.reviewEmailFailedAt = new Date();
+      await lockedOrder.save();
+    }
+
+    res.json(lockedOrder);
   } catch (error) {
     res.status(500).json({ message: "Failed to update order status" });
   }
