@@ -1,6 +1,10 @@
 const express = require("express");
 const AdminUser = require("../models/AdminUser");
-const { createPasswordHash } = require("../services/adminAuthService");
+const {
+  createPasswordHash,
+  verifyPasswordHash,
+  createAdminSessionToken,
+} = require("../services/adminAuthService");
 
 const router = express.Router();
 
@@ -70,6 +74,52 @@ router.post("/setup", async (req, res) => {
     }
 
     res.status(500).json({ message: "Failed to create admin account" });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { usernameOrEmail: rawUsernameOrEmail, password } = req.body;
+
+    if (
+      typeof rawUsernameOrEmail !== "string" ||
+      typeof password !== "string"
+    ) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const usernameOrEmail = rawUsernameOrEmail.trim();
+
+    if (!usernameOrEmail || !password) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const admin = await AdminUser.findOne({
+      $or: [
+        { username: usernameOrEmail },
+        { email: usernameOrEmail.toLowerCase() },
+      ],
+    });
+
+    if (!admin || !verifyPasswordHash(password, admin.passwordHash)) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const token = createAdminSessionToken();
+
+    if (!token) {
+      res.status(500).json({
+        message: "Server authentication is not configured",
+      });
+      return;
+    }
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to log in" });
   }
 });
 
