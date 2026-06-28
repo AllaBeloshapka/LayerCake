@@ -1,6 +1,7 @@
 const express = require("express");
 const Product = require("../models/Product");
 const upload = require("../middleware/upload");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const { convertToWebP } = require("../services/imageService");
 const { uploadProductImage } = require("../services/s3Service");
 
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", requireAdminAuth, upload.single("image"), async (req, res) => {
   try {
     const productData = {
       productCode: Number(req.body.productCode),
