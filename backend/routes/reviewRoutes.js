@@ -100,7 +100,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", requireAdminAuth, async (req, res) => {
   try {
     const { status } = req.body;
 
