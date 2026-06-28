@@ -14,7 +14,7 @@ router.get("/", requireAdminAuth, async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", requireAdminAuth, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 
