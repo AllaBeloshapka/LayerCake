@@ -19,26 +19,25 @@ function isValidPasswordHashFormat(storedHash) {
   );
 }
 
-function getAuthConfig() {
-  const username = process.env.ADMIN_USERNAME;
-  const passwordHash = process.env.ADMIN_PASSWORD_HASH;
+function getSessionSecret() {
   const sessionSecret = process.env.ADMIN_SESSION_SECRET;
 
-  if (
-    !username ||
-    !passwordHash ||
-    !sessionSecret ||
-    sessionSecret.length < 32 ||
-    !isValidPasswordHashFormat(passwordHash)
-  ) {
+  if (!sessionSecret || sessionSecret.length < 32) {
     return null;
   }
 
-  return { username, passwordHash, sessionSecret };
+  return sessionSecret;
 }
 
 function isAdminAuthConfigured() {
-  return getAuthConfig() !== null;
+  return getSessionSecret() !== null;
+}
+
+function createPasswordHash(password) {
+  const salt = crypto.randomBytes(16);
+  const hash = crypto.scryptSync(password, salt, 64);
+
+  return `${salt.toString("hex")}:${hash.toString("hex")}`;
 }
 
 function verifyPasswordHash(password, storedHash) {
@@ -58,24 +57,10 @@ function verifyPasswordHash(password, storedHash) {
   return crypto.timingSafeEqual(expectedHash, derivedHash);
 }
 
-function verifyAdminCredentials(username, password) {
-  const config = getAuthConfig();
-
-  if (!config || !username || !password) {
-    return false;
-  }
-
-  if (username !== config.username) {
-    return false;
-  }
-
-  return verifyPasswordHash(password, config.passwordHash);
-}
-
 function createAdminSessionToken() {
-  const config = getAuthConfig();
+  const sessionSecret = getSessionSecret();
 
-  if (!config) {
+  if (!sessionSecret) {
     return null;
   }
 
@@ -88,7 +73,7 @@ function createAdminSessionToken() {
     "base64url",
   );
   const signature = crypto
-    .createHmac("sha256", config.sessionSecret)
+    .createHmac("sha256", sessionSecret)
     .update(payloadEncoded)
     .digest("base64url");
 
@@ -96,9 +81,9 @@ function createAdminSessionToken() {
 }
 
 function verifyAdminSessionToken(token) {
-  const config = getAuthConfig();
+  const sessionSecret = getSessionSecret();
 
-  if (!config || !token) {
+  if (!sessionSecret || !token) {
     return false;
   }
 
@@ -110,7 +95,7 @@ function verifyAdminSessionToken(token) {
 
   const [payloadEncoded, signatureProvided] = parts;
   const expectedSignature = crypto
-    .createHmac("sha256", config.sessionSecret)
+    .createHmac("sha256", sessionSecret)
     .update(payloadEncoded)
     .digest("base64url");
   const signatureBuffer = Buffer.from(signatureProvided, "base64url");
@@ -147,7 +132,8 @@ function verifyAdminSessionToken(token) {
 
 module.exports = {
   isAdminAuthConfigured,
-  verifyAdminCredentials,
+  createPasswordHash,
+  verifyPasswordHash,
   createAdminSessionToken,
   verifyAdminSessionToken,
 };
