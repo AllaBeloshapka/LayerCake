@@ -151,7 +151,7 @@ router.patch("/:id/status", requireAdminAuth, async (req, res) => {
   }
 });
 
-router.patch("/:id/remove-photo", async (req, res) => {
+router.patch("/:id/remove-photo", requireAdminAuth, async (req, res) => {
   try {
     const review = await Review.findByIdAndUpdate(
       req.params.id,
