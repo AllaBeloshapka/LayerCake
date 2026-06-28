@@ -1,7 +1,10 @@
-function requireAdminAuth(req, res, next) {
-  const adminToken = process.env.ADMIN_TOKEN;
+const {
+  isAdminAuthConfigured,
+  verifyAdminSessionToken,
+} = require("../services/adminAuthService");
 
-  if (!adminToken) {
+function requireAdminAuth(req, res, next) {
+  if (!isAdminAuthConfigured()) {
     res.status(500).json({ message: "Server authentication is not configured" });
     return;
   }
@@ -15,7 +18,7 @@ function requireAdminAuth(req, res, next) {
 
   const token = authorization.slice("Bearer ".length).trim();
 
-  if (!token || token !== adminToken) {
+  if (!token || !verifyAdminSessionToken(token)) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
