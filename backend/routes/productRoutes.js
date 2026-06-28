@@ -92,7 +92,7 @@ router.delete("/:id", requireAdminAuth, async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireAdminAuth, async (req, res) => {
   try {
     const productCode = Number(req.params.id);
 
