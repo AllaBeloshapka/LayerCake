@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", requireAdminAuth, async (req, res) => {
   try {
     const { status, sendReviewEmail } = req.body;
 
