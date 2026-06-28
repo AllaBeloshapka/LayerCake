@@ -1,10 +1,11 @@
 const express = require("express");
 const Order = require("../models/Order");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const { sendReviewRequestEmail } = require("../services/emailService.js");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", requireAdminAuth, async (req, res) => {
   try {
     const orders = await Order.find().sort({ sentAt: -1 });
     res.json(orders);
