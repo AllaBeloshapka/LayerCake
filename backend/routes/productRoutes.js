@@ -76,7 +76,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAdminAuth, async (req, res) => {
   try {
     const productCode = Number(req.params.id);
     const product = await Product.findOneAndDelete({ productCode });
