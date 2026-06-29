@@ -15,3 +15,14 @@ window.adminApiFetch = async function adminApiFetch(url, options = {}) {
 
   return fetch(url, updatedOptions);
 };
+
+window.requireAdminSession = function requireAdminSession() {
+  const token = sessionStorage.getItem("adminSessionToken");
+
+  if (!token) {
+    window.location.href = "login.html";
+    return false;
+  }
+
+  return true;
+};
