@@ -40,6 +40,13 @@ orderButton.addEventListener("click", () => {
   window.location.href = "../orders_page/index.html";
 });
 
+const logoutButton = document.querySelector("#logout-button");
+
+logoutButton.addEventListener("click", () => {
+  sessionStorage.removeItem("adminSessionToken");
+  window.location.href = "login.html";
+});
+
 /* =========================
    INITIAL RENDER
 ========================= */
