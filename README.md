@@ -170,6 +170,18 @@ Admin authentication is available for local development but is not yet part of a
 
 ---
 
+## Business Value of Admin Authentication
+
+This branch adds practical protection for a small cake business running its own site. The shop owner keeps control of products, orders, and review moderation instead of leaving those actions open to anyone who finds the admin pages.
+
+LayerCake follows a **one site = one owner/admin** model. After the first admin account is created, repeat public registration is blocked, which helps prevent strangers from taking over the back office.
+
+Customer-related data—such as order details handled in the admin workflow—is less exposed because admin API actions require a valid session. Invalid or expired sessions redirect the owner back to the login page instead of continuing with stale access. Logout gives a clear way to end an admin session safely on a shared or workplace device.
+
+Together, these changes move LayerCake closer to a **reusable website template** that a business could eventually run in production. Full production hardening is still in progress; features such as email verification and password recovery are not implemented yet.
+
+---
+
 ## Running Locally
 
 ### 1. Clone the repository
