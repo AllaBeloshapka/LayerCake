@@ -96,7 +96,7 @@ approveButton.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
       {
         method: "PATCH",
