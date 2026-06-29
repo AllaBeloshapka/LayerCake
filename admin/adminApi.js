@@ -13,7 +13,14 @@ window.adminApiFetch = async function adminApiFetch(url, options = {}) {
     },
   };
 
-  return fetch(url, updatedOptions);
+  const response = await fetch(url, updatedOptions);
+
+  if (response.status === 401) {
+    sessionStorage.removeItem("adminSessionToken");
+    window.location.href = "login.html";
+  }
+
+  return response;
 };
 
 window.requireAdminSession = function requireAdminSession() {
