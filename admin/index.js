@@ -1,3 +1,5 @@
+if (window.requireAdminSession()) {
+
 // Order elements
 const orderElement = document.querySelector(".order");
 
@@ -541,3 +543,4 @@ editForm.addEventListener("submit", async (event) => {
     saveMessage.style.color = "red";
   }
 });
+}
