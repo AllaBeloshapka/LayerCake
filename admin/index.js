@@ -288,7 +288,7 @@ productForm.addEventListener("submit", async (event) => {
   formData.append("diameter", 0);
 
   try {
-    const response = await fetch("http://localhost:3000/api/products", {
+    const response = await window.adminApiFetch("http://localhost:3000/api/products", {
       method: "POST",
       body: formData,
     });
