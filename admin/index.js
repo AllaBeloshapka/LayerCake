@@ -355,7 +355,7 @@ deleteForm.addEventListener("submit", async (event) => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/products/${deleteId}`,
       {
         method: "DELETE",
