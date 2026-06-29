@@ -513,7 +513,7 @@ editForm.addEventListener("submit", async (event) => {
       diameter: Number(diameterInput.value),
     };
 
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/products/${productId}`,
       {
         method: "PUT",
