@@ -1,3 +1,5 @@
+if (window.requireAdminSession()) {
+
 // Order elements
 const orderElement = document.querySelector(".order");
 
@@ -11,7 +13,7 @@ const orderButton = document.querySelector(".btn-order");
 
 async function updateNewOrdersCount() {
   try {
-    const response = await fetch("http://localhost:3000/api/orders");
+    const response = await window.adminApiFetch("http://localhost:3000/api/orders");
 
     if (!response.ok) {
       throw new Error("Failed to fetch orders");
@@ -36,6 +38,13 @@ async function updateNewOrdersCount() {
 
 orderButton.addEventListener("click", () => {
   window.location.href = "../orders_page/index.html";
+});
+
+const logoutButton = document.querySelector("#logout-button");
+
+logoutButton.addEventListener("click", () => {
+  sessionStorage.removeItem("adminSessionToken");
+  window.location.href = "login.html";
 });
 
 /* =========================
@@ -69,7 +78,7 @@ let pendingReviews = [];
 
 async function loadPendingReviews() {
   try {
-    const response = await fetch("http://localhost:3000/api/reviews/pending");
+    const response = await window.adminApiFetch("http://localhost:3000/api/reviews/pending");
 
     if (!response.ok) {
       throw new Error("Failed to fetch pending reviews");
@@ -96,7 +105,7 @@ approveButton.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
       {
         method: "PATCH",
@@ -127,7 +136,7 @@ rejectButton.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/reviews/${pendingReview._id}/status`,
       {
         method: "PATCH",
@@ -154,7 +163,7 @@ replacePhotoButton.addEventListener("click", async () => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/reviews/${pendingReview._id}/remove-photo`,
       {
         method: "PATCH",
@@ -288,7 +297,7 @@ productForm.addEventListener("submit", async (event) => {
   formData.append("diameter", 0);
 
   try {
-    const response = await fetch("http://localhost:3000/api/products", {
+    const response = await window.adminApiFetch("http://localhost:3000/api/products", {
       method: "POST",
       body: formData,
     });
@@ -355,7 +364,7 @@ deleteForm.addEventListener("submit", async (event) => {
   }
 
   try {
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/products/${deleteId}`,
       {
         method: "DELETE",
@@ -513,7 +522,7 @@ editForm.addEventListener("submit", async (event) => {
       diameter: Number(diameterInput.value),
     };
 
-    const response = await fetch(
+    const response = await window.adminApiFetch(
       `http://localhost:3000/api/products/${productId}`,
       {
         method: "PUT",
@@ -541,3 +550,4 @@ editForm.addEventListener("submit", async (event) => {
     saveMessage.style.color = "red";
   }
 });
+}

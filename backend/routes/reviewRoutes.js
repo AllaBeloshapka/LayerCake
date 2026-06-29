@@ -3,6 +3,7 @@ const Review = require("../models/Review");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const upload = require("../middleware/upload");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const { convertToWebP } = require("../services/imageService");
 const { uploadProductImage } = require("../services/s3Service");
 
@@ -19,7 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/pending", async (req, res) => {
+router.get("/pending", requireAdminAuth, async (req, res) => {
   try {
     const reviews = await Review.find({ status: "pending" }).sort({
       submittedAt: 1,
@@ -99,7 +100,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", requireAdminAuth, async (req, res) => {
   try {
     const { status } = req.body;
 
@@ -150,7 +151,7 @@ router.patch("/:id/status", async (req, res) => {
   }
 });
 
-router.patch("/:id/remove-photo", async (req, res) => {
+router.patch("/:id/remove-photo", requireAdminAuth, async (req, res) => {
   try {
     const review = await Review.findByIdAndUpdate(
       req.params.id,

@@ -84,20 +84,101 @@ Base URL (local): `http://localhost:3000`
 | Endpoint | Description |
 |----------|-------------|
 | `GET /api/health` | Health check |
-| `GET /api/products` | List all products |
-| `POST /api/products` | Create product with required image upload or image URL |
-| `GET /api/products/:productCode` | Get product by product code |
-| `PUT /api/products/:productCode` | Update product |
-| `DELETE /api/products/:productCode` | Delete product |
-| `GET /api/orders` | List all orders |
-| `GET /api/orders/:id` | Get order by ID |
-| `POST /api/orders` | Create order |
-| `PATCH /api/orders/:id/status` | Update order status (optional review email on completion) |
-| `GET /api/reviews` | List approved reviews |
-| `GET /api/reviews/pending` | List pending reviews for moderation |
-| `POST /api/reviews` | Submit review (optional photo upload) |
-| `PATCH /api/reviews/:id/status` | Approve or reject review |
-| `PATCH /api/reviews/:id/remove-photo` | Remove review photo from moderation |
+| `POST /api/auth/setup` | Create the first admin account (one-time) |
+| `POST /api/auth/login` | Admin login; returns a session token |
+| `GET /api/products` | List all products (public) |
+| `POST /api/products` | Create product with required image upload or image URL (**admin**) |
+| `GET /api/products/:productCode` | Get product by product code (public) |
+| `PUT /api/products/:productCode` | Update product (**admin**) |
+| `DELETE /api/products/:productCode` | Delete product (**admin**) |
+| `GET /api/orders` | List all orders (**admin**) |
+| `GET /api/orders/:id` | Get order by ID (**admin**) |
+| `POST /api/orders` | Create order (public) |
+| `PATCH /api/orders/:id/status` | Update order status (**admin**; optional review email on completion) |
+| `GET /api/reviews` | List approved reviews (public) |
+| `GET /api/reviews/pending` | List pending reviews for moderation (**admin**) |
+| `POST /api/reviews` | Submit review (public; optional photo upload) |
+| `PATCH /api/reviews/:id/status` | Approve or reject review (**admin**) |
+| `PATCH /api/reviews/:id/remove-photo` | Remove review photo from moderation (**admin**) |
+
+---
+
+## Admin Authentication
+
+LayerCake uses a **one site = one owner/admin** model. Each deployment is intended to have a single admin account that manages products, orders, and review moderation.
+
+### First admin setup
+
+`POST /api/auth/setup` creates the **first and only** admin account for the site. Send JSON with `username`, `email`, and `password` (minimum 8 characters).
+
+- On success: `201` with `{ message: "Admin account created" }`
+- If an admin already exists: `409` with `{ message: "Admin account already exists" }`
+
+Passwords are stored as **hashes**, not plain text. There is no admin setup page in the frontend yet; the first account is created through this API call during local setup.
+
+### Admin login
+
+`POST /api/auth/login` accepts JSON:
+
+```json
+{
+  "usernameOrEmail": "admin",
+  "password": "your-password"
+}
+```
+
+On success, the API returns `{ token }`. Invalid credentials return `401`.
+
+The admin login page is `admin/login.html`. After a successful login, the frontend stores the token in **`sessionStorage`** under the key `adminSessionToken`.
+
+### Session protection (frontend)
+
+- The admin dashboard (`admin/index.html`) checks for a token with `requireAdminSession()` and redirects unauthenticated users to **`admin/login.html`**.
+- Admin API requests use `adminApiFetch`, which sends `Authorization: Bearer <token>`.
+- If the backend returns **`401`** (missing, invalid, or expired token), the frontend clears `adminSessionToken` and redirects to **`admin/login.html`**.
+- Logout removes the token from `sessionStorage` and returns to the login page.
+
+### Protected admin actions
+
+These require a valid admin session token:
+
+- Create, update, and delete products
+- List orders and view order details
+- Update order status
+- List pending reviews
+- Approve or reject reviews
+- Remove a photo from a pending review
+
+### Public visitor actions
+
+These do not require admin authentication:
+
+- Browse products (`GET /api/products`, `GET /api/products/:productCode`)
+- Place an order (`POST /api/orders`)
+- View published reviews (`GET /api/reviews`)
+- Submit a review (`POST /api/reviews`)
+
+### Planned future work
+
+The following are **not implemented yet**:
+
+- Admin account settings (profile changes after setup)
+- Email verification
+- Password recovery / reset flow
+
+Admin authentication is available for local development but is not yet part of a finished production deployment process.
+
+---
+
+## Business Value of Admin Authentication
+
+This branch adds practical protection for a small cake business running its own site. The shop owner keeps control of products, orders, and review moderation instead of leaving those actions open to anyone who finds the admin pages.
+
+LayerCake follows a **one site = one owner/admin** model. After the first admin account is created, repeat public registration is blocked, which helps prevent strangers from taking over the back office.
+
+Customer-related data—such as order details handled in the admin workflow—is less exposed because admin API actions require a valid session. Invalid or expired sessions redirect the owner back to the login page instead of continuing with stale access. Logout gives a clear way to end an admin session safely on a shared or workplace device.
+
+Together, these changes move LayerCake closer to a **reusable website template** that a business could eventually run in production. Full production hardening is still in progress; features such as email verification and password recovery are not implemented yet.
 
 ---
 
@@ -139,7 +220,8 @@ Open in the browser:
 
 - Main site: `http://localhost:5500/`
 - Gallery: `http://localhost:5500/galery/index-galery.html`
-- Admin: `http://localhost:5500/admin/index.html`
+- Admin login: `http://localhost:5500/admin/login.html`
+- Admin dashboard: `http://localhost:5500/admin/index.html`
 - Orders: `http://localhost:5500/orders_page/index.html`
 - Reviews: `http://localhost:5500/reviews/index_reviews.html`
 - Review form: `http://localhost:5500/review_form/index.html`
@@ -176,7 +258,7 @@ Copy `backend/.env.example` to `backend/.env` and configure:
 - Backend and database migration are in progress
 - Products, orders, reviews, and the email review flow are connected to the backend
 - Image uploads use S3-compatible storage when configured
-- Admin authentication and route protection are planned for the next branch
+- Admin authentication and protected admin API routes are implemented for local development
 - The project is functional for local development but not hardened for production yet
 
 ---
@@ -191,10 +273,9 @@ Copy `backend/.env.example` to `backend/.env` and configure:
 
 ## Planned Next Steps
 
-- Admin authentication
-- Protected admin API routes
 - Secure review links with token validation
 - CORS allowlist and rate limiting before production
+- Admin account settings, email verification, and password recovery
 - README and deployment documentation improvements
 
 ---

@@ -1,10 +1,11 @@
 const express = require("express");
 const Order = require("../models/Order");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const { sendReviewRequestEmail } = require("../services/emailService.js");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", requireAdminAuth, async (req, res) => {
   try {
     const orders = await Order.find().sort({ sentAt: -1 });
     res.json(orders);
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", requireAdminAuth, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 
@@ -55,7 +56,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", requireAdminAuth, async (req, res) => {
   try {
     const { status, sendReviewEmail } = req.body;
 
