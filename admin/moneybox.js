@@ -22,7 +22,7 @@ let moneyboxValue = 0;
 
 async function loadMoneyboxOrders() {
   try {
-    const response = await fetch("http://localhost:3000/api/orders");
+    const response = await window.adminApiFetch("http://localhost:3000/api/orders");
 
     if (!response.ok) {
       throw new Error("Failed to fetch orders");
