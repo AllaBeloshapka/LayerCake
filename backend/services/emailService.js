@@ -1,15 +1,3 @@
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: Number(process.env.EMAIL_PORT) === 465,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -17,6 +5,37 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+async function sendTransactionalEmail({ to, subject, text, html }) {
+  const apiKey = process.env.BREVO_API_KEY;
+  const emailFrom = process.env.EMAIL_FROM;
+
+  if (!apiKey || !emailFrom) {
+    throw new Error("Email service is not configured.");
+  }
+
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": apiKey,
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { email: emailFrom },
+      to: [{ email: to }],
+      subject,
+      textContent: text,
+      htmlContent: html,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    console.error(responseText);
+    throw new Error("Failed to send email through Brevo.");
+  }
 }
 
 async function sendReviewRequestEmail(order, reviewLink) {
@@ -41,8 +60,7 @@ Thank you for choosing LayerCake!`;
     <p>Thank you for choosing LayerCake!</p>
   `;
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+  await sendTransactionalEmail({
     to: order.email,
     subject: "How was your cake?",
     text,
@@ -50,4 +68,4 @@ Thank you for choosing LayerCake!`;
   });
 }
 
-module.exports = { sendReviewRequestEmail };
+module.exports = { sendReviewRequestEmail, sendTransactionalEmail };
