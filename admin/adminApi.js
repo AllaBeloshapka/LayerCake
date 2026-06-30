@@ -33,3 +33,13 @@ window.requireAdminSession = function requireAdminSession() {
 
   return true;
 };
+
+window.getCurrentAdminAccount = async function getCurrentAdminAccount() {
+  const response = await window.adminApiFetch("http://localhost:3000/api/auth/me");
+
+  if (!response.ok) {
+    throw new Error("Failed to load admin account");
+  }
+
+  return response.json();
+};
