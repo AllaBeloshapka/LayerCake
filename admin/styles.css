@@ -1079,11 +1079,35 @@ li {
   font-size: 14px;
 }
 
-.admin-logout-button {
+.admin-header-actions {
   position: absolute;
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-account-link {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px solid rgb(242, 255, 0);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.15);
+  color: rgb(242, 255, 0);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.admin-account-link:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.admin-logout-button {
   padding: 8px 16px;
   border: 2px solid rgb(242, 255, 0);
   border-radius: 8px;
@@ -1100,10 +1124,20 @@ li {
 }
 
 @media (max-width: 768px) {
-  .admin-logout-button {
+  .admin-header-actions {
     position: static;
     transform: none;
     margin-top: 4px;
+  }
+
+  .admin-account-link {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .admin-logout-button {
+    position: static;
+    transform: none;
     font-size: 14px;
     padding: 6px 12px;
   }

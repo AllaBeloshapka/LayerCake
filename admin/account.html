@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title -->
+    <title>Admin Account: Layer Cake</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+
+    <!-- Scripts -->
+    <script src="adminApi.js" defer></script>
+    <script src="account.js" defer></script>
+  </head>
+
+  <body id="root">
+    <!-- Header -->
+    <header class="admin-header">
+      <h2>Our goal is less fuss, more profit.</h2>
+      <div class="admin-header-actions">
+        <a href="index.html" class="admin-account-link">Back to dashboard</a>
+        <button type="button" id="account-logout-button" class="admin-logout-button">Logout</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <section>
+        <h1>Admin Account</h1>
+
+        <p>
+          <strong>Username:</strong>
+          <span id="admin-account-username">Loading...</span>
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          <span id="admin-account-email">Loading...</span>
+        </p>
+
+        <p>
+          <strong>Email status:</strong>
+          <span id="admin-account-email-status">Loading...</span>
+        </p>
+
+        <p id="admin-account-message" aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>
