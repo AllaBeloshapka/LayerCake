@@ -25,6 +25,16 @@ const adminUserSchema = new mongoose.Schema(
     passwordResetExpiresAt: {
       type: Date,
     },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationTokenHash: {
+      type: String,
+    },
+    emailVerificationExpiresAt: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

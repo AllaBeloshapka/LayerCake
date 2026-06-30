@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title -->
+    <title>Admin Account: Layer Cake</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+
+    <!-- Scripts -->
+    <script src="adminApi.js" defer></script>
+    <script src="account.js" defer></script>
+  </head>
+
+  <body id="root" class="account-page">
+    <!-- Header -->
+    <header class="admin-header">
+      <h2>Our goal is less fuss, more profit.</h2>
+      <div class="admin-header-actions">
+        <a href="index.html" class="admin-account-link">Back to dashboard</a>
+        <button type="button" id="account-logout-button" class="admin-logout-button">Logout</button>
+      </div>
+    </header>
+
+    <main class="main account-main">
+      <section class="account-card">
+        <h1 class="account-title">Admin Account</h1>
+
+        <div class="account-row">
+          <span class="account-label">Username</span>
+          <span id="admin-account-username" class="account-value">Loading...</span>
+        </div>
+
+        <div class="account-row">
+          <span class="account-label">Email</span>
+          <span id="admin-account-email" class="account-value">Loading...</span>
+        </div>
+
+        <div class="account-row">
+          <span class="account-label">Email status</span>
+          <span id="admin-account-email-status" class="admin-email-status">Loading...</span>
+        </div>
+
+        <p id="admin-account-message" class="account-message" aria-live="polite"></p>
+
+        <form id="admin-password-form" class="account-password-form">
+          <h2 class="account-section-title">Change Password</h2>
+
+          <label for="current-password" class="account-form-label">Current password</label>
+          <input
+            class="account-form-input"
+            type="password"
+            id="current-password"
+            name="currentPassword"
+            autocomplete="current-password"
+            required
+          />
+
+          <label for="new-password" class="account-form-label">New password</label>
+          <input
+            class="account-form-input"
+            type="password"
+            id="new-password"
+            name="newPassword"
+            autocomplete="new-password"
+            required
+          />
+
+          <label for="repeat-new-password" class="account-form-label">Repeat new password</label>
+          <input
+            class="account-form-input"
+            type="password"
+            id="repeat-new-password"
+            name="repeatNewPassword"
+            autocomplete="new-password"
+            required
+          />
+
+          <button type="submit" class="account-button">Change password</button>
+
+          <p id="admin-password-message" class="account-message" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

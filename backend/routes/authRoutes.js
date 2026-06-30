@@ -1,5 +1,6 @@
 const express = require("express");
 const AdminUser = require("../models/AdminUser");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const {
   createPasswordHash,
   verifyPasswordHash,
@@ -120,6 +121,67 @@ router.post("/login", async (req, res) => {
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: "Failed to log in" });
+  }
+});
+
+router.get("/me", requireAdminAuth, async (req, res) => {
+  try {
+    const admin = await AdminUser.findOne().select("username email emailVerified");
+
+    if (!admin) {
+      res.status(404).json({ message: "Admin account not found" });
+      return;
+    }
+
+    res.json({
+      username: admin.username,
+      email: admin.email,
+      emailVerified: Boolean(admin.emailVerified),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load admin account" });
+  }
+});
+
+router.patch("/password", requireAdminAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (typeof currentPassword !== "string" || !currentPassword) {
+      res.status(400).json({ message: "Current password is required" });
+      return;
+    }
+
+    if (typeof newPassword !== "string") {
+      res.status(400).json({ message: "Invalid password data" });
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      res.status(400).json({
+        message: "Password must be at least 8 characters long",
+      });
+      return;
+    }
+
+    const admin = await AdminUser.findOne();
+
+    if (!admin) {
+      res.status(404).json({ message: "Admin account not found" });
+      return;
+    }
+
+    if (!verifyPasswordHash(currentPassword, admin.passwordHash)) {
+      res.status(401).json({ message: "Current password is incorrect" });
+      return;
+    }
+
+    admin.passwordHash = createPasswordHash(newPassword);
+    await admin.save();
+
+    res.json({ message: "Password updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update password" });
   }
 });
 
