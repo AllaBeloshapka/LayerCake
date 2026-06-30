@@ -1,5 +1,6 @@
 const express = require("express");
 const AdminUser = require("../models/AdminUser");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 const {
   createPasswordHash,
   verifyPasswordHash,
@@ -120,6 +121,25 @@ router.post("/login", async (req, res) => {
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: "Failed to log in" });
+  }
+});
+
+router.get("/me", requireAdminAuth, async (req, res) => {
+  try {
+    const admin = await AdminUser.findOne().select("username email emailVerified");
+
+    if (!admin) {
+      res.status(404).json({ message: "Admin account not found" });
+      return;
+    }
+
+    res.json({
+      username: admin.username,
+      email: admin.email,
+      emailVerified: Boolean(admin.emailVerified),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to load admin account" });
   }
 });
 
