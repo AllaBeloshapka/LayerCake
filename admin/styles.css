@@ -1216,6 +1216,14 @@ li {
   font-size: 14px;
 }
 
+.account-page .account-verification-action {
+  margin-top: 16px;
+}
+
+.account-page .account-verification-button {
+  margin-top: 0;
+}
+
 .account-page .account-password-form {
   display: flex;
   flex-direction: column;

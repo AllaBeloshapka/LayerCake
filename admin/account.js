@@ -5,11 +5,33 @@ const emailElement = document.querySelector("#admin-account-email");
 const emailStatusElement = document.querySelector("#admin-account-email-status");
 const accountMessageElement = document.querySelector("#admin-account-message");
 const accountLogoutButton = document.querySelector("#account-logout-button");
+const sendVerificationEmailButton = document.querySelector("#send-verification-email-button");
+const emailVerificationMessageElement = document.querySelector("#admin-email-verification-message");
 const passwordForm = document.querySelector("#admin-password-form");
 const passwordMessageElement = document.querySelector("#admin-password-message");
 const currentPasswordInput = document.querySelector("#current-password");
 const newPasswordInput = document.querySelector("#new-password");
 const repeatNewPasswordInput = document.querySelector("#repeat-new-password");
+
+let currentAdminEmailVerified = false;
+
+function updateVerificationControls() {
+  if (currentAdminEmailVerified) {
+    sendVerificationEmailButton.style.display = "none";
+    emailVerificationMessageElement.textContent = "";
+    emailVerificationMessageElement.style.color = "";
+    return;
+  }
+
+  sendVerificationEmailButton.style.display = "";
+  sendVerificationEmailButton.disabled = false;
+  sendVerificationEmailButton.textContent = "Send verification email";
+}
+
+function showEmailVerificationMessage(message, isError) {
+  emailVerificationMessageElement.textContent = message;
+  emailVerificationMessageElement.style.color = isError ? "red" : "green";
+}
 
 async function loadAdminAccount() {
   try {
@@ -23,6 +45,8 @@ async function loadAdminAccount() {
     emailStatusElement.className = admin.emailVerified
       ? "admin-email-status admin-email-status--verified"
       : "admin-email-status admin-email-status--unverified";
+    currentAdminEmailVerified = Boolean(admin.emailVerified);
+    updateVerificationControls();
   } catch (error) {
     usernameElement.textContent = "";
     emailElement.textContent = "";
@@ -30,6 +54,8 @@ async function loadAdminAccount() {
     emailStatusElement.className = "admin-email-status";
     accountMessageElement.textContent = "Unable to load account.";
     accountMessageElement.style.color = "red";
+    sendVerificationEmailButton.style.display = "none";
+    sendVerificationEmailButton.disabled = true;
   }
 }
 
@@ -37,6 +63,37 @@ function showPasswordMessage(message, isError) {
   passwordMessageElement.textContent = message;
   passwordMessageElement.style.color = isError ? "red" : "green";
 }
+
+sendVerificationEmailButton.addEventListener("click", async () => {
+  sendVerificationEmailButton.disabled = true;
+  sendVerificationEmailButton.textContent = "Sending...";
+  emailVerificationMessageElement.textContent = "";
+
+  try {
+    const result = await window.requestAdminEmailVerification();
+
+    if (result.emailVerified) {
+      currentAdminEmailVerified = true;
+      emailStatusElement.textContent = "Verified";
+      emailStatusElement.className =
+        "admin-email-status admin-email-status--verified";
+      updateVerificationControls();
+      return;
+    }
+
+    showEmailVerificationMessage(
+      "Verification email sent. Please check your inbox.",
+      false,
+    );
+  } catch (error) {
+    showEmailVerificationMessage(error.message, true);
+  } finally {
+    if (!currentAdminEmailVerified) {
+      sendVerificationEmailButton.disabled = false;
+      sendVerificationEmailButton.textContent = "Send verification email";
+    }
+  }
+});
 
 passwordForm.addEventListener("submit", async (event) => {
   event.preventDefault();

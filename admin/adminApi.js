@@ -91,3 +91,37 @@ window.changeAdminPassword = async function changeAdminPassword(
 
   return response.json();
 };
+
+window.requestAdminEmailVerification = async function requestAdminEmailVerification() {
+  const response = await window.adminApiFetch(
+    "http://localhost:3000/api/auth/email-verification/request",
+    {
+      method: "POST",
+      skipUnauthorizedRedirect: true,
+    },
+  );
+
+  if (!response.ok) {
+    let errorMessage = "Failed to send verification email";
+
+    try {
+      const error = await response.json();
+
+      if (error.message) {
+        errorMessage = error.message;
+      }
+    } catch (parseError) {
+      // Keep default error message.
+    }
+
+    if (errorMessage === "Unauthorized") {
+      sessionStorage.removeItem("adminSessionToken");
+      window.location.href = "login.html";
+      throw new Error("Unauthorized");
+    }
+
+    throw new Error(errorMessage);
+  }
+
+  return response.json();
+};
