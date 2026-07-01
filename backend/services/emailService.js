@@ -1,15 +1,5 @@
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: Number(process.env.EMAIL_PORT) === 465,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -17,6 +7,74 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+async function sendThroughSmtp({ to, subject, text, html }) {
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: Number(process.env.EMAIL_PORT),
+    secure: Number(process.env.EMAIL_PORT) === 465,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: process.env.EMAIL_FROM,
+    to,
+    subject,
+    text,
+    html,
+  });
+
+  const previewUrl = nodemailer.getTestMessageUrl(info);
+
+  if (previewUrl) {
+    console.log("Email preview URL:", previewUrl);
+  }
+
+  return info;
+}
+
+async function sendThroughBrevo({ to, subject, text, html }) {
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": process.env.BREVO_API_KEY,
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { email: process.env.EMAIL_FROM },
+      to: [{ email: to }],
+      subject,
+      textContent: text,
+      htmlContent: html,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseText = await response.text();
+    console.error("Brevo email error:", responseText);
+    throw new Error("Failed to send email through Brevo.");
+  }
+}
+
+async function sendTransactionalEmail({ to, subject, text, html }) {
+  if (!process.env.EMAIL_FROM) {
+    throw new Error("Email service is not configured.");
+  }
+
+  if (process.env.EMAIL_HOST) {
+    return sendThroughSmtp({ to, subject, text, html });
+  }
+
+  if (process.env.BREVO_API_KEY) {
+    return sendThroughBrevo({ to, subject, text, html });
+  }
+
+  throw new Error("Email service is not configured.");
 }
 
 async function sendReviewRequestEmail(order, reviewLink) {
@@ -41,8 +99,7 @@ Thank you for choosing LayerCake!`;
     <p>Thank you for choosing LayerCake!</p>
   `;
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
+  await sendTransactionalEmail({
     to: order.email,
     subject: "How was your cake?",
     text,
@@ -50,4 +107,4 @@ Thank you for choosing LayerCake!`;
   });
 }
 
-module.exports = { sendReviewRequestEmail };
+module.exports = { sendReviewRequestEmail, sendTransactionalEmail };
